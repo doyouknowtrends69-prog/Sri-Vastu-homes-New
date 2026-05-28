@@ -1620,6 +1620,82 @@ background: #1a1008;
     background: var(--ivory);
     border-top: 1px solid var(--rule);
   }
+
+  /* ── Magazine category tiles ── */
+  .mag-cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding-inline: var(--pad-x);
+    border-top: 1px solid var(--rule);
+  }
+
+  .mag-cat-tile {
+    flex: unset !important;
+    scroll-snap-align: unset !important;
+    padding: 2.5rem 1.8rem 2rem !important;
+    border-bottom: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    border-left: none;
+    background: var(--ivory);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .mag-cat-tile:nth-child(3n) { border-right: none; }
+  .mag-cat-tile:nth-child(4),
+  .mag-cat-tile:nth-child(5),
+  .mag-cat-tile:nth-child(6) { border-bottom: none; }
+  .mag-cat-tile:hover {
+    background: #F5EDD8;
+    transform: translateY(-2px);
+  }
+
+  .mag-cat-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+    line-height: 1;
+  }
+
+  .mag-cat-tile h3 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+    text-transform: lowercase;
+  }
+
+  .mag-cat-tile h3::first-letter {
+    text-transform: uppercase;
+    font-size: 2.4rem;
+    line-height: 0.85;
+    float: left;
+    margin-right: 0.05em;
+    color: var(--maroon);
+    font-weight: 700;
+  }
+
+  .mag-cat-tile p {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    max-width: 28ch;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 780px) {
+    .mag-cat-grid { grid-template-columns: repeat(2, 1fr); }
+    .mag-cat-tile:nth-child(3n) { border-right: 1px solid var(--rule); }
+    .mag-cat-tile:nth-child(2n) { border-right: none; }
+    .mag-cat-tile:nth-child(5),
+    .mag-cat-tile:nth-child(6) { border-bottom: none; }
+    .mag-cat-tile:nth-child(4) { border-bottom: 1px solid var(--rule); }
+  }
+
+  @media (max-width: 480px) {
+    .mag-cat-grid { grid-template-columns: 1fr; }
+    .mag-cat-tile { border-right: none !important; border-bottom: 1px solid var(--rule) !important; }
+    .mag-cat-tile:last-child { border-bottom: none !important; }
+  }
+
 /* Magazine horizontal track */
   .mag-header {
     display: flex;
@@ -2015,14 +2091,15 @@ background: #1a1008;
   /* ============================================
    ARTICLE MODAL
    ============================================ */
+/* ── Magazine Category Modal ── */
 .modal-overlay {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(42, 24, 16, 0.72);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(42, 24, 16, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
@@ -2032,77 +2109,334 @@ background: #1a1008;
 }
 .modal-panel {
   background: var(--ivory);
-  max-width: 760px;
+  max-width: 1140px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 92vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 32px 80px rgba(42,24,16,0.45);
+  box-shadow: 0 40px 100px rgba(42,24,16,0.5);
   border: 1px solid var(--rule-strong);
   animation: modalIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 @keyframes modalIn {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(28px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* Modal header bar */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.8rem 2.5rem 1.4rem;
+  border-bottom: 1px solid var(--rule-strong);
+  position: sticky;
+  top: 0;
+  background: var(--ivory);
+  z-index: 10;
+}
+.modal-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.modal-header-cat {
+  font-family: var(--f-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.68rem;
+  color: var(--maroon);
+}
+.modal-header-title {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.modal-header-sinhala {
+  font-family: var(--f-sinhala);
+  font-size: 1rem;
+  color: var(--ink-soft);
 }
 .modal-close {
-  position: sticky;
-  top: 1rem;
-  float: right;
-  margin: 1rem 1rem 0 0;
   background: var(--maroon);
   color: var(--cream);
   border: none;
-  width: 36px; height: 36px;
+  width: 38px; height: 38px;
   font-size: 0.9rem;
   cursor: pointer;
   display: grid;
   place-items: center;
-  z-index: 10;
+  flex-shrink: 0;
   transition: background 0.2s;
+  border-radius: 2px;
 }
 .modal-close:hover { background: var(--maroon-deep); }
-.modal-img-wrap {
-  width: 100%;
-  height: 280px;
-  overflow: hidden;
+
+/* Modal description strip */
+.modal-desc-strip {
+  padding: 1.2rem 2.5rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--cream-soft);
 }
-.modal-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.modal-body {
-  padding: 2.5rem 2.5rem 3rem;
-}
-.modal-meta {
-  display: flex;
-  gap: 1.2rem;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-#modalTitle {
-  font-family: var(--f-display);
-  font-weight: 500;
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  line-height: 1.2;
-  margin-bottom: 1rem;
-}
-#modalSinhala {
-  font-family: var(--f-sinhala);
-  font-size: 1.1rem;
-  color: var(--maroon);
-  margin-bottom: 1rem;
-}
-#modalExcerpt {
+.modal-desc-strip p {
   font-style: italic;
   color: var(--ink-soft);
   border-left: 3px solid var(--gold);
   padding-left: 1rem;
-  margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 80ch;
 }
 
+/* Content tiles grid */
+.modal-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.modal-article-tile {
+  padding: 1.6rem 1.5rem 1.8rem;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.25s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.modal-article-tile:nth-child(4n) { border-right: none; }
+.modal-article-tile:nth-last-child(-n+4) { border-bottom: none; }
+.modal-article-tile:hover { background: #F5EDD8; }
+.modal-article-tile:hover .mat-title { color: var(--maroon); }
+.modal-article-tile:hover .mat-read { color: var(--maroon); transform: translateX(3px); }
+
+.mat-img-wrap {
+  width: 100%;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+  background: var(--paper);
+  margin-bottom: 0.2rem;
+}
+.mat-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  filter: sepia(0.08);
+}
+.modal-article-tile:hover .mat-img-wrap img { transform: scale(1.04); }
+.mat-tag {
+  font-family: var(--f-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--saffron);
+}
+.mat-title {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+.mat-excerpt {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  flex: 1;
+}
+.mat-read {
+  font-family: var(--f-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: inline-block;
+  transition: color 0.2s, transform 0.2s;
+}
+
+@media (max-width: 900px) {
+  .modal-tiles-grid { grid-template-columns: repeat(3, 1fr); }
+  .modal-article-tile:nth-child(4n) { border-right: 1px solid var(--rule); }
+  .modal-article-tile:nth-child(3n) { border-right: none; }
+  .modal-article-tile:nth-last-child(-n+3) { border-bottom: none; }
+  .modal-article-tile:nth-last-child(n+4):nth-last-child(-n+6) { border-bottom: 1px solid var(--rule); }
+}
+@media (max-width: 620px) {
+  .modal-panel { max-height: 95vh; }
+  .modal-header { padding: 1.2rem 1.5rem; }
+  .modal-desc-strip { padding: 1rem 1.5rem; }
+  .modal-tiles-grid { grid-template-columns: repeat(2, 1fr); }
+  .modal-article-tile:nth-child(3n) { border-right: 1px solid var(--rule); }
+  .modal-article-tile:nth-child(2n) { border-right: none; }
+  .modal-article-tile:nth-last-child(-n+2) { border-bottom: none; }
+}
+
+/* Legacy (unused but kept for safety) */
+.modal-img-wrap { display: none; }
+.modal-body { display: none; }
+
+
+/* ============================================
+   ARTICLE READER MODAL (second level)
+   ============================================ */
+.art-reader-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(42, 24, 16, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.art-reader-overlay.open { display: flex; }
+.art-reader-panel {
+  background: var(--ivory);
+  max-width: 780px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 48px 120px rgba(42,24,16,0.55);
+  border: 1px solid var(--rule-strong);
+  animation: artReaderIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+.art-reader-panel::-webkit-scrollbar { width: 4px; }
+.art-reader-panel::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+@keyframes artReaderIn {
+  from { opacity: 0; transform: scale(0.94) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.art-reader-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  position: sticky;
+  top: 0;
+  background: var(--ivory);
+  z-index: 10;
+}
+.art-reader-back {
+  font-family: var(--f-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--rule-strong);
+  color: var(--ink-soft);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.art-reader-back:hover { border-color: var(--maroon); color: var(--maroon); }
+.art-reader-cat {
+  font-family: var(--f-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--maroon);
+}
+.art-reader-close {
+  background: var(--maroon);
+  color: var(--cream);
+  border: none;
+  width: 34px; height: 34px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s;
+  border-radius: 2px;
+}
+.art-reader-close:hover { background: var(--maroon-deep); }
+.art-reader-img-wrap {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background: var(--paper);
+}
+.art-reader-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: sepia(0.1);
+}
+.art-reader-body {
+  padding: 2.5rem 3rem 4rem;
+}
+.art-reader-tag {
+  font-family: var(--f-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  display: block;
+  margin-bottom: 1rem;
+}
+.art-reader-title {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.art-reader-byline {
+  font-family: var(--f-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+}
+.art-reader-rule {
+  height: 1px;
+  background: var(--rule-strong);
+  border: none;
+  margin-bottom: 2rem;
+}
+.art-reader-content {
+  font-family: var(--f-serif);
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.art-reader-content p {
+  margin-bottom: 1.4rem;
+}
+.art-reader-content p:last-child { margin-bottom: 0; }
+.art-reader-content .drop-cap::first-letter {
+  font-family: var(--f-display);
+  font-size: 3.8rem;
+  line-height: 0.8;
+  float: left;
+  margin: 0.1rem 0.15rem 0 0;
+  color: var(--maroon);
+  font-weight: 400;
+}
+.art-reader-content blockquote {
+  border-left: 3px solid var(--gold);
+  padding: 0.8rem 1.4rem;
+  margin: 1.8rem 0;
+  font-style: italic;
+  color: var(--ink-soft);
+  background: rgba(184,146,74,0.06);
+}
+@media (max-width: 620px) {
+  .art-reader-body { padding: 1.8rem 1.5rem 3rem; }
+  .art-reader-img-wrap { height: 220px; }
+}
 </style>
 </head>
 <body>
@@ -2120,7 +2454,7 @@ background: #1a1008;
      ============================================ -->
 <nav class="primary">
   <a href="#" class="brand">
-    <div class="brand-mark"><img src="sri-padmavathi-aandal-maniyo.jpeg" alt="Sree Ganesh Logo"></div>
+    <div class="brand-mark"><img src="allpics/sri-padmavathi-aandal-maniyo.jpeg" alt="Sree Ganesh Logo"></div>
     <div class="brand-text">
       <div class="name">Sri Vastu Homes</div>
       <div class="sub">Sri Ganesha Astrology</div>
@@ -2270,9 +2604,10 @@ background: #1a1008;
         <h3>Vedic <em>Astrology</em> Readings</h3>
         <p>Personal birth-chart analysis for clarity on career, relationships, health and timing of life events.</p>
         <div class="service-tags">
-          <span class="tag">Janma Kundali</span>
-          <span class="tag">Dasha</span>
-          <span class="tag">Transit</span>
+          <span class="tag">Complete 12 house reading</span>
+          <span class="tag">Aruda reading</span>
+          <span class="tag">Jayamini reading</span>
+          <span class="tag">Vimshothtari reading</span>
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2297,12 +2632,13 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Vastu Shastra <em>for Home</em></h3>
+        <h3>Vastu <em>Shastra</em></h3>
         <p>Architectural guidance that aligns your home or business with cosmic energies — without major structural changes.</p>
         <div class="service-tags">
-          <span class="tag">Floor Plans</span>
-          <span class="tag">Site Visit</span>
-          <span class="tag">Govt. Approved</span>
+          <span class="tag">House</span>
+          <span class="tag">Business</span>
+          <span class="tag">Buildings</span>
+          <span class="tag">Religious places</span>
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2327,12 +2663,12 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Sacred <em>Pooja</em> &amp; Homam</h3>
-        <p>Traditional fire rituals for prosperity, protection and removal of obstacles — at our temple or your home.</p>
+        <h3>Business <em>Logo</em> &amp; Colors</h3>
+        <p>Traditional fire rituals for prosperity, protection and removal of Obstacles.</p>
         <div class="service-tags">
-          <span class="tag">Ganesh Homam</span>
-          <span class="tag">Lakshmi Kubera</span>
-          <span class="tag">Navagraha</span>
+          <span class="tag">Astrology for business</span>
+          <span class="tag">Mantra and colors for business</span>
+          <span class="tag">Logos for business</span>
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2356,12 +2692,16 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Kundali <em>Matching</em></h3>
-        <p>Compatibility analysis for marriage — assessing the eight critical attributes for a harmonious lifelong union.</p>
+        <h3>Auspicious <em>Timing</em>(Muhurtha)</h3> 
+        <p>Discover personalized Muhurtha guidance for life’s important moments calculated according to traditional Vedic astrology.</p>
         <div class="service-tags">
-          <span class="tag">Ashta Koota</span>
-          <span class="tag">Mangal Dosha</span>
-          <span class="tag">Remedies</span>
+          <span class="tag">Starts</span>
+          <span class="tag">Purchases</span>
+          <span class="tag">Ceremonies</span>
+           <span class="tag">Auspicious times</span>
+          <span class="tag">Vedic Pooja times</span>
+          <span class="tag">Shanti times</span>
+
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2386,17 +2726,22 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Gemstone <em>Prescription</em></h3>
-        <p>Personalised guidance on planetary gemstones — ruby, sapphire, emerald — to strengthen your favourable grahas.</p>
+        <h3>Gemstone <em>Guidance</em></h3>
+        <p>Receive expert gemstone guidance tailored to your energy spiritual balance and positive energy</p>
         <div class="service-tags">
-          <span class="tag">Authenticated</span>
-          <span class="tag">Energised</span>
-          <span class="tag">Custom</span>
+          <span class="tag">Colours</span>
+          <span class="tag">Gem type </span>
+          <span class="tag">Shape</span>
+           <span class="tag">Which hand and finger?</span>
+          <span class="tag">⁠Which mantra for energies?</span>
+
         </div>
       </div>
       <div class="service-arrow">→</div>
       <div class="service-num">v.</div>
     </div>
+
+
 
     <!-- 6. Name Correction -->
     <div class="service">
@@ -2418,12 +2763,12 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Name <em>Correction</em> &amp; Numerology</h3>
-        <p>Aligning your name's vibration with your birth chart — a subtle but powerful correction for fortune and success.</p>
+        <h3>Interior <em>Designing</em></h3>
+        <p>Create harmonious living spaces through interior and architectural design guided by traditional Vedic principles.</p>
         <div class="service-tags">
-          <span class="tag">Personal</span>
-          <span class="tag">Business</span>
-          <span class="tag">Baby Names</span>
+          <span class="tag">Architectural design</span>
+          <span class="tag">Panchabhootha balance</span>
+          
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2453,12 +2798,20 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Navagraha <em>Remedies</em></h3>
+        <h3>Pooja &amp; <em>Yogas</em></h3>
         <p>Targeted ritual remedies for each of the nine planetary influences — mantras, donations, colours and timings.</p>
         <div class="service-tags">
-          <span class="tag">Nine Planets</span>
-          <span class="tag">Mantra</span>
-          <span class="tag">Yantra</span>
+          <span class="tag">Raja Yoga</span>
+          <span class="tag">Pancha Mahapurusha Yoga</span>
+          <span class="tag">Lakshmi Yoga</span>
+          <span class="tag">Yogada</span>
+          <span class="tag">Maha yogada</span>
+          <span class="tag">⁠Kewal maha yogada</span>
+          <span class="tag">Kalpadruma</span>
+          <span class="tag">Vishnu yoga</span>
+          <span class="tag">Vipareeth ayush yoga</span>
+          <span class="tag">Vipareetha raja yoga</span>
+
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2488,12 +2841,16 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Muhurtha <em>Timing</em></h3>
+        <h3>Special <em> Ayurvedic</em> Astrology</h3>
         <p>Selecting the most auspicious moment for weddings, house-warmings, business launches and new beginnings.</p>
         <div class="service-tags">
-          <span class="tag">Weddings</span>
-          <span class="tag">Griha Pravesha</span>
-          <span class="tag">Business</span>
+          <span class="tag">Maraka</span>
+          <span class="tag">Eraashtaka</span>
+          <span class="tag">Health</span>
+          <span class="tag">Obstacle timing</span> 
+          <span class="tag">Cancer cell activation times</span>
+          <span class="tag">Mental disorders</span> 
+
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2520,12 +2877,12 @@ background: #1a1008;
         </div>
       </div>
       <div class="service-content">
-        <h3>Vastu <em>for Business</em></h3>
+        <h3>Remedies- <em>Yantra &amp; Mantra</em> Services</h3>
         <p>Spatial alignment for offices, shops and factories — enhancing productivity, cash flow and staff harmony.</p>
         <div class="service-tags">
-          <span class="tag">Office</span>
-          <span class="tag">Retail</span>
-          <span class="tag">Factory</span>
+          <span class="tag">Tantric</span>
+          <span class="tag">All kind of Remedies</span>
+          <span class="tag">Protection methods</span>
         </div>
       </div>
       <div class="service-arrow">→</div>
@@ -2553,38 +2910,38 @@ background: #1a1008;
   <div class="events-list reveal">
 
     <div class="event"
-      data-ev-title="Sri Ganesh Homam"
-      data-ev-day="26" data-ev-month="May 2026"
-      data-ev-time="6:30 AM"
+      data-ev-title="Sri Ganesh Abhishekam"
+      data-ev-day="29" data-ev-month="April 2026"
+      data-ev-time="6:30 PM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="The foundational fire ritual to remove obstacles and invite auspicious beginnings. Held at the new dawn, this homam calls upon Lord Ganesha to clear the path ahead — for new ventures, new homes, and new chapters of life."
-      data-ev-imgs="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1609766418204-94aae0ecfdfc?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80&auto=format">
+      data-ev-desc="ශ්‍රී මහා ගනපති අභිශේක පූජාව සහ සහස්‍රනාමාර්චනම් පූජාව .. සියලු භාදක දුරුවී සෞභාග්‍යය උදාවේවා ..🙏🙏"
+      data-ev-imgs="684295094_1489645396506707_4371209720996943314_n.jpg|686404378_1489645739840006_3671746092917573553_n.jpg|686176047_1489645656506681_7825446935047447279_n.jpg|683569088_1489645703173343_4470078171670653036_n.jpg">
       <div class="event-date">
-        <div class="day">26</div>
-        <div class="month">May</div>
+        <div class="day">29</div>
+        <div class="month">April</div>
       </div>
       <div class="event-info">
-        <h3>Sri Ganesh <em>Homam</em></h3>
+        <h3>Sri Ganesh <em>Abhishekam</em></h3>
         <p>The foundational fire ritual to remove obstacles and invite auspicious beginnings.</p>
       </div>
-      <div class="event-time">6:30 AM</div>
+      <div class="event-time">6:30 PM</div>
       <div class="event-cta">View →</div>
     </div>
 
     <div class="event"
-      data-ev-title="Lakshmi Kubera Pooja"
-      data-ev-day="06" data-ev-month="Jun 2026"
+      data-ev-title="Sri Valli Thewani Sameda Sri Subraniyam Kadirawelayuda Dandapani Katharagamaswami Sahasranama"
+      data-ev-day="28" data-ev-month="April 2026"
       data-ev-time="6:30 PM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="Devotion to the goddess of wealth and the lord of treasures. This pooja is performed to invite prosperity, abundance and financial stability into your home and family. Families are encouraged to bring an offering of flowers and fruit."
-      data-ev-imgs="https://images.unsplash.com/photo-1609766418204-94aae0ecfdfc?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=1200&q=80&auto=format">
+      data-ev-desc="ශ්‍රී වල්ලි තේවානිසමේද ශ්‍රී සුබ්‍රමන්‍ය කදිර්වේලයුද දන්ඩපානි කතරගාමස්වාමී සහස්‍රනාමර්චනම් පූජාව...සැමට යහපතක්ම වේවා...🙏🙏"
+      data-ev-imgs="683368412_1488781226593124_270685832365683740_n.jpg|683041710_1488781423259771_1407191253363608730_n.jpg|683877730_1488781263259787_4055008871302983281_n.jpg">
       <div class="event-date">
-        <div class="day">06</div>
-        <div class="month">Jun</div>
+        <div class="day">28</div>
+        <div class="month">April</div>
       </div>
       <div class="event-info">
-        <h3>Lakshmi <em>Kubera</em> Pooja</h3>
-        <p>Devotion to the goddess of wealth and the lord of treasures — to invite prosperity into your home.</p>
+        <h3>Sri Valli Thewani Sameda <em>Sri Subraniyam Kadirawelayuda</em> Dandapani Katharagamaswami Sahasranama</h3>
+        <p>Devotion to the god of wealth and the lord of treasures — to invite prosperity into your home.</p>
       </div>
       <div class="event-time">6:30 PM</div>
       <div class="event-cta">View →</div>
@@ -2592,136 +2949,145 @@ background: #1a1008;
 
     <div class="event"
       data-ev-title="Navagraha Shanti Homam"
-      data-ev-day="14" data-ev-month="Jun 2026"
+      data-ev-day="11" data-ev-month="Mar 2026"
       data-ev-time="6:30 AM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="Pacification of the nine planetary deities — a profound ritual for balance, clarity and the easing of difficult transits. The Navagraha Shanti Homam is especially recommended during Saturn, Rahu or Ketu dashas."
-     data-ev-imgs="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1601314167099-232775b3d6fd?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1582560475093-ba66accbc424?w=1200&q=80&auto=format">
+      data-ev-desc="මද්‍යහ්න ශ්‍රී යන්ට්‍ර මහාමේරු පූජාව....🙏🙏 සැමට යහපතක්ම වේවා...🙏🙏🙏"
+     data-ev-imgs="650828391_1446639607473953_4595644543377154170_n.jpg|649830371_1446640344140546_7811608148738671878_n.jpg|650996786_1446640314140549_8928946675098306850_n.jpg">
       <div class="event-date">
-        <div class="day">14</div>
-        <div class="month">Jun</div>
+        <div class="day">11</div>
+        <div class="month">Mar</div>
       </div>
       <div class="event-info">
-        <h3>Navagraha <em>Shanti</em> Homam</h3>
+        <h3>Sri Yanthra <em>Mahameru </em> Pooja</h3>
         <p>Pacification of the nine planetary deities — balance, clarity and easing of difficult transits.</p>
       </div>
-      <div class="event-time">6:30 AM</div>
+      <div class="event-time">12:00 PM</div>
       <div class="event-cta">View →</div>
     </div>
 
-    <div class="event"
-      data-ev-title="Saraswati Pooja"
-      data-ev-day="22" data-ev-month="Jun 2026"
-      data-ev-time="7:00 AM"
-      data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="Honouring the goddess of wisdom, learning and the arts. Particularly auspicious for students, teachers and creatives. Books, instruments and tools of learning are traditionally placed at the altar during this pooja."
-      data-ev-imgs="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80&auto=format">
-      <div class="event-date">
-        <div class="day">22</div>
-        <div class="month">Jun</div>
-      </div>
-      <div class="event-info">
-        <h3>Saraswati <em>Pooja</em></h3>
-        <p>Honouring the goddess of wisdom, learning and the arts. Auspicious for students and creatives.</p>
-      </div>
-      <div class="event-time">7:00 AM</div>
-      <div class="event-cta">View →</div>
-    </div>
+    
 
     <div class="event"
       data-ev-title="Sudarshana Homam"
-      data-ev-day="05" data-ev-month="Jul 2026"
-      data-ev-time="6:00 AM"
+      data-ev-day="15" data-ev-month="Feb 2026"
+      data-ev-time="6:00 PM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="A powerful protection ritual invoking Lord Vishnu's Sudarshana Chakra. This homam is performed for removal of negative energies, spiritual protection of the home and family, and resolution of long-standing difficulties."
-      data-ev-imgs="https://images.unsplash.com/photo-1582560475093-ba66accbc424?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1601314167099-232775b3d6fd?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1609766418204-94aae0ecfdfc?w=1200&q=80&auto=format">
+      data-ev-desc="2026 මහා ශිවරාත්‍රී නිශ්ට කාල සම්පූර්න සාම්භ සදාශිව අභිශේක පූජාව සහ අර්දනාරීශ්වර ස්වරූප ස්ගිව ලින්ග සහස්‍රනාමර්චනම් පූජාව....සහ ද්වාදස ජොඉතිඋර්ලින්ග පූජාව...සැමට යහපතක්ම වේවා..ප්‍රාර්තනා සාර්තක වේවා... 🙏🙏🙏"
+      data-ev-imgs="634708399_1426575749480339_4301769344299219823_n.jpg|636853671_1426590926145488_5717099636541183264_n.jpg|634455016_1426592416145339_8406348482790260951_n.jpg|636995440_1426591699478744_6911441126950904213_n.jpg|
+                    632792535_1426591936145387_7658873454326935427_n.jpg|636985983_1426591622812085_5850596317619064074_n.jpg|633953616_1426591249478789_3609603232797193644_n.jpg|634254262_1426592346145346_3787755189924282144_n.jpg|
+                    633003066_1426592096145371_4884333352955423121_n.jpg|635119204_1426591482812099_9041101384788810035_n.jpg|634018469_1426591386145442_326942241713133360_n.jpg|635533940_1426591829478731_7939871920690280402_n.jpg|
+                    634923800_1426591536145427_714256806044267956_n.jpg|633995201_1426591069478807_3195940915662604350_n.jpg|634400301_1426592016145379_7400559653902712858_n.jpg|633201345_1426590939478820_821337202065791923_n.jpg">
+                   
       <div class="event-date">
-        <div class="day">05</div>
-        <div class="month">Jul</div>
+        <div class="day">15</div>
+        <div class="month">FEB</div>
       </div>
       <div class="event-info">
-        <h3>Sudarshana <em>Homam</em></h3>
-        <p>A powerful protection ritual invoking the Sudarshana Chakra for home and family.</p>
+        <h3>Maha <em>Shiva</em> Rathree</h3>
+        <p>Ultimate celebration of Shiva</p>
       </div>
-      <div class="event-time">6:00 AM</div>
+      <div class="event-time">6:00 PM</div>
       <div class="event-cta">View →</div>
     </div>
 
     <div class="event"
       data-ev-title="Mrityunjaya Homam"
-      data-ev-day="19" data-ev-month="Jul 2026"
-      data-ev-time="6:30 AM"
+      data-ev-day="12" data-ev-month="Nov 2025"
+      data-ev-time="6:30 PM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="Dedicated to Lord Shiva as the conqueror of death. The Mrityunjaya Homam is performed for healing, longevity and the overcoming of serious illness. It may also be performed on behalf of an individual who cannot attend in person."
-      data-ev-imgs="https://images.unsplash.com/photo-1601314167099-232775b3d6fd?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1582560475093-ba66accbc424?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80&auto=format">
+      data-ev-desc="2025 ශ්‍රී කාලබයිරව ජයන්ති පූජාව 🙏🙏🙏 සැමගෙ ඇස්වහ කටවහ හෝවහ දුරුවී නිවාස දෝශ දුරුවී බූමි දොශ ඉවත්ව..සැමට සෞභාග්‍ය උදාවේවා..🙏🙏🙏"
+      data-ev-imgs="580878224_1346202794184302_1178201292187454102_n.jpg|580690803_1346202904184291_1758623996215315504_n.jpg|581870038_1346202757517639_5737154349972919068_n.jpg">
       <div class="event-date">
-        <div class="day">19</div>
-        <div class="month">Jul</div>
+        <div class="day">12</div>
+        <div class="month">Nov</div>
       </div>
       <div class="event-info">
-        <h3>Mrityunjaya <em>Homam</em></h3>
-        <p>Dedicated to Lord Shiva for healing, longevity and the overcoming of serious illness.</p>
+        <h3>Sri <em>KaalBairavan</em> Jayanthi</h3>
+        <p>Removing Evil on KaalBairavan Jayanthi</p>
       </div>
-      <div class="event-time">6:30 AM</div>
+      <div class="event-time">6:30 PM</div>
       <div class="event-cta">View →</div>
     </div>
 
     <div class="event"
       data-ev-title="Ayutha Pooja"
-      data-ev-day="02" data-ev-month="Aug 2026"
-      data-ev-time="8:00 AM"
+      data-ev-day="31" data-ev-month="Mar 2025"
+      data-ev-time="5:00 PM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="The auspicious blessing of tools, vehicles and instruments of work. Business owners, engineers, craftsmen and drivers are especially invited. All who bring their tools are welcome — registration is required due to limited space."
-      data-ev-imgs="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80&auto=format">
+      data-ev-desc="ශ්‍රී මත්ස්‍ය ජයන්ති පූජාව.. ස්ග්‍රී විශ්නු දෙවියන්ගේ මත්ස්‍ය අවතාර ජයන්තී දින විශේශ පූජාව... සැමට යහපතක්ම වේවා...අදුරේ ගිලී ඇති ජීවයන් නැවත ආලෝකයට ගත් ශ්‍රී මත්ස්‍ය භගවාන් දෙවිදුන්ගේ පිහිටයි...
+                    Shri Matsya Jayanti Pooja… A special pooja on the Jayanti day of Shri Vishnu’s Matsya Avatar… May it bring prosperity to all… With the divine grace of Shri Matsya Bhagavan, may those engulfed in darkness find their way back to the light…
+                    ஸ்ரீ மத்ஸ்ய ஜயந்தி பூஜை… ஸ்ரீ விஷ்ணுவின் மத்ஸ்ய அவதார ஜயந்தி நாளில் சிறப்பு பூஜை… எல்லோருக்கும் நன்மை பெருகட்டும்… இருளில் மூழ்கிய உயிர்கள் மீண்டும் ஒளியைக் காண ஸ்ரீ மத்ஸ்ய பகவானின் அருள் வழிவகையாக்கட்டும்…"
+      data-ev-imgs="494454412_1177519424385974_821486568858947654_n.jpg|494643596_1177517924386124_1431906390110541530_n.jpg|494310112_1177520401052543_5358694075701675940_n.jpg|494236855_1177520117719238_6311262535604875832_n.jpg|494287810_1177520594385857_3003569693226775290_n.jpg|494627706_1177518617719388_6172975132079457849_n.jpg">
       <div class="event-date">
-        <div class="day">02</div>
-        <div class="month">Aug</div>
+        <div class="day">31</div>
+        <div class="month">Mar</div>
       </div>
       <div class="event-info">
-        <h3>Ayutha <em>Pooja</em></h3>
-        <p>The auspicious blessing of tools, vehicles and instruments of work and trade.</p>
+        <h3>Sri <em>Mathsya Bagawan</em> Jayanthi</h3>
+        <p>A special pooja on the Jayanti day of Shri Vishnu’s Matsya Avatar…</p>
       </div>
-      <div class="event-time">8:00 AM</div>
+      <div class="event-time">5:00 PM</div>
       <div class="event-cta">View →</div>
     </div>
 
     <div class="event"
       data-ev-title="Vastu Griha Pravesha"
-      data-ev-day="16" data-ev-month="Aug 2026"
-      data-ev-time="7:30 AM"
+      data-ev-day="29" data-ev-month="Mar 2025"
+      data-ev-time="7:30 PM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="A sacred housewarming ceremony conducted according to full Vastu Shastra principles. If you are entering a new home or completing a major renovation this year, this ceremony purifies the space and establishes the correct energy for every room. Prior consultation is required — contact us to arrange."
-      data-ev-imgs="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1601314167099-232775b3d6fd?w=1200&q=80&auto=format">
+      data-ev-desc="ආයුශ..සෞක්‍ය..දනය... ආරක්ශාව..සුභාග්‍ය වෙනුවෙන් ශනි මාරුව සදහා පූජාව.... සූර්‍ය ග්‍රහන පූජාව... අමාවශ්‍ය දින වෙනුවෙන් පැවත්වූ ශ්‍රී සාම්භ සදාශිව සහස්‍රනාමර්චනම් ත්‍රිත්ව පූජාවන් සහ අභිශේක් පුජාව...."
+      data-ev-imgs="493503006_1175883727882877_9034043519129336205_n.jpg|493452106_1175883081216275_6519231063488947016_n.jpg|494024193_1175885984549318_798725786301778523_n.jpg">
       <div class="event-date">
-        <div class="day">16</div>
-        <div class="month">Aug</div>
+        <div class="day">29</div>
+        <div class="month">Mar</div>
       </div>
       <div class="event-info">
-        <h3>Vastu <em>Griha Pravesha</em></h3>
-        <p>Sacred housewarming ceremony — purifying the new home according to Vastu Shastra.</p>
+        <h3>Sri <em>Sambha Sadashiva</em> Sahassranam Pooja</h3>
+        <p>Shri Sambha Sadashiva through powerful Sahasranama Archana ceremonies</p>
       </div>
-      <div class="event-time">7:30 AM</div>
+      <div class="event-time">7:30 PM</div>
       <div class="event-cta">View →</div>
     </div>
 
     <div class="event"
       data-ev-title="Vastu Vastu "
-      data-ev-day="16" data-ev-month="Aug 2026"
-      data-ev-time="7:30 AM"
+      data-ev-day="15" data-ev-month="Mar 2025"
+      data-ev-time="5:30 PM"
       data-ev-location="Suduwella Junction, Panadura"
-      data-ev-desc="A sacred housewarming ceremony conducted according to full Vastu Shastra principles. If you are entering a new home or completing a major renovation this year, this ceremony purifies the space and establishes the correct energy for every room. Prior consultation is required — contact us to arrange."
-      data-ev-imgs="1b84bf3f-e8d0-4b03-8ffc-10c342430204.jpg|https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80&auto=format">
+      data-ev-desc="ශ්‍රී නව දුර්ගා සහස්‍රනාමාර්චනම් පූජාව. දේවී නව දුර්ගා මාතාවගේ අසීමිත ආශීර්වාද ලබාගැනීම සඳහා පැවැත්වෙන මෙම පූජාව, ආරක්ෂාව, සෞභාග්‍යය, ආධ්‍යාත්මික ශක්තිය සහ සියලු බාධක දුර කිරීම සඳහා අතිශය බලසම්පන්න වූ ශාස්ත්‍රීය පූජාව."
+      data-ev-imgs="492032591_1171790121625571_4024360859691400662_n.jpg|492019624_1171790184958898_3645636154430440025_n.jpg|492050177_1171789928292257_797271484837294859_n.jpg|492429486_1171789934958923_7612606516372009914_n.jpg|491965193_1171790148292235_6662358736926889619_n.jpg">
       <div class="event-date">
-        <div class="day">16</div>
-        <div class="month">Aug</div>
+        <div class="day">15</div>
+        <div class="month">Mar</div>
       </div>
       <div class="event-info">
-        <h3>Vastu <em>Griha Pravesha</em></h3>
-        <p>Sacred housewarming ceremony — purifying the new home according to Vastu Shastra.</p>
+        <h3>Sri <em>Nawa Durga</em> Shassranaam Pooja</h3>
+        <p>A powerful sacred ritual performed to receive the divine blessings of Goddess Nava Durga for protection, prosperity, spiritual strength, and the removal of obstacles and negative influences</p>
       </div>
       <div class="event-time">7:30 AM</div>
       <div class="event-cta">View →</div>
     </div>
+
+     <div class="event"
+      data-ev-title="දනය වෙනුවෙන් උදාවන්නාවූ ලක්ශ්මී කුබේර මුහුර්තය"
+      data-ev-day="10" data-ev-month="May 2024"
+      data-ev-time="7:00 PM"
+      data-ev-location="Suduwella Junction, Panadura"
+      data-ev-desc="එලබෙන 30 වන දින උදාවන්නාවූ මෙම මුහුර්තයන් අතීශය බලසම්පන්න දනය වෙනුවෙන්ම පවතින මුහුර්තයකි. මෙම දිනයේ අදාල දන කුබේර මුහුර්තය තමන්ගේ කේන්දරයට සීහෙන පරිදි සකසවාගෙන එම නකත් වේලාව එම මුහුර්තාදිපති හරහා ශ්‍රී කුබේර භගවාන් සහ ශ්‍රී ලක්ශ්මී මුහුර්ත ක්‍රියාත්මක වන පරිදි ගනුදෙනු කිරීමත් විශේශ පූජා සිදුකිරීමත් තමන්ගේ කේන්දර වල අයස්තානීය දෝශ සහ දරීද්‍ර දෝශ මගහරවා දනෝපායන මාර්ග සාක්ශාත් කරගැනීමේ සුභම අවස්තාවකි.. "
+      data-ev-imgs="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80&auto=format|https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80&auto=format">
+      <div class="event-date">
+        <div class="day">10</div>
+        <div class="month">May</div>
+      </div>
+      <div class="event-info">
+        <h3>Kuberan <em>Pooja</em></h3>
+        <p>Kubera and Goddess Lakshmi is believed to remove financial obstacles and open the path to abundance</p>
+      </div>
+      <div class="event-time">7:00 PM</div>
+      <div class="event-cta">View →</div>
+    </div> 
+
 
   </div>
 </section>
@@ -2914,14 +3280,14 @@ Academically, I hold qualifications in:
       <div class="proj-slide-item">
         <div class="if-image" data-photo-carousel>
   <div class="proj-photo-track">
-    <img src="637582388_1429023635902217_4720921902044049217_n.jpg" alt="Wijesinghe Residence — photo 1">
-    <img src="637936121_1429026959235218_440584605662606729_n.jpg" alt="Wijesinghe Residence — photo 2">
-    <img src="635610764_1429027162568531_3098732231808545250_n.jpg" alt="Wijesinghe Residence — photo 3">
-    <img src="638006546_1429026732568574_2295111858510068998_n.jpg" alt="Wijesinghe Residence — photo 3">
-    <img src="639046752_1429026932568554_7878988299441077872_n.jpg" alt="Wijesinghe Residence — photo 3">
-    <img src="639103814_1429026762568571_9165739437791970580_n.jpg" alt="Wijesinghe Residence — photo 3">
-    <img src="639155450_1429027212568526_5166019792531984435_n.jpg" alt="Wijesinghe Residence — photo 3">
-    <img src="639156176_1429026719235242_1516938801523751733_n.jpg" alt="Wijesinghe Residence — photo 3">
+    <img src="allpics/637582388_1429023635902217_4720921902044049217_n.jpg" alt="Wijesinghe Residence — photo 1">
+    <img src="allpics/637936121_1429026959235218_440584605662606729_n.jpg" alt="Wijesinghe Residence — photo 2">
+    <img src="allpics/635610764_1429027162568531_3098732231808545250_n.jpg" alt="Wijesinghe Residence — photo 3">
+    <img src="allpics/638006546_1429026732568574_2295111858510068998_n.jpg" alt="Wijesinghe Residence — photo 3">
+    <img src="allpics/639046752_1429026932568554_7878988299441077872_n.jpg" alt="Wijesinghe Residence — photo 3">
+    <img src="allpics/639103814_1429026762568571_9165739437791970580_n.jpg" alt="Wijesinghe Residence — photo 3">
+    <img src="allpics/639155450_1429027212568526_5166019792531984435_n.jpg" alt="Wijesinghe Residence — photo 3">
+    <img src="allpics/639156176_1429026719235242_1516938801523751733_n.jpg" alt="Wijesinghe Residence — photo 3">
 
 
 
@@ -2950,16 +3316,16 @@ This design perfectly blends luxury, functionality, comfort, and contemporary ae
       <div class="proj-slide-item">
        <div class="if-image" data-photo-carousel>
   <div class="proj-photo-track">
-    <img src="638115230_1429485562522691_7638753053353688320_n.jpg" alt="Perera Villa — photo 1">
-    <img src="637912056_1429489742522273_8331422887068935007_n.jpg" alt="Perera Villa — photo 2">
-    <img src="636688391_1429489395855641_3144130800975890709_n.jpg" alt="Perera Villa — photo 3">
-    <img src="639167937_1429489732522274_236128354486890535_n.jpg" alt="Perera Villa — photo 4">
-    <img src="639137896_1429489915855589_788123965113083824_n.jpg" alt="Perera Villa — photo 5">
-    <img src="639147750_1429489815855599_9132152423321776003_n.jpg" alt="Perera Villa — photo 6">
-    <img src="639151600_1429489682522279_1272312066472953497_n.jpg" alt="Perera Villa — photo 7">
-    <img src="639675571_1429489855855595_6664243062553288798_n.jpg" alt="Perera Villa — photo 8">
-    <img src="639485282_1429489895855591_6910871483177458286_n.jpg" alt="Perera Villa — photo 9">
-    <img src="638008290_1429489439188970_1966354935344860815_n.jpg" alt="Perera Villa — photo 10">
+    <img src="Johnkeels/638115230_1429485562522691_7638753053353688320_n.jpg" alt="Perera Villa — photo 1">
+    <img src="Johnkeels/637912056_1429489742522273_8331422887068935007_n.jpg" alt="Perera Villa — photo 2">
+    <img src="Johnkeels/636688391_1429489395855641_3144130800975890709_n.jpg" alt="Perera Villa — photo 3">
+    <img src="Johnkeels/639167937_1429489732522274_236128354486890535_n.jpg" alt="Perera Villa — photo 4">
+    <img src="Johnkeels/639137896_1429489915855589_788123965113083824_n.jpg" alt="Perera Villa — photo 5">
+    <img src="Johnkeels/639147750_1429489815855599_9132152423321776003_n.jpg" alt="Perera Villa — photo 6">
+    <img src="Johnkeels/639151600_1429489682522279_1272312066472953497_n.jpg" alt="Perera Villa — photo 7">
+    <img src="Johnkeels/639675571_1429489855855595_6664243062553288798_n.jpg" alt="Perera Villa — photo 8">
+    <img src="Johnkeels/639485282_1429489895855591_6910871483177458286_n.jpg" alt="Perera Villa — photo 9">
+    <img src="Johnkeels/638008290_1429489439188970_1966354935344860815_n.jpg" alt="Perera Villa — photo 10">
   </div>
   <button class="proj-photo-btn ppb-prev" aria-label="Previous photo">←</button>
   <button class="proj-photo-btn ppb-next" aria-label="Next photo">→</button>
@@ -2984,12 +3350,12 @@ This design perfectly blends luxury, functionality, comfort, and contemporary ae
       <div class="proj-slide-item">
         <div class="if-image" data-photo-carousel>
   <div class="proj-photo-track">
-    <img src="636638533_1427748446029736_8687804165931964738_n.jpg" alt="Silva Retreat — photo 1">
-    <img src="637911701_1427752522695995_5828155760192283045_n.jpg" alt="Silva Retreat — photo 2">
-    <img src="637899631_1427752339362680_4210092937725909063_n.jpg" alt="Silva Retreat — photo 3">
-    <img src="637894335_1427752506029330_7012828754234421422_n.jpg" alt="Silva Retreat — photo 4">
-    <img src="636023931_1427748639363050_5582870174303600917_n.jpg" alt="Silva Retreat — photo 5">
-    <img src="635489482_1427748462696401_585109341358700608_n.jpg" alt="Silva Retreat — photo 6">
+    <img src="Kottawa/636638533_1427748446029736_8687804165931964738_n.jpg" alt="Silva Retreat — photo 1">
+    <img src="Kottawa/637911701_1427752522695995_5828155760192283045_n.jpg" alt="Silva Retreat — photo 2">
+    <img src="Kottawa/637899631_1427752339362680_4210092937725909063_n.jpg" alt="Silva Retreat — photo 3">
+    <img src="Kottawa/637894335_1427752506029330_7012828754234421422_n.jpg" alt="Silva Retreat — photo 4">
+    <img src="Kottawa/636023931_1427748639363050_5582870174303600917_n.jpg" alt="Silva Retreat — photo 5">
+    <img src="Kottawa/635489482_1427748462696401_585109341358700608_n.jpg" alt="Silva Retreat — photo 6">
 
   </div>
   <button class="proj-photo-btn ppb-prev" aria-label="Previous photo">←</button>
@@ -3020,11 +3386,11 @@ Full landscaping and external development works</p>
       <div class="proj-slide-item">
         <div class="if-image" data-photo-carousel>
   <div class="proj-photo-track">
-    <img src="638108228_1427713802699867_6464343314807374398_n.jpg" alt="Fernando Home — photo 1">
-    <img src="635137054_1427716656032915_6165530481830316916_n.jpg" alt="Fernando Home — photo 2">
-    <img src="637939708_1427716646032916_1699609609078721852_n.jpg" alt="Fernando Home — photo 3">
-    <img src="635288778_1427716679366246_744907757357463020_n.jpg" alt="Fernando Home — photo 4">
-    <img src="638129575_1427713912699856_7239867945605317801_n.jpg" alt="Fernando Home — photo 5">
+    <img src="10p/638108228_1427713802699867_6464343314807374398_n.jpg" alt="Fernando Home — photo 1">
+    <img src="10p/635137054_1427716656032915_6165530481830316916_n.jpg" alt="Fernando Home — photo 2">
+    <img src="10p/637939708_1427716646032916_1699609609078721852_n.jpg" alt="Fernando Home — photo 3">
+    <img src="10p/635288778_1427716679366246_744907757357463020_n.jpg" alt="Fernando Home — photo 4">
+    <img src="10p/638129575_1427713912699856_7239867945605317801_n.jpg" alt="Fernando Home — photo 5">
   </div>
 
   <button class="proj-photo-btn ppb-prev" aria-label="Previous photo">←</button>
@@ -3050,10 +3416,10 @@ Full landscaping and external development works</p>
       <div class="proj-slide-item">
        <div class="if-image" data-photo-carousel>
   <div class="proj-photo-track">
-    <img src="635489475_1427700119367902_404658650201854941_n.jpg" alt="Coastal House — photo 1">
-    <img src="638185438_1427700182701229_9142442146532593849_n.jpg" alt="Coastal House — photo 2">
-    <img src="634976380_1427702802700967_4496647763886848644_n.jpg" alt="Coastal House — photo 3">
-    <img src="635192423_1427702809367633_6405544478303461698_n.jpg" alt="Coastal House — photo 4">
+    <img src="Colombo10/635489475_1427700119367902_404658650201854941_n.jpg" alt="Coastal House — photo 1">
+    <img src="Colombo10/638185438_1427700182701229_9142442146532593849_n.jpg" alt="Coastal House — photo 2">
+    <img src="Colombo10/634976380_1427702802700967_4496647763886848644_n.jpg" alt="Coastal House — photo 3">
+    <img src="Colombo10/635192423_1427702809367633_6405544478303461698_n.jpg" alt="Coastal House — photo 4">
   </div>
   <button class="proj-photo-btn ppb-prev" aria-label="Previous photo">←</button>
   <button class="proj-photo-btn ppb-next" aria-label="Next photo">→</button>
@@ -3163,6 +3529,1694 @@ Full landscaping and external development works</p>
   </div>
 </section>
 
+<!-- ============================================================
+     MAGAZINE ARTICLE DATA
+     This is the editable data for all magazine articles.
+     Each <div class="mag-article"> is one article card.
+     Fields: data-cat, data-img, data-tag, data-title, data-excerpt
+     Full article body goes inside <template> tags.
+     ============================================================ -->
+<div id="magazineData" hidden>
+
+  <!-- ── Astrology ── -->
+  <div class="mag-cat-data" data-category="Astrology">
+
+    <div class="mag-article"
+      data-img="490737630_1165663458904904_544062316159410775_n.jpg"
+      data-tag="Natal Chart"
+      data-title="වෘක්ශ ශාන්තී පූජා...."
+      data-excerpt="ප්‍රදාන වේද හතරින් අතර්වන් වේදයට අනුව එහි වුක්ශ ශාන්තී සම්බන්ද ආද්‍යායට අනුව මෙම වෘක්ශ ශාන්තී පූජාවන් හරහා තම තමන්ගේ කර්මානුරූපව පැමිනෙන ගැටලු විශාල ලෙස අවමකර ගත හැක">
+      <template class="art-body">
+        <p class="drop-cap">ප්‍රදාන වේද හතරින් අතර්වන් වේදයට අනුව එහි වුක්ශ ශාන්තී සම්බන්ද ආද්‍යායට අනුව මෙම වෘක්ශ ශාන්තී පූජාවන් හරහා තම තමන්ගේ කර්මානුරූපව පැමිනෙන ගැටලු විශාල ලෙස අවමකර ගත හැක.
+              උත්තර වයිදික ශ්‍රේශ්ට සූර්‍ය ආදිත්‍ය ගුරුකුල් හීම පවතින මෙම වෘක්ශ විද්‍යාශාස්ත්‍රය ඉතාම අද්බූත ලෙස විශ්වයේ ක්‍රියාත්මක වේ..
+              <p>අදාල තාර්කා හෝ රාශී මූලික දශාව තෝරාගන ඉන්පසුව</p>
+              <p>පුද්ගලයාට</p>
+              <p>සෞක්‍ය </p>
+              <p>තැම්පතු</p>
+              <p>නව ආරම්භයක්</p>
+              <p>නිවසක්</p>
+              <p>වාහන හෝ ඉඩම් දරුවන්</p>
+              <p>සතෲ මර්දනය</p>
+              <p>හවුල් ව්‍යාපාර වර්දනය</p>
+              <p>උරුමය</p>
+              <p>අදයාපනය</p>
+              <p>රැකියාව </p>
+              <p>ආදායම් මාර්ග</p>
+              <p>අද්‍යාත්මික මාර්ගය </p>
+              <p>විවාහය</p>
+              <p>යන තමන්ගේ අවශ්‍යතාව උදෙසා මෙන්ම ඉතා විශාල ලෙස ආයුශ සහ මාරක ගැලවීම උදෙසා වෘක්ශ ශාන්තීන් සිදු කලහැකි.</p>
+              එසේම ජන්මපත්‍රයේ සෝමාවාසය පරීක්ශා කර සොමාවාසයේ මුල...ප්‍රතම මද්‍යය... ඩ්ගෙවන මද්‍යය.. අග ... යන ස්තාන සලකා අනතුරුව අදාල වුක්ශ හෝ මහා වෘක්ශ පූජාව සිදුකල යුතුයි...
+              එයට අදාල පන්චාන්ග ශුද්දිය සහ භූබල ශුද්දිය ඇතුව කිරීම හරහා වෘක්ශ ශාන්තී කර්ම ආරම්භ වන අතර අනතුරුව අදාල කුල දේවතා සහ අනෙකුත් නිත්‍ය පූජා තැබීමෙන් වෘක්ශ ශාන්තී පූජාවන් සිදු කලහැක..
+              දනය..බලය..ආයුශ ..  වෙනුවෙන් මෙම පූජා තැබීම උත්තර ඉන්දීය බලයේ ප්‍රදාන ක්‍රමවේදයකි...</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="641811807_1434159628721951_7781700694863295697_n.jpg"
+      data-tag="Transits"
+      data-title="කේමද්‍රම යෝගය"
+      data-excerpt="එකවර හෝ ක්‍රම ක්‍රමයෙන් දිලිදුබාවය ළගාකරන කේමදෘම යෝගය ලැබෙන ක්‍රමය">
+      <template class="art-body">
+        <p class="drop-cap">කේමදෘම යෝගය කියන්නේ:
+              • ජන්ම කුණ්ඩලියේ නැත්තන් හදහනේ චන්ද්‍රයා ඉදිරිය (2) හා පසුපස (12) භාවයන් තුළ
+              කිසිදු ග්‍රහයෙක් නොමැති වීම
+              • චන්ද්‍රයාට කෙන්ද්‍ර (1,4,7,10) වලින් ග්‍රහ බලයක් නොලැබීම
+              • චන්ද්‍රයා තනියෙන් සිටීම
+              මෙය “චන්ද්‍ර දුර්බලතාවය” ලෙසත් සලකනවා.
+              මේ ගැටලුව එන්න පූර්ව ජන්ම හේතු ට්ගියෙනවා..
+              පුරාණ ග්‍රන්ථයන් වලට සහ ගුරුකුල් වලට අනුව,
+                      <p>කේමදෘම යෝගය පූර්ව ජන්මයේ:</p>
+              <p>• මව්වරුන්ට, ස්ත්‍රීන්ට අපහාස කිරීම</p>
+              <p>• දුප්පත් අයට ආධාර නොදීම</p>
+              <p> • දාන-ධර්ම වලින් දුරස්වීම</p>
+              <p>• මානසික වේදනාවන් ඇති කිරීම</p>
+              <p>චන්ද්‍රයා “මාතා, මනස, කරුණාව” නියෝජනය කරන නිසා, මේ ක්‍රියාවල  ප්‍රතිඵලයක් ලෙස මෙය පෙන්වෙනවා.
+              හැබැයි ඒ කියලා තමන්ට වින කරන ඉහත අයට ගැතුවෙන්න කියන එක නෙමෙ...</p>
+              <p>🌑 කේමදෘම යෝගයෙන් ලැබෙන විපාක</p>
+              <p>මේ දුර්යෝගය ශක්තිමත් නම්:
+              <p>• මානසික එකලස්භාවය</p>
+              <p>• ධන අස්ථිරභාවය</p>
+              <p>• පවුල් සහය නොලැබීම</p>
+              <p>• සමාජයෙන් වෙන්වීම</p>
+              <p>• නිතර සිත් වියවුල්</p>
+              <p>හැබැයි යෝගය භංග වී ඇත්නම් පුද්ගලයා ඉතා ශක්තිමත්, ස්වයං නිර්මාණශීලී, තනිව උසස්වෙන කෙනෙක් වෙන්න පුළුවන්.</p>
+              <p>🌕 කේමදෘම භංග වන ක්‍රම
+              මෙම යෝගය භංග වන අවස්ථා:</p>
+              <p>1. චන්ද්‍රයාට කෙන්ද්‍රයකින් ග්‍රහ බලය තිබීම</p>
+              <p> 2. ගුරු (බ්‍රහස්පති) චන්ද්‍රයාට දෘෂ්ටිය දීම</p>
+              <p>3. චන්ද්‍රයා උච්ච / ස්වක්ෂේත්‍රව සිටීම</p>
+              <p>4. ලග්නේශ බලවත් වීම</p>
+              <p>5. රාජයෝග සමඟ සම්බන්ධ වීම</p>
+              <p>විශේෂයෙන් ගුරු-චන්ද්‍ර යෝගය (Gajakesari Yoga) ඇතිනම්, කේමදෘම බලය ඉතා අඩු වෙයි.
+              හැබැයි ප්‍රශ්නෙ මෙහෙම භංග වීම් තියෙන අයගේ ජන්මපට්ග්‍ර මම පෞද්ගලිකව වසර 20 තිස්සේ පරීක්ෂා කරලා තියෙනවා නමුත් ඔවුන් අදාල ගැටලු සමනය කරගන්න තාක් ඉහත දෝශවලින් පීඩා විදිනවා 
+              ශාන්ති කර්ම (උපශම)</p>
+              <p>1. සොමවාර ව්‍රත</p>
+              <p>• සොමවාර උපාසන</p>
+              <p>•    අභිෂේක (ශිව ලිංගයට)</p>
+              <p>2. ශිව දෙවුදුන් වැදීම</p>
+              <p>• “ඔම් නමඃ ශිවාය” ජප 108 / 1008
+              <p>• ට්ගර්පන පූජා</p>
+              <p>3. චන්ද්‍ර ශාන්ති</p>
+              <p>• “ඔම් සෝම් සෝමාය නමඃ” මන්ත්‍ර ජප</p>
+              <p>• සුදු වස්ත්‍ර, සුදු අහාර දානයන්</p>
+              <p>• දුප්පත් කාන්තාවන්ට සැලකීම</p>
+              <p>4. දාන</p>
+              <p>• කිරි, අල, කෑම</p>
+              <p>• සිඟිති දරුවන්ට සහය දීම</p>
+              <p>මේවගේ ශාන්තිකර්ම වගේම හරියටම කේන්දරේට අදාල දාන්තීන් ටික කරලා..මේ යෝගය භන්ග කරගන්න...
+              මේක තියෙන මිනිස්සු නරක නෑ හැබැයි දුර්වල මනසවල් ඕනම කෙනෙකුට නම්මගන්න පුලුවන්... නිද්‍රාශීලි බව සහ රිනාත්මකතාවයෙන් යුතුයි.. මින් එලියට ආවම ඔවුන් විශාල සාර්තකත්වයක් ලබාගන්නවා...</p>
+     </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="499677505_1193525639452019_8520109798410396427_n.jpg"
+      data-tag="Remedies"
+      data-title="පාප් දූරය නැවතීම සමග මීලග පාප් දූරය පැමිනීම"
+      data-excerpt="ක්‍රිශ්නා අශ්ටමී දිනයේ වතිකානුවේ පවතින පාප් දූරය නැවතීම සමග ලෝකයේ මීලග පාප් දූරය පැමිනීමට පටන් ගනී.
+">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>ක්‍රිශ්නා අශ්ටමී දිනයේ වතිකානුවේ පවතින පාප් දූරය නැවතීම සමග ලෝකයේ මීලග පාප් දූරය පැමිනීමට පටන් ගනී.</p>
+            <p>බුද සහ මන්ගල් ග්‍රහයාගේ නීච තත්වය හරහා බිද වැටුනු පාප් දූරය උත්ට්ගර ඉන්දීය ජෝට්ගීශය අනුව විග්‍රහයේදී මන්ගල්ගේ නීච තාවය හරහා ඉතිහාසයේ පාප්තුමාට තිබූ සේනාදිනායකතාව අහෝසිවීම පෙන්වයි.</p>
+            <p>නමුත් උච්ච සූර්‍යයා විසීම හරහා මින් පසු පත්වන පෝප්වරයා ඉතා ඉහල අදිකාරීත්වයක් හරහා නැවත ලෝකය තුල ස්තිරසාර පාප්පදවියක් ඉතා විශාල මෙන්ම අදික වෑයමකින් මෙන්ම අවස්තා තුනකින් පසුව ප්‍රතිස්තාපනය කරයි.</p>
+            <p>එය බොහෝ විට වතිකානුවට දුර නොවූ නගරයක අගහරුවාදා දිනක උපත ලැබූ මෙන්ම ඒකාදසී තිතියක උපතලැබූවකු වීමේ සම්බාවිතාව පවතී.</p>
+            <p>සර්පයා නියෝජනය කරන උපරිම දැනුම් සම්බාරයෙන්  යුත් අස්ලිස නැකතකින් හෝ මීලග නැකත වන මග නැකතින් උපන් පුද්ගල්‍යකු විය යුතුයි.</p>
+            <p>බුද මන්ගල් සහ සූර්‍යා යන ග්‍රහයන් තුනේ ඒකාත්මික වීමකින් මීලග පාප්තුමා පහල වේ.</p>
+
+            <p>“With the resignation of the current Pope on the day of Krishna Ashtami, the path begins for the emergence of the next Pope in the world.</p>
+            <p>According to Indian astrology, the downfall of the papacy has occurred through the debilitation (Neecha) of Mercury and Mars. This reflects the weakening of the leadership power that Popes historically held—especially through Mars’ debilitation, which signifies the loss of authoritative, military-like command.</p>
+            <p>However, with the exaltation of the Sun (Uchcha Sūrya), the next Pope will come with a high level of authority, restoring the dignity and stability of the papacy globally—through immense effort and in three distinct stages.</p>
+            <p>There is a strong possibility that this individual is born on a Tuesday (symbolic of Mars), in a city not too far from the Vatican, and during the tithi of Ekadashi (11th lunar day).</p>
+            <p>He is likely to be born under the Ashlesha nakshatra (represented by the serpent and associated with deep knowledge) or the following Magha nakshatra—both of which are symbolic of royalty, wisdom, and mysticism.</p>
+            <p>The next Pope will emerge through the combined force of Mercury, Mars, and the Sun.</p>
+
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="621919258_1407787774692470_2683932441450682497_n12.jpg"
+      data-tag="Dasha Cycles"
+      data-title="රුද්‍රාම්ස...🔥💥🌪"
+      data-excerpt="විශේෂ වර්ග කුණ්ඩලියක් ලෙස රූද්‍රාංශය (Rudramsa)">
+      <template class="art-body">
+        <p class="drop-cap">එක් එක් වර්ග චක්‍රයන් හරහා එක් එක් විදයන් රිශිභාදිතයේ පවතී...
+          <p>උට්ග්ට්ගර ඉන්දීය ආදිත්‍ය ගුරුකුලය පහත පරිදි එකොලොස්වන වර්ගචක්‍රය දිගහරී...
+          ජන්මියකුගේ ජන්මපත්‍ර සටහන්වල සමහර ග්‍රහ අතිශයින් අහිතකර ලෙස ක්‍රියා කරන අවස්ථා තිබේ. එවැනි විශේෂ බලපෑම් හඳුනාගැනීමට භාවිතා කරන විශේෂ වර්ග කුණ්ඩලියක් ලෙස රූද්‍රාංශය (Rudramsa) හෙවත් D11 කුණ්ඩලිය හැඳින්වේ.</p>
+          ඇත්තෙන්ම D11 කුණ්ඩලි වර්ග තුනක් ලෙසට වෙන වෙනම පවත්වාගෙන යයි.මක්නිසාද ඒ ඒ ගුරුකුල් වල පවතින රහස්‍ය ගනනයන් හරහා ගනනය කරන බැවින්.</p>
+          රූද්‍රාංශය</p> 
+          <p>සමහරුන් මෙය පරා අංශ ලෙස හඳුන්වන නමුත්, ශාස්ත්‍රයේ ශ්ලෝක අනුව නිවැරදි නාමය රූද්‍රාංශය වේ.</p>
+          <p>ලාභාංශය (ලන්කාවේ බොහෝවිට මෙය භාවිතාවේ).</p>
+          <p>– සමහරුන් මෙය ගෙවල් හා දේපළ ලාභ සඳහා භාවිතා කරන අතර, තවත් සමහරුන් ආදායම (income) සඳහා භාවිතා කරති.</p>
+          <p>අයර් (Iyer) විසින් භාවිතා කළ වෙනත් D11 කුණ්ඩලියක් ද පවතී.</p>
+          <p>රූද්‍රාංශයේ සැබෑ භාවිතය – මහත්මා ගාන්ධිගේ කුණ්ඩලියෙන් උදාහරණයක් ලෙස</p>
+          <p>රූද්‍රාංශය සැබෑවටම ක්‍රියා කරන ආකාරය මහත්මා ගාන්ධිගේ ජන්ම කුණ්ඩලිය මගින් පැහැදිලි කළ හැක.</p>
+          <p>ගාන්ධිගේ 7වන භාවාධිපති වූ මන්ගල් ලග්නයේ පිහිටා ඇත. මෙය ඔහුගේ ජීවිතය ඉතා අශාන්තිමත්, සිද්ධීන්ගත හා සටන්මය වූ බව පෙන්වයි. ඔහුට විශේෂ දසාවක් වූ ද්විසප්තති සමා දසා (Dvisaptati Sama Dasa) යොදාගත හැකි වේ.</p>
+          <p>ඔහුගේ ජීවිතය සම්පූර්ණයෙන්ම වෙනස් කළ සිද්ධි දෙකක් මෙහි විමර්ශනය කෙරේ.</p>
+          <p>බ්‍රරහ්මචර්යය (බ්‍රහ්මචාරී ජීවිතයට යෑමේ) තීරණය</p>
+          <p>මෙම තීරණය ගාන්ධි විසින් ප්‍රකාශ කළේ මන්ගල් මහා දසාවේ – සඳ අන්තර්දසාවේදී ය.</p>
+          <p>රූද්‍රාංශ D11 කුණ්ඩලිය දෙස බැලූ විට,</p>
+          <p>මන්ගල් 8වන භාවයේ නිච ලෙස පිහිටා ඇත</p>
+          <p>මෙය සම්බන්ධතා බිඳවැටීම, විවාහික ජීවිතයෙන් ඉවත්වීම, බ්‍රහ්මචර්යය වැනි අර්ථ දක්වයි.</p>
+          <p>මන්ගල් අධිපති වූ සඳ ද 12වන භාවයේ නිච වී කේතු සමඟ ඇත</p>
+          <p>මෙය සම්පූර්ණ විරක්තිය, වෙන්වීම හා ත්‍යාගය පැහැදිලිව පෙන්වයි.</p>
+          <p>එබැවින් බ්‍රහ්මචර්ය තීරණය පහසුවෙන් තහවුරු කළ හැක.</p>
+          <p>මරණ සිද්ධිය</p>
+          <p>මෙය සිදු වූයේ</p>
+          <p>රාහු දසාවේ – බුධ අන්තර්දසාවේදී ය.</p>
+          <p>රූද්‍රාංශ D11 කුණ්ඩලිය අනුව,</p>
+          <p>රාහු 6වන භාවයේ (සතුරන්ගේ භාවය) සූර්යයා සමඟ සිටී</p>
+          <p>සූර්ය–රාහු යෝගයෙන් ග්‍රහණය (eclipse) සෑදේ.</p>
+          <p>පසුව ගුරුගේ ප්‍රතිඵල ක්‍රියා කරයි</p>
+          <p>ගුරු 3වන භාවයේ MKS (මරණ කාරක ස්ථානය) තුළ මාරක බුධ සමඟ සිටී.</p>
+          <p>ඒ අනුව රාහු–බුධ දසාව පැහැදිලිවම මාරක දසාවක් වේ.</p>
+          <p>රූද්‍රාංශය සමඟ උදු දසා භාවිතා කරන විට කරන ප්‍රතිකාර</p>
+          <p>රූද්‍රාංශය සමඟ උදු දසා භාවිතා කරන විට, ග්‍රහය සඳහා අදාල මන්ත්‍ර අංකය ගණනය කළ යුතුය.</p>
+          <p>එක් රූද්‍රාංශයක් = 2°43′38″</p>
+          <p>ග්‍රහය පිහිටි අංශය අනුව අංකය ගණනය කරයි.</p>
+          <p> මන්ගල් ගනිමු.</p>
+          <p>26°23′ ÷ 30 × 11 = 9.67</p>
+          <p>ඉහළ පූර්ණ අංකය ගන්නා නිසා = 10වන රූද්‍රාංශය</p>
+          <p>මෙහිදිජ් රුද්‍රාමන්ට්‍ර වලින් අදාල අන්කයේ මන්ට්‍රය ගතයුතුයි.</p>
+          <p>ඕම් ගුරවේ නමක්...🙏</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="616850485_1401355308669050_7481612587681339689_n.jpg"
+      data-tag="Nakshatras"
+      data-title="සූර්‍ය කල නල චක්‍රය..."
+      data-excerpt="සූර්‍ය කල නල කියන්නෙ ශරීරයේ තුල වන ශුක්ශ්ම ශක්ති පද්දතියේ.......">
+      <template class="art-body">
+        <p class="drop-cap">සූර්‍ය කල නල චක්‍රය...</p>
+              <p>පුරාන ජොතිශී පලාපල ක්‍රම වේදයක්වූ සූර්‍ය කල නල චක්‍රයෙන් පලාපල කීම කුමක්දැයි බලමු.</p>
+              <p>මෙය සාමන්‍ය විම්ශෝත්ට්නරී ක්‍රමය නොවේ... එකම් චන්ද්‍ර මූලික ක්‍රමයක් නොවේ.</p>
+              <p>සූර්‍ය කල නල කියන්නෙ ශරීරයේ තුල වන ශුක්ශ්ම ශක්ති පද්දතියේ සූර්‍ය ශක්තිය මනිපූර චක්‍රය හරහා ගලායන්නෙ කෙසේද යන්න බලා ඒහරහා සූර්‍ය ශක්තියේ ක්‍රියාකාත්වය බලන ජෝතිශ ක්‍රමවේදය වේ.</p>
+              <p>තන්ත්‍ර වලදී මෙය පින්ගලා මාර්ගය ලෙස සලකන අතර උත්තර ඉන්දීය ආදිත්‍ය ගුරුකුල මෙය මනිපූරයේ සූර්‍ය කල නල ලෙස හදුන්වයි.</p>
+              <p>නාම අර්තයෙන් ගන්නකොට </p>
+              <p>සුර්‍ය .. සූර්‍යා සහ ආත්මය</p>
+              <p>කල.... කාලය සහ ශක්ති ප්‍රවාහයක්</p>
+              <p>නල ... නාලිකාව හෙවත් සූක්ෂම ශක්ති නාලය</p>
+              <p>සූර්‍ය දක්තිය ප්‍රදානකොට අදිකාරී බලය.. ක්ටියාශීලීත්වය.. ආත්මවිශ්වාසය..කරම ක්රියාත්මක වීම නියෝජනය කරයි.</p>
+              <p>සරලව සූර්‍ය කල නල කියන්නෙ කාලයට අනුව ක්‍රියාකරන සූර්‍ය ශක්ති ප්‍රවාහය වගේ අර්තයක්..</p>
+              <p>ජෝතිශයේ සූර්‍ය කල නාල සම්බන්දතාවය </p>
+              <p>සූර්‍ය බලය</p>
+              <p>මේශ ..සිම්හ..දනු රාශි</p>
+              <p>10වන භාවය..කාර්‍ය</p>
+              <p>පිතෲ කර්මය </p>
+              <p>ආත්මය</p>
+              <p>පූර්ව ආත්මීය ආයුර්වේද ජෝතිශය </p>
+              <p>ආදී දේවල් සදහා යොදාගන්නවා..</p>
+              <p>මෙය කෙලින්ම ගනනය බලපාන්නෙ</p>
+              <p>නායකත්වය සහ එහි පැවැත්ම</p>
+              <p>රාජකාරී හා වෘත්තීය උසස්වීම් </p>
+              <p>ආත්ම ගෞරවය</p>
+              <p>ශරීර ශක්තිය </p>
+              <p>ආරක්ශක ශක්තිය </p>
+              <p>බලය</p>
+              <p>ජීර්නය</p>
+              <p>කෝපය සහ අහම්කාරය වගේ දෙවල් වලට.</p>
+              <p>සූර්‍ය කල නාල දර්මය ජ්‍රියාත්මක වීම හරහා සූර්‍ය ශක්තිය පිරිසිදුව බලෙන් නොව නිරායාසයෙන් ලැබීම ඇතිවීම විදියට හදුන්වනවා .</p>
+              <p>මෙහිදී හදහනක සුය්‍ර්‍ය කල නල විශ්ලේශනය කරන්න.</p>
+              <p>සූර්‍ය කලා එකක් තත්පර 24 ලෙස ගනින්න ඕන.</p>
+              <p>සැමවිටම උදේ 6 න් පටන්ගන්න උදාහරණයක් විදියට උදේ 7 වෙනකන් ගනනයබ්කරන්න නම් සූර්‍ය නාල 150ක් එකතුකරගන්න.</p>
+              <p>ඉන්පසු ප්‍රශ්න ජෝතිශය සහ මුහුර්ත නියමය එකතු කල්ල </p>
+              <p>අවශ්‍යනම් ප්‍රශ්න ජෝතිශ හෝ ජොඉතිශය යන දෙකෙන් පලාපල විග්‍රහය කරන්න පුලිවන්..</p>
+              <p>නක්ශත්‍ර 27 ක්‍රමෙනුයි</p>
+              <p>යෝගි සහ මෘත්‍යු භාග වලිනුයි</p>
+              <p>ත්‍රිශ්පුට  එක්කයි කරන එක හරි නමුත් උපග්‍රහ ගනනය කරන්න එපා..</p>
+              <p>හැබැයි වක්‍රතාවය සලකන්න ඕන..</p>
+              <p>ලග්නය කුමන නැකතේද කියලත් බලන්න වෙනවා.</p>.
+              <p>යම් තරමක සන්කීර්න උනාට දසවැන්නට අදාලව</p>
+              <p>මනීපූරය පවතින තැනට  අදාලව</p>
+              <p>තාන්ත්‍රික අදාලතාවයන් වලට</p>
+              <p>බලය වෙනුවෙන් ගැටලු හොයාගන...</p>
+              <p>නිවැරදි යන්ට්‍ර  මන්ට්‍ර  තන්ට්‍ර සාදනයට විශාල ලෙස ප්‍රයෝජනවත් වෙන නිසා නිකන් රවිගෙ අපලෙ..අන්න ඒවගේ සාමොරදායික වචන එක්ක නොගිහින් ගරියට  වෘත්තීය වෙනුවෙන් බලය වෙනුවෙන්.. අදිකාරීත්වය වෙනුවෙන් පලාපල විග්‍රහ කරගන්න පුලුවන් සුවිශේශී ජ්‍රම වේදයක්...
+              <p>සන්කීර්න ගනනයක් තියෙනවා උනත්...</p>
+              <p>හැබැයි කෙනෙක් ඒකෙන් පලාපල කියනවානම් නිවැරදිව සූර්‍ය කල නල චක්‍රය ඇදලා අදාල සූර්‍ය මන්ට්‍රය කියලා පලාපල කියන්න පටන් ගන්න....🙏🙏🙏</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="611944025_1392972846173963_1217316947557898769_n.jpg"
+      data-tag="Muhurta"
+      data-title="මකර සංක්‍රාන්තිය "
+      data-excerpt="මකර සංක්‍රාන්ති යනු සූර්යයා ධනු රාශියෙන් ඉවත් වී මකර රාශියටප්‍රවේශ වීමයි.">
+      <template class="art-body">
+        <p class="drop-cap">මකර සංක්‍රාන්ති යනු සූර්යයා ධනු රාශියෙන් ඉවත් වී මකර රාශියටප්‍රවේශ වීමයි.</p>
+              <p>මෙය සූර්ය සංක්‍රාන්තියක් වන අතර, චන්ද්‍ර මාසයට නොව සූර්ය ගතිකත්වයට අනුගත වීම නිසා සදාකාලිකව (සාමාන්‍යයෙන් ජනවාරි 14 හෝ 15) පැවැත්වේ.</p>
+              <p>වේදයන් අනුව මෙය</p>
+              <p>උත්තරායණය ආරම්භ වන දිනයයි</p>
+              <p>දෙවියන්ගේ දිනයක් ලෙස සැලකේ (දෙවියන්ට දිනය – මනුෂ්‍යයන්ට වර්ෂයක්)</p>
+              <p>භගවද් ගීතා (8.24) අනුව –</p>
+              <p>උත්තරායණ කාලයේදී ශරීරය හැර යන ආත්මයන්ට මෝක්ෂයට යාමේ මාර්ගය විවෘත වේ.</p>
+              <p>උත්තරායණය – ආධ්‍යාත්මික අර්ථය</p>
+              <p>දකුණු ආයණය  – අන්ධකාරය, භෞතික භෝග</p>
+              <p>උත්තරායණය – ප්‍රකාශය, ධර්මය, ජ්ඥානය</p>
+              <p>ඒ නිසා මකර සංක්‍රාන්ති</p>
+              <p>අභ්‍යන්තර පිරිසිදු වීම,</p>
+              <p>කර්ම ශුද්ධිය,</p>
+              <p>ආධ්‍යාත්මික උත්ථානය සඳහා ගුරුවරයා අතිශයින්ම බලවත් වේ.</p>
+              <p>ජ්‍යෝතිෂ්‍ය විස්තර </p>
+              <p>මකර රාශිය </p>
+              <p>• රාශි අධිපති: ශනි ( ශනි දෙවියන්)</p>
+              <p>• තත්ත්වය: පෘථිවි (පටවි)</p>
+              <p>• ගුණය: චර (චලනය වෙනවා)</p>
+              <p>මකරය නියෝජනය කරන්නේ</p>
+              <p>කර්ම</p>
+              <p>වගකීම්</p>
+              <p>ආත්ම නියෝග</p>
+              <p>දිගුකාලීන සාර්ථකත්වය</p>
+              <p>සූර්යයා මෙහි ඇතුළු වීමෙන්</p>
+              <p>ආලෝකය + කර්ම ශක්තිය එකතු වේ</p>
+              <p>අධිෂ්ඨානය සහ ධෛර්යය වර්ධනය වේ</p>
+              <p>🪐 ශනි සහ සූර්ය සම්බන්ධය</p>
+              <p>ශනි – කර්ම දෙවියන්</p>
+              <p>සූර්ය – ආත්ම ශක්තිය (Atma Karaka)</p>
+              <p>👉 මෙහිදී</p>
+              <p>• අහංකාරය අඩුවෙයි</p>
+              <p>• අභිමානය පාලනය වේ</p>
+              <p>• සැබෑ වගකීමෙන් ජීවිතය බැලීමට බලය ලැබේ</p>
+              <p>ඒ නිසා මකර සංක්‍රාන්ති</p>
+              <p>කර්ම ගෙවීම්, නව ආරම්භ, ශාප නැසීම සඳහා යෝග්‍ය වේ.</p>
+              <p>මකර සංක්‍රාන්තිදී කළ යුතු යහපත් ක්‍රියා</p>
+              <p>1. සූර්ය අර්ඝ්‍ය පූජා</p>
+              <p>• උදෑසන සූර්ය උදාවේදී</p>
+              <p>• තඹ පාත්‍රයකින් ජලය + තිල + රතු මල්</p>
+              <p>• “ඕම් සූර්යයා නමඃ” මන්ත්‍රය</p>
+              <p>2. ශනි ශාන්ති</p>
+              <p>• කළු තිල දානය</p>
+              <p>• කළු ඇඳුම්, තෙල්, ධාන්‍ය දානය</p>
+              <p>• “ඕම් ශං ශනිචරාය නමඃ”</p>
+              <p>3. ස්නානය (පුණ්‍ය ස්නානය)</p>
+              <p>• ගංගා ස්නානය ඉතා බලවත්</p>
+              <p>• ගෙදරදී: උණුසුම් ජලයට තිල එකතු කර</p>
+              <p>4. දාන</p>
+              <p> • අන්න දානය</p>
+              <p>• උණුසුම් ආහාර දානය</p>
+              <p>සූර්ය කර්ම විශේෂයෙන් ක්‍රියාත්මක වේ..</p>
+              <p>එසේම සූර්‍ය දෙවියන්.. ශිව දෙවියන් හා විශ්නු දෙවියන්ගේ සූර්‍ය ස්වරූප වෙනුවෙන් පූජා පවත්වයි.</p>
+              <p>මකර සන්ක්‍රාන්තිය තනිකරම දිව්‍යමය ආලෝකය දිඋර්ගකාලීන සාර්තකත්වය සදහා ජීවිතයේ මාර්ගය විවර කරන දිනයකි...</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="586224377_1352523146885600_5025458179980168516_n.jpg"
+      data-tag="Navagraha"
+      data-title="යහපත කරන්න — යහපතක් ලැබේ"
+      data-excerpt="නිවසට හෝ ව්‍යාපාරයට දනය ග්‍ර්න ඒමට යන්ට්‍රයක්">
+      <template class="art-body">
+        <p class="drop-cap"><p>නිවසට හෝ ව්‍යාපාරයට දනය ග්‍ර්න ඒමට යන්ට්‍රයක්</p>
+              <p>යන්ත‍්‍රයක් යනු මැජික් නොවේ. එය ඔබගේ අපේක්ෂිත සිද්ධියන් හා කැමතුම් සපුරාලීමට උපකාරී වන මාර්ගයක්, ක්‍රමයක් හෝ තත්ත්‍වයක් පමණි. වේද හා ශාස්ත්‍රානුසාරයෙන් යන්ත‍්‍ර ශක්තිය විශාල ක්ෂේත්‍රයක් බැවින්, නිසි උපදෙස් හා විධාන පිළිපදින්නේ නම් එය ඉක්මන් මාර්ගයක් ලෙස සැලකේ. අපගේ මහ රැෂිවරු යන්ත‍්‍ර පුරුදු කර නිරවද්‍යතාවයට පත් කර, අපට එහි මාර්ගය දකිවමින් සිටිති. දැන් එය අනුගමනය කිරීම අප සතුය.
+              <p>කිසිවෙකුට හානියක් නොකරන්න.</p>
+              <p>යහපත කරන්න — යහපතක් ලැබේ.</p>
+              <p>විවිධ ශාස්ත්‍රවල, යන්ත‍්‍රය උසස් ගෞරවයකින් හැඳින්වේ, මන්ද එය දෙවි හා දෙවියන්ගේ සත්‍ය ප්‍රතිභාවය පිළිඹිබු කරන මාර්ගයක් බැවිනි.</p>
+              <p>දෙවියෝ යන්ත‍්‍රය තුළ වාසය කරති යැයි කියപ്പെടുന്നു. එබැවින්, යන්ත‍්‍රයේ පූජාව නොකොට ඔබට දෙවියන් පුද නොකළ හැකිද, යන්ත‍්‍රයේ අපේක්ෂිත ප්‍රතිඵලද ලබාගත නොහැක.”**</p></p>
+                    
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="572965386_1333197238818191_3939074522386321461_n12.jpg"
+      data-tag="Kundali"
+      data-title="ශ්‍රී කාළි දේවිය"
+      data-excerpt="ශ්‍රී කාළි දේවිය කියන්නේ කාලයම ඔක්කොම  සියල්ල බිහි කරණ">
+      <template class="art-body">
+        <p class="drop-cap"><p>“කාලි” යන්න “කාල” යන සංස්කෘත වචනයෙන් ආපු වචනයකි.</p>
+                  <p>“කාල” යන්න කියන්නේ කාලය, වෙනස්වීම සහ අනිවාර්ය මරණය යන්නයි.</p>
+                  <p>ඒ නිසා ශ්‍රී කාළි දේවිය කියන්නේ කාලයම ඔක්කොම  සියල්ල බිහි කරණ, පෝෂණය කරන හා විනාශ කරන ශක්තියම කියන එකයි. වේද වලින් සහ තාන්ත්‍රික ග්‍රන්ථ වලින් අනුව, ඇය මහාකාල (ශිවන්) ගේ ශක්තිය ලෙස දැක්වෙයි. </p>
+                  <p>ශිව සන්සුන්, නිශ්චල බුද්ධිය නම් — කාළි ඒ ශක්තිය ක්‍රියාත්මක කරන චේතනාවයි.</p>
+                  <p>වෙදසහ තාන්ත්‍රික දෘෂ්ටිකෝණයෙන්, කාලි දේවිය භයජනක නොවෙයි — ඇය මහ මව්වරුන්ගේ සත්‍ය රූපයයි.</p>
+                  <p> • ඇය භය, මරණය සහ අවිද්‍යා මත ජයගන්නා ශක්තියයි.</p>
+                  <p> • ඇය මිනිසාගේ අහංකාරය හා මෝහය විනාශ කර, ආත්මය (නිර්මල ජීවය) දක්වයි.</p>
+                  <p> • යෝගීය විචාරයෙන් ඇය මුලාධාර හා ආඥා චක්‍ර දෙකම පාලනය කරයි – අධෝභාගයෙන් ආලෝකය දක්වා ශක්තිය උත්ථාන කරයි.</p>
+                  <p>තාන්ත්‍රික වේදයන්හි, කාලි දේවිය ආද්‍ය ශක්තිය ලෙස හැඳින්වෙයි  විශ්වයේ මුල් සෘජු බලය.</p>
+                  <p>ඇය කුණ්ඩලිනි ශක්තිය (පෘථිවියේ ශක්තිය) අවදි කර, ශිව සමඟ එකතු වන ලෙස සහස්‍රාර චක්‍රය දක්වා නංවයි.</p>
+                  <p>එය මෝක්ෂය – නිවණ සහ සත්‍ය අවබෝධයයි.</p>
+                  <p>කාළි විනාශය නොවේ  ඇය නිදහසයි.</p>
+                  <p>ඇය විනාශ කරන්නේ මෝහය පමණක්; පෙන්වන්නේ සදාකාලික, මරණයෙන් තොර සත්‍යයයි.</p>
+                  <p>උග්‍ර ශක්තියක් ලෙස කාලි පළමුව ෘග්වේදයේ “අග්නි” (ගිනි දෙවියන්ගේ) අන්ධකාරමය ශක්තියක් ලෙස සඳහන් වේ.</p>
+                  <p>දේවී මහාත්මියාවෙහි, දූර්ගා දේවියගේ නෙතින් ඇය උපන් බව සඳහන් — රක්තබීජ, චණ්ඩ, මුණ්ඩ ආදී අසුරයන් විනාශ කිරීමට එට්ගුමිය පැමිනියායැයි කියයි...</p>
+                  <p>කෙනෙක් තුල ස්ග්‍රී කාලිය වෙත භක්තියක් හටගන්නවානම් අනිවාර්‍යෙන් ඔහු ඒ සදහා තමන්ගේ ශරීරය .. මනස.. ආත්මය කැප කල යුතුයි...</p>
+                  <p>මන්ද ආදරනීය මවක් දරුවන් දඩුවම් කොට නිවරදි මාර්ගයේ පිහිටුවන්නේද එසේම මැයද තම දඑඋවන් තනව් තනව් දන්ඩහර ලෙස නිවරදි කරවයි...</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="561737100_1321107626693819_8787536256513085758_n.jpg"
+      data-tag="Kundali"
+      data-title="රාගු හෙවත් රාහු... 8 වන භාවයේ සිටීම"
+      data-excerpt="ජ්‍යෝතිෂ්‍යයෙහි “රන්ද්‍ර භාවය” ලෙස හඳුන්වන.....">
+      <template class="art-body">
+        <p class="drop-cap"><p>රාගු හෙවත් රාහු... 8 වන භාවයේ සිටීම
+                  <p>ජ්‍යෝතිෂ්‍යයෙහි “රන්ද්‍ර භාවය” ලෙස හඳුන්වන අශ්ටම භාවය (8 වන භාවය) වඩාත් භාග්‍ය උද කරන ස්ථානය ලෙස සැලකේ. මෙම භාවයේ ස්වාමීන් ගැටලු ගෙනෙන ලෙස අර්ථදක්වයි – නරක අර්ථයකින්. බොහෝ අධ්‍යයන මෙය ගැන සිදුකර තිබූ නමුත් මෙහිදී අප පරීක්ෂා කරන්නේ රාවු 8වන භාවයේ සිටීමේ ප්‍රභාවයයි. </p>
+                  <p>සාමාන්‍යයෙන් ජ්‍යෝතිෂන්‍යයන් සිතනුයේ අති දුෂ්ට භාවය (😎 හා අති දුෂ්ට ග්‍රහය (රාහු)) එකට බැඳීමෙන් ඉතා නරක ප්‍රතිඵල ලැබෙන බවයි. නමුත් එය සෑම වෙලාවේම සත්‍ය නොවේ.</p>
+                  <p>රාහු 8වන භාවයේ සිටින විට හදිසි වාසනාවන් හෝ අනපේක්ෂිත වෙනස්කම් ලබා දිය හැක. </p>
+                  <p>එය වෙනත් භාවයක ස්වාමියා සමග යුගල වූ විට, එම ග්‍රහය සම්බන්ධ කාර්යයන් හරහා රාවුගේ (හොඳ හා නරක දෙකම) ප්‍රතිඵල සක්‍රීය වේ</p>.
+                  <p>ඇල්බට් අයින්ස්ටයින්ගේ කුණ්ඩලියේ, රාහු 8වන භාවයේ ඇත, එයට උච්ච මංගලය (6 සහ 11 භාවයන්ගේ ස්වාමි) එකතු වී ඇත. මෙයින් පර්යේෂණ තුළ සාර්ථකත්වය හා විප්ලවීය සොයාගැනීම් නිසා ලෝකප්‍රසිද්ධියක් ලබා දෙන බව පෙන්වයි. මංගල් යුද්ධ දෙවියන් නම් වන නිසා මෙම පර්යේෂණ බලවත් අවි (උදා: න්‍යෂ්ටික බෝම්බය) සෑදීමට යොදාගන්නා බව දර්ශනය වේ. 6වන භාවයේ ස්වාමියා නිසා යුද්ධයක් හෝ සටනක් රාවු 8වන භාවයේ බලය සක්‍රීය කරයි. මෙහිදී උච්ච ග්‍රහයකුත් සමඟ රාහු 8 භාවයේ සිටීම අයින්ස්ටයින්ට ශක්ති (අග්නි තත්ත්වය) සම්බන්ධ පර්යේෂණයෙන් විශාල සාර්ථකත්වයක් ලබා දුන් “ආශීර්වාදයක්” බවට පත්වේ.</p>
+                  <p>මිථුන රාශියේ උච්ච රාවු 8වන භාවයේ නම්, ප්‍රසිද්ධ හෝ ධනවත් පවුලක උපත, උරුම ලැබීම, ජීවිතය පුරා අහිඟ නොවීම යනාදිය පෙන්වයි. මෙය සත්‍ය ආශීර්වාදයකි, යැයි කියන්නේ සතුටු භාවයේ ස්වාමියා වන රාවු (කුම්භ රාශියේ සමස්ථභාවයේ 4 වන භාව) 8 භාවයේ උච්ච වූ බැවිනි.</p>
+                  <p>සාමාන්‍යයෙන්, රාවු 8වන භාවයේ උච්ච වූ විට හෝ උච්ච ග්‍රහයකුත් සමඟ සිටින විට මෙය නිසැකවම ආශීර්වාදයකි. (මෙහිදී උච්ච රහසිගත / අයුෂ්‍යය සඳහා වෘෂභ නොව, මිථුන මූලික කරගන්නා බව සලකන්න).</p>
+                  <p>8වන භාවය බියක් දැනෙන භාවයක්.</p>
+                  <p>රාහු එහි සිටියත් සැමවිට නරක නොවේ.</p>
+                  <p>උච්චයෙන් හෝ උච්ච ග්‍රහය සමඟ නම්, හදිසි වාසනාවන්, උරුම, ප්‍රසිද්ධිය, පර්යේෂණ සාර්ථකත්වය ලැබිය හැක.</p>
+                  <p>පවුල් උරුමය, පරම්පරා ගමන් කිරීම, ශක්තිමත් නැගී එමිය.</p>
+                  <p>ඒ නිසා, රාවු 8වන භාවයේ සිටීම සෑම විටම භයානක නොවෙයි – බොහෝ විට එය සැඟවුණු ආශීර්වාදයකි.</p>
+                  <p>ඔබගේ එසේ පිහිටියේ නම් එය නැවත සුමටව පැඃඇදිලිව ණැණ්වත් ජෝතීශන්‍යකු හරහා කියවාගන අදාල වාසනාගුනය උදෙසා කල යුතු ප්‍රතීකර්ම අසාදැනගන්න...</p>
+                  🙏🙏🙏</p>
+      </template>
+    </div>
+
+  </div><!-- end Astrology -->
+
+  <!-- ── Gods & Temple ── -->
+  <div class="mag-cat-data" data-category="Gods &amp; Temple">
+
+    <div class="mag-article"
+      data-img="503940447_1205265708278012_349114516171830533_n.jpg"
+      data-tag="Ganesha"
+      data-title="ශක්ති පීඨය"
+      data-excerpt="ශ්‍රී ලංකාවේ පිහිටි එකම ශක්ති පීඨය ලෙස සැලකෙන්නේ තිරිකුණාමළයේ ශංකරි දේවී ශක්ති පීඨයය.">
+      <template class="art-body">
+        <p class="drop-cap"><p>🛕 ශංකරි දේවී ශක්ති පීඨය (තිරිකුණාමළය)</p>
+                    <p>• දේවියගේ නම: ශංකරි දේවී (පාර්වතී දේවියගේ එක් ආකාරයක්)</p>
+                    <p>• භෛරව නායකයා: රිෂ්ව හෝ රක්ෂසේශ්වර</p>
+                    <p>• පතිත වූ ශරීර අංගය: (සංස්කෘතික කථා අනුව) සතරින් පහළ කොටස/යෝනිභාගය</p>
+                    <p>• පිහිටීම: තිරිකුණාමළයේ කෝනේශ්වරම් දේවාලය ඇතුළත, ස්වාමි ගල මත පිහිටා ඇත.</p>
+                    ⸻
+                    <p>🕉️ ආගමික වැදගත්කම:</p>
+                    <p> • මෙය ශක්ති පීඨ 51න් එකක් වන අතර, දේවී සතීගේ ශරීර භාග බිම වැටුණු ස්ථාන ලෙස සළකයි.</p>
+                    <p> • මෙය ඉන්දියාවේ ශක්ති පීඨ වලට වඩා ප්‍රචලිත නොවුණත්, උත්කෘෂ්ට ආධ්‍යාත්මික බලයක් සහිත ස්ථානයක් ලෙස සැලකේ.</p>
+                    <p>• කෝනේශ්වර දේවාලය තුළම පිහිටා ඇති බැවින්, ශෛව හා ශාක්ත සම්ප්‍රදායන්ගේ එකමුතු භක්ති ස්ථානයක් ලෙසත් ද හැඳින්වේ.</p>
+                    ⸻
+                    <p>🕰️ ඉතිහාසික තොරතුරු:</p>
+                    <p> • මෙම ස්ථානය වසර දහසකට වැඩි පැරණිව තිබෙන බව විශ්වාස කෙරේ.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="491420328_1166139565523960_516660957905894336_n.jpg"
+      data-tag="Lakshmi"
+      data-title="කාශියේ දේවාල"
+      data-excerpt="සිලලුම 468ක්වූ ප්‍රදාන කාශියේ දේවාල ව්ණ්දනා කලබ්‍යුතුයි..">
+      <template class="art-body">
+        <p class="drop-cap"><p>කාශිකන්ඩ පුරානයට අනුව කාසි ශේශ්‍රය ශිව දෙවියන්ගේ ත්‍රිශූලයේ උල් තුනේ පවතී... එම උල් තුනේ දෙවාල තුනක් පවතී..ඕම්කාරේශ්වර දෙවොල උතුරින්ද මද්‍යයේ විශ්වේද්වර දෙවොලද කේදාරේශ්වර් දෙවොල දකුනේද පිහිටයි
+                    <p>එසේම අශ්ට බයිරව දේවාල අට හරියටම</p>
+                    <p>කාඩිනල අටේ පවතී ඒවා නම්</p>
+                    <p>උම්මත්ත බයිරව</p>
+                    <p>ක්‍රෝද බයිරව</p>
+                    <p>කපාල බයිරව</p>
+                    <p>අසිතාන්ග බයිරව</p>
+                    <p>චන්ඩ බයිරව</p>
+                    <p>රූරු බයිරව</p>
+                    <p>භීශන බයිරව</p>
+                    <p>සම්හාර බයිරව ලෙසටයි</p>
+                    <p>කලින් කියූ දේවාල තුන කේන්දර කර මන්ඩල 7ක් ගනපති කෝවිල් 56ක් පවතිනවා. ඒ පනස් හය දක්ශිනාවර්ත ම්ණ්ඩල 7ක් ලෙසට වන්දනා ක්ළ යුතුයි.</p>
+                    <p>ඊට අමරව ඉන්පසු අනෙක් යෝගිනී දේඑආල 64ව්න්දනා කලයුතුයි.9ක්වූ නවදුර්ගා දේවල නවය සහ 9ක් වූ චන්දී දෙවිලවල් වන්දනා කලබ්‍යුතුයි. ඉන්පසි සූර්‍ය දෙවොලවල් 12වන්දනා කල යුතුයි</p>
+                    <p>එසේම සිලලුම 468ක්වූ ප්‍රදාන කාශියේ දේවාල ව්ණ්දනා කලබ්‍යුතුයි..</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="490737630_1165663458904904_544062316159410775_n12354655654.jpg"
+      data-tag="Goddess"
+      data-title="හසන්තිකා ශ්‍යාමලා දේවතාවිය..."
+      data-excerpt="දසතාන්ත්‍රික මාතාව වන ඇයගේ හෝමය තුලින් උත්තරීතර දිව්‍යමය දැනුම ලගාකරගැනීමට හැකියාව....">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p><p>ලලිතා සහාස්‍රනාමයේ සඳහන් පරිදි, ලලිතා දේවිය චිදාග්නි හෝම කුණ්ඩයෙන් පරිණත වී, “චක්‍ර රාජ රථය” නම් විශේෂ රථයක ආසීනව ප්‍රකට විය. එබැවින්, ඇය පිළිබඳව “චිදාග්නි කුණ්ඩ සම්භූතා”, “දේව කාර්ය සමුද්‍යතා” සහ “චක්‍ර රාජ රථාරුඝා සර්වායුධ පරිශ්කෘතා” වැනි විස්තර ලලිතා සහාස්‍රනාමයේ සඳහන් වේ.</p>
+                    <p>සෘෂ්ටි ක්‍රමය (ස්‍රෂ්ටියෙහි ක්‍රමය)</p>
+                    <p>ලලිතා දේවිය, තම ඇත්තාව දෙදීමක් ලෙස - පුරුෂ හා ස්ත්‍රී ස්වරූප දෙකක් ලෙස විහිදුවමින්, සෘෂ්ටිය (ස්ෂ්ටි - මැවුම්) ඉදිරියට ගෙන ගියේය.</p>
+                    <p> 1. වමන ඇසින් (සෝම – චන්ද්‍ර ස්වභාවය ඇතිව)</p>
+                    <p> • බ්‍රහ්ම හා ලක්ෂ්මී දේවිය ප්‍රකට විය.</p>
+                    <p>2. දකුණ ඇසින් (සූර්ය – සූර්ය ස්වභාවය ඇතිව)</p>
+                    <p>• විෂ්ණු හා පාර්වති දේවිය ප්‍රකට විය.</p>
+                    <p>3. ත්‍රිති‍ය නෙත්‍රයෙන් (අග්නි – ගිඟුරු ගින්නේ ස්වභාවය ඇතිව)</p>
+                    <p>• රුද්‍ර හා සරස්වතී දේවිය ප්‍රකට විය.</p>
+                    <p>ඉන්පසු, ලක්ෂ්මී - විෂ්ණු, පාර්වති - ශිව, සහ සරස්වතී - බ්‍රහ්ම යන යුගලයන් හැඳිවිය.</p>
+                    <p>විශේෂ මැවීම් (නිර්මාණය කළ දිවයින්)</p>
+                    <p>• යුරා (හෘදය) න් – බලා දේවිය (බාලා දේවිය) මැවීය.</p>
+                    <p>• බුද්ධියෙන් – ශ්‍යාමලා දේවිය මැවීය.</p>
+                    <p> • අහංකාරයෙන් – වාරාහි දේවිය මැවීය.</p>
+                    <p> • සිනාවෙන් – විඥ්ඥේශ්වර ප්‍රකට විය.</p>
+                    <p>ශ්‍යාමලා දේවිය – මන්ත්‍රිනී දේවිය ලෙස</p>
+                    <p>මහා සෘෂ්ටිය අවසානයේ, ලලිතා දේවිය තම ස්වාමි, ශිව කාම සුන්දර දේවන්ට “ශිව චක්‍රය” මැවීමට කියා සිටියේය. ශිව දේවන් ඉතා ශබ්දයක් නිකුත් කළ අතර, එයින් ශිව චක්‍රයේ දේවතාවන් 23ක් ප්‍රකට විය.</p>
+                    <p>එවිට, ලලිතා දේවිය ශ්‍යාමලා දේවියට මන්ත්‍රිනී (අග්‍රමන්ත්‍රි) ලෙස තනතුර ලබාදෙමින්, ඇයගේ අංගුලි මුද්‍රාව (ඇඟිලි මුද්‍රා වළලු) භාරදුන්වා.</p>
+                    <p>මේ හේතුව නිසා, ශ්‍යාමලා දේවිය “මන්ත්‍රිනී දේවිය” ලෙසද, “හාසන්තිකා ශ්‍යාමලා” ලෙසද හැඳින්වේ.</p>
+                    <p>දසතාන්ත්‍රික මාතාව වන ඇයගේ හෝමය තුලින් උත්තරීතර දිව්‍යමය දැනුම ලගාකරගැනීමට හැකියාව වන අතර රාජශ්‍රී සෞභාග්‍යය සහ අද්‍යාත්මික දැනුම ලගාවන බව නිත්‍ය පලසෘතියයි...</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="491719090_1167139992090584_2904456559707595482_n12.jpg"
+      data-tag="Saraswati"
+      data-title="දත්තාත්‍රේය භගවන්"
+      data-excerpt="දත්තාත්‍රේය භගවන් බ්‍රහ්මන්, විෂ්ණුන් සහ ශිවන්ගේ සංයුක්ත අවතාරයකි">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>දත්තාත්‍රේය භගවන් – දිව්‍ය ත්‍රිමුර්තින්ගේ එකමුතු ස්වරූපය</p>
+                    <p>දත්තාත්‍රේය භගවන් බ්‍රහ්මන්, විෂ්ණුන් සහ ශිවන්ගේ සංයුක්ත අවතාරයකි. ඔහු සෑම දෙයකම මූලික සත්‍යය වන සර්ව සාම්ප්‍රදායික ත්‍රිමුර්තින්ගේ නිර්මාණය, පෝෂණය සහ විනාශය යන මූලික මූලධර්ම නියෝජනය කරයි.</p>
+                    <p>දත්තාත්‍රේයන් සාමාන්‍යයෙන් තුන් මුනක් සහිතව දර්ශනය වේ. එය ත්‍රිමුර්තින්ගේ ඒකාබද්ධත්වය දැක්විය හැක. ඔහුගේ හය අත් සන්සුන් මූලධර්ම නියෝජනය කරන සංකේත වස්තු  තියාගන සිටිනවා</p>
+                    <p>දත්තාත්‍රේයන්ගේ රූපයන්හීදී ඔහුට සමීපව පස්නාළු ගවයා සහ සතරමහා උපදේශ දේශනා කරන බල්ලාන් සිටී. එය සිව් වේද නියෝජනය කරයි. ගවයා මව භූමිය නියෝජනය කරයි.</p>
+                    <p>දත්තාත්‍රේය භගවන් ප්‍රඥාව, ජ්ඣානය සහ මෝක්ෂය නියෝජනය කරමින් භක්තිමත්යන්ට ආත්මාර්ථ සන්ධානය කරවා ගැනීමට මග පෙන්වයි.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="491925906_1167374945400422_2589456850146818029_n12.jpg"
+      data-tag="Shiva"
+      data-title="ශ්‍රී මාතා ශ්‍රී මහාරාජිනී...."
+      data-excerpt="ශ්‍රී මහා ලලිතා ත්‍රිපුරසුන්දර මෑනියන් වනාහී සියලූම ලෝමයන් වල මාතාව වන්නීය.">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>ශ්‍රී මාතා ශ්‍රී මහාරාජිනී....</p>
+                    <p>ශ්‍රී මහා ලලිතා ත්‍රිපුරසුන්දර මෑනියන් වනාහී සියලූම ලෝමයන් වල මාතාව වන්නීය.</p>
+                    <p>ඇයට මව් වන අනෙක් කෙනෙකුන් නැතිවා සේම ඇය ස්වයම්බූද වේ...</p>
+                    <p>ශ්‍රී තත්වයේ උපරිමය ඇය වන අතර අනෙක් සියලු ශ්‍රී තත්ව ඇයට පහලින්ම වන්නේය...</p>
+                    <p>ඇයගෙන් පැමිනෙන කිසිදු අවතාරයක් මව් ගැබක නොදරන්නේමය. </p>
+                    <p>කිසිදු ගැබක්තුල ඇයව දැරිය නොහැකි බැවිනි... </p>
+                    <p>දෙවියන්ගේද, මනුෂ්‍යයන්ගේද, යක්ෂයන්ගේද, ගන්ධර්වයන්ගේද, සම්පත් සහ ශක්තියේද රැජිණ වේ.</p>
+                    <p>ඇය සර්ව රාජ්‍ය බලය, සම්පත්, විද්‍යා, ශක්තිය, ප්‍රභාව සහ ආධිපත්‍යය සතු මහා රැජිණියකි.</p>
+                    <p>මේ නාමයන් ශ්‍රී ලලිතා සහරනාම ස්තෝත්‍රයේ මුල්ම දෙකක් වන අතර එතුමියගේ මව්ත්වය සහ ආධිපත්‍යය පළමු මොහොතේම ප්‍රකාශ කර සිටී.</p>
+                    <p>යමෙක් එතුමිය තමන්තුල පිහිටීමට ක්‍රියාකරයිද වාග්දේවීය ඔහුට්ගුල වාසය කරයි. එසේම කෙනෙකු තමන් තුල ශ්‍රී දේවිය ක්‍රියාත්මකවීමට පිරිසිදුවේද ඔහු නිත්‍ය නිර්මල මෝක්ශ මාර්ගයට අවතීර්න වූවාහා සමානය..</p>
+                    <p>යමෙක් තමාතුල එතුමියට ආලයම් තනයිද තම ජීවිතයේ සිම්හාසනේශ්වරිය ක්‍රියාත්මක වේ..</p>
+                    <p>“චිතඥ්ඥ කුණ්ඩ සම්භූත” යනු සංස්කෘත වාක්‍යයකි.</p>
+                    <p>“මනස තේරුම් ගන්නා (ප්‍රඥාවෙන් පිරුණු) ශුද්ධත්වයෙන් උපන් (දෙවි පිළිවෙත් ලැබූ) සත්ත්වයා” ලෙස අර්ථ කිවකළ හැක.</p>
+                    <p>මෙය සාමාන්‍යයෙන් දෙවියන්ගේ හෝ විශේෂ ආධ්‍යාත්මික තත්වයක් සේම එතුමිය සදහා පූජා සිද්ද කිරීමෙන් සහ එතුමිය වෙත පුද දීම හරහා ට්නමන් තුල මෙම තත්වය ජනනය වන්නේය.</p>
+                    <p>ශ්‍රී ලලිතාමහාත්‍රීපුරසුන්රී තාන්ත්‍රිකමාර්ගයේ උපරිම ක්න්ඩලිනීය සහස්‍ර චක්‍රය අබිබවා ගිය තත්වයක් වේ...</p>
+                    <p>එබැවින් යමෙක් ශ්‍රී ලලිතා දේවිය වෙත කැප වේද පුද දේද හෙතෙම ස්තිරවූ නිර්මල මෝක්ශයේ යනබව නිත්‍යපලසෘතියයි...</p>
+                    <p>දනය සම්බන්ද ගැටලු</p>
+                    <p>විවාහ ගැටලු</p>
+                    <p>බලය සම්බන්ද ගැටලු</p>
+                    <p>සෞක්‍ය සම්බන්ද ගැටලු</p>
+                    <p>පරිවාර සම්පත්තිය </p>
+                    <p>ආදී සියලුම තත්ව යන් සමනය කර දෙන්නී ඇයයි.</p>
+                    <p>එසේම ශ්‍රී ත්ත්ව පත්තිරු වලින් එතුමියගේ ශක්තිය ගැබ්කර එතුමිය ක්‍රියාත්මක කර කුම්කුමාර්චම් මෙන්ම සෝඩශෝපචාර පූජා මෙන්ම රහස්තර්පිත පූජා සිද්ද කරමින් එතුමියගේ ශ්‍රී තත්වය සැමට උදාකරගැනීම ඉතාම යහපත්‍ය...</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="576213443_1335945031876745_2714407776457564047_n.jpg"
+      data-tag="Temple"
+      data-title="ස්වානන්ද ගණපති (Swananda Ganapati)"
+      data-excerpt="ස්ව යනු තමන්..  ආනන්ද යනු... ">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>ස්වානන්ද ගණපති (Swananda Ganapati)</p>
+                    <p>• වෘත්තිමත් සතුට, “අභ්‍යන්තර සතුට” ලබාදෙන රූපය.</p>
+                    <p>• භව–බන්ධනෙන් පිරිහීම, මනසට සැප.</p>
+                    <p>ස්ව යනු තමන්..  ආනන්ද යනු... උසස් මානසික තත්වය වේ..</p>
+                    <p>තමාන් තුලින් තම අබ්‍යන්තරයෙන් ආනන්දය කරා ගමන් කිරීමට ස්වානන්ද ගනපති වන්දනා කරයි..</p>
+                    <p>මෙය ශ්‍රී රන්ගනාත ස්වරූපය නොවන අතර පද්මය මත දරන ස්වනන්ද ගනපති ස්වරූපයයි.. </p>
+                    <p>මූලාදාරයික ගනපති ස්වරූපයයි...🙏🙏</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="569012241_1326132646191317_7155370347296219263_n.jpg"
+      data-tag="Puja"
+      data-title="ස්කන්ද ශශ්ටි...."
+      data-excerpt="හින්දු දේවතාවන්ගේ අතර මහත් බලශක්තිමත් දෙවියෙකු වන මුරුගන් දෙවියන්ට.">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>කතරගම දෙවියන්ගේ පුජා දවස් 6</p>
+                    <p>ස්කන්ද ශශ්ටි....</p>
+                    <p>ස්කන්ද ෂෂ්ඨි (ස්කන්දා ෂෂ්ඨි) කියන්නෙ හින්දු දේවතාවන්ගේ අතර මහත් බලශක්තිමත් දෙවියෙකු වන මුරුගන් දෙවියන්ට (ස්කන්ද, සුබ්‍රමණ්‍ය, කාර්තිකෙයා) අති විශේෂ දිනයකි.</p>
+                    <p>මෙය චන්ද්‍ර මාවතේ අනුව සඳ අළුත් වූ පසු දින 6 වැනි දිනේ (ශුක්ල පක්ෂයේ හයවන දිනයේ) ඉටු කෙරේ.</p>
+                    ⸻
+                    <p>🕉️ මුරුගන් දෙවියන් වහන්සේගේ පසුබැසීම</p>
+                    <p>• මුරුගන් දෙවියන් වහන්සේ යනු ශිව දෙවියන්ගේ සහ පාර්වති දෙවියන්ගේ පුත්‍රයා වේ.</p>
+                    <p>• උන්වහන්සේ සම්භවය වූයේ දේව ලෝවට විරෝධී වූ අසුර රජු “සූරපද්මන්” විනාශ කිරීමටය.</p>
+                    <p>• එම සටන දින 6ක් දිවිය. ඒ නිසාම මේ “ෂෂ්ඨි” (දින 6ක්) නම ලැබීය.</p>
+                    <p>⚔️ ස්කන්ද ෂෂ්ඨි උත්සවයේ පුරාණ කතාව</p>
+                    <p>1. අසුර රජු සූරපද්මන් දේව ලෝවට හානි කරමින් දෙවියන් පීඩනයට ලක් කළා.</p>
+                    <p>2. එවිට ශිව දෙවියන්ගේ තපසින් උපන් ස්කන්ද (මුරුගන්) දෙවියන් සටනට නියම වුණා.</p>
+                    <p>3. උන්වහන්සේ තමන්ගේ වෙලායුදයෙන් සූරපද්මන් විනාශ කළා</p>.
+                    <p>4. එම සටන දින 6ක් පුරාවට ගොස් හයවෙනි දිනේ (ෂෂ්ඨි) ජයග්‍රහණය ලැබුණා.</p>
+                    <p>එබැවින් එදා “ස්කන්ද ෂෂ්ඨි විජය උත්සවය” ලෙස හින්දු විශ්වාසයේ දී සැමරෙයි.</p>
+                    <p>අසුරයන් = අඳුර, අමනුෂ්‍ය ගුණ, අවිද්‍යාව.</p>
+                    <p>• මුරුගන් = ජ්‍යෝතිෂ්මත් ශක්තිය, ආලෝකය, දැනුම. මෙහි සන්කේතවත් වෙනවා..</p>
+                    <p>කට්ගරගම දෙවියන් හට පූජා තැබීමට ඉතාම සුදුසු දින හයක් වන මෙය..</p>
+                    <p>විවාහ දෝශ</p>
+                    <p>රතවාහන </p>
+                    <p>යුද ජයග්‍රහන</p>
+                    <p>නඩු හබ</p>
+                    <p>වැනි භෞතිකව යහපත් දේවල් වලට හා අද්‍යාත්මික පැතිකඩටද යහපත්ම අවස්තාවකි..</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="576380438_1335922918545623_5601920686634415640_n12.jpg"
+      data-tag="Vishnu"
+      data-title="ආදී පරාශක්තිය"
+      data-excerpt="ආදී පරාශක්තියට සරණ යන ව්‍යාඝ්‍රයෙන් අදහස් වෙන්නේ">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>ආදී පරාශක්තියට සරණ යන ව්‍යාඝ්‍රයෙන් අදහස් වෙන්නේ:</p>
+                    <p>• මනුෂ්‍යයා සිය ego, karma, doṣa, rāga-dveṣa යන සියල්ල දෙවි මාතෘ ශක්තියට පවරා දීම</p>
+                    <p>• දේවීය ඥානය (Jnana Shakti), ක්‍රියා ශක්තිය (Kriya Shakti), ඉච්ඡා ශක්තිය (Iccha Shakti) සමග එකතු වීම</p>
+                    <p>• මායාවෙන් (Maya) පිරුණු මනස නිදහස් කරගන්නා සතර මාර්ගගේ ආරම්භය</p>
+                    <p>එබැවිනි ආදී පරාශක්තිය සරණය ≈ මෝක්‍ෂ මගට පුරෝගාමී වීම.</p>
+      </template>
+    </div>
+
+  </div><!-- end Gods & Temple -->
+
+  <!-- ── Vedic ── -->
+  <div class="mag-cat-data" data-category="Vedic">
+
+    <div class="mag-article"
+      data-img="491407842_1166148995523017_2607887782384082358_n.jpg"
+      data-tag="Philosophy"
+      data-title="සමුද්‍ර මන්තනය සහ නාගයෝ"
+      data-excerpt="මහා කුම්භ සන්ක්‍රාන්තිය සහ සමුද්‍ර මන්තනය සහ නාගයෝ">
+      <template class="art-body">
+        <p class="drop-cap"><p>මහා කුම්භ සන්ක්‍රාන්තිය සහ සමුද්‍ර මන්තනය සහ නාගයෝ</p>
+                  <p>මෙම වසරේ කුම්භ සන්ක්‍රාන්තිය පෙබරවාරි මස 13 වන දිනට යෙදී ඇත. </p>
+                  <p>මහා සමුද්‍ර මන්තනය සිදුවූ අවස්තාව මෙය වන අතර </p>
+                  <p>එනම්
+                  <p>සමුද්‍ර මන්ථනය (Samudra Manthana) යනු හින්දු පුරාණවල සඳහන් වූ විශාල සිදුවීමකි. මෙය ශ්‍රීමද් භාගවත පුරාණය, විෂ්ණු පුරාණය සහ මහාභාරතය ආදී ග්‍රන්ථ වල සඳහන් වන අතර, *දේවයන් (දෙවිවරුන්) සහ අසුරයන් (අසුරයෝ) එකගවී (ක්ෂීරාසාගරය) මන්ථනය කිරීමේ කථාවයි.</p>
+                  <p>සමුද්‍ර මන්ථනය</p>
+                  <p> • දේවයන් සහ අසුරයන් අතර වූ සටන්වලදී දේවයන් (දෙවිවරුන්) ශක්තිමත් ලෙස දිගටම දිනාගෙන යාමට නොහැකි විය.මේ හේතුවෙන්, දෙවිවරුන්ගේ නායකයෙකු වූ ඉන්ද්‍රදේවන්, විෂ්ණුදේවන්ට උපදෙස් ලබා ගැනීමට ගියේය.විෂ්ණුදේවන් විසින් අම්බුද <p><p>ගෝෂ්ඨි (සමුළුවක්) ආරම්භ කර, දෙවිවරුන් සහ අසුරයන් එකට එක්ව ක්සීර සාගරය මන්ථනය කිරීමට උපදෙස් ලබාදීය.</p>
+                  <p>මන්ථනයෙන් ලබාගන්නා අමුත්තාන්හි (අම්‍රිතය) බෙදාගැනීමෙන් දෙවිවරුන්ට ශක්තිය වැඩි වනු ඇතැයි විෂ්ණුදේවන් පැවසීය.</p>
+                  <p>මන්ථනයේ ක්‍රමය</p>
+                  <p>1. මන්දරාචල පර්වතය (මන්දාර ගිරිය) – මුහුද මන්ථනය කිරීම සඳහා භාවිතා විය.</p>
+                  <p>2. වාසුකී නාගයා (වාසුකී සර්පයා) – මෙය රැහැනක් ලෙස භාවිතා කළ අතර, දෙවිවරුන් සහ අසුරයන් එය අල්ලා මන්තනය කරයි.</p>
+                  <p>3. විෂ්ණුදේවන්ගේ කුරුමාවතාරය (අමූර්ත කමට) – මන්දරාචල පර්වතය මුහුදේ ගිලීම වැළැක්වීම සඳහා, විෂ්ණුදේවන් කුරුමාවතාරය ගෙන, පර්වතය තම පිටට තබාගත්තා.</p>
+                  <p>4. දේවයන් සහ අසුරයන් – දෙවිවරුන් වාසුකී නාගයාගේ නැට්ට් අල්ලා සිටිය අතර, අසුරයෝ  හිස අල්ලා සිටියේය.</p>
+                  <p>5. මන්ථනය ආරම්භ විය – මෙහිදී මුහුදෙන් විවිධ දේ පිටව එළියට ආවා.</p>
+                  <p>සමුද්‍ර මන්ථනයෙන් ලැබුණු දේවල් 10ක්:</p>
+                  <p>1. අමෘතය (Amrutha) – අමරණීයත්වය ලබාදෙන දේවීය පානය.</p>
+                  <p>2. ගෝවර්ධන (Kamadhenu) – ඕනෑම ප්‍රාර්ථනයක් සපුරාලන දිවියන්ගේ දූගෝව.</p>
+                  <p>3. උච්චෛෂ්‍රවා (Uchchaihshravas) – සුදු වර්ණයේ අශ්වයා, ඉන්ද‍්‍රගේ වාහනයක් විය.</p>
+                  <p>4. අයිරාවත (Airavata) – ඉන්ද්‍රගේ සුදු හස්තිරාජයා.</p>
+                  <p>5. කෞස්තුභ මැණික්මණිය (Kaustubha Mani) – විෂ්ණු දෙවියන්ගේ උතුම් මැණික්මණිය.</p>
+                  <p>6. පාරිජාත මල (Parijata Flower) – ස්වර්ගීය සුවඳ සහිත මලක්.</p>
+                  <p>7. වාරුණි (Varuni) – මදිරා (සෝමපානය) දේවයන්ගේ සතුත උදෙසා.</p>
+                  <p>8. රම්බා සහ අනිකුත් අප්සරාවියෝ (Apsaras like Rambha) – ස්වර්ගීය නර්ථිකාවන්.</p>
+                  <p>9. චන්ද්‍රමා (Chandra – The Moon) – සඳ, ශිවාන්ගේ හිස මත සන්ධානය කළේය.</p>
+                  <p>10. ලක්ශ්මී.. විශ්නු දෙවියන්ගේ භාර්‍යාව විය.</p>
+                  <p>ඉහත කී මන්තනය සිදුවූයේ මම දිනයේ වන අතර ශුද්දවූ ම්න්ට්‍රය කියමින් මේ ශුද්දවූ අවස්තාවේදි දියේ ගිලෙමින් මන්ට්‍ර කීම හරහා තම දිවියටද අමෘතය ප්‍රදාන දස වස්තූන් පැමිනෙන භව පුරාන ඉගැන්වීමයි.</p>
+                  <p>එසේම වාසුකී ප්‍රදාන නාග ගෝත්‍රිකයන්ගෙන් පැවත එන අය හට එම ආශිර්වාදය ලබාගතහැකි අවස්තාවකි.</p>
+                  <p>වාසුකී පූජාව සිදුකරන ප්‍රදානතම දිනයද මෙය වේ..</p>
+                  <p>කාල සර්ප කාල අමුර්තා ආදී සර්ප දෝශ සහ නාග බන්ද වැනි දෝශ ශාන්තීන් සදහාද එසේම නාග පූශානී දෙවිදුන්හට සහ සමන්ත නම් නාග දෙවිදුන් හට පූජා පැවැත්විය යුතු දිනයකි.</p>
+
+                  <p>සමුද්‍ර මන්ථනයෙන් මුලින්ම හලා හල විෂ පිටවිය. ශිවදේවන් මෙය පානය කර නීලකණ්ඨ ලෙස ප්‍රසිද්ධ විය</p>
+                  <p>ශිව ඩෙවිදුන්ගේ නීලකන්ට ස්වරූපය දර්ස්ගනය වූ දිනයද මෙයයි.</p>
+                  <p>එසේම මෙදින ලුනුනාහාරයට නොගෙන සිට කරන්නාවූ පූජාව හරහා තම දරීරයේ විශ හරනය වනභව පුරාන පිලිගැනීමයු..</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="683017872_1487318780072702_6714218015291936956_n12.jpg"
+      data-tag="Architecture"
+      data-title="ආයුර්වේදය සැබෑවටම කුමක්ද?"
+      data-excerpt="බොහෝ දෙනා “ආයුර්වේදය” කියන වචනය ඇහුණම මතකයට එන්නේ......">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p>
+                  <p>🌿 ආයුර්වේදය සැබෑවටම කුමක්ද? (චරක සංහිතාව අනුව)</p>
+                  <p>බොහෝ දෙනා “ආයුර්වේදය” කියන වචනය ඇහුණම මතකයට එන්නේ දේවල් තුනක්</p>
+                  <p>කහ කිරි (turmeric milk),
+                  අවහිර කළ යුතු ආහාර ලැයිස්තු,
+                  හෝ අම්මා/අත්තම්මා කියපු පැරණි උපදෙස්.
+                  <p>එකක්වත් සම්පූර්ණ ආයුර්වේදය නෙමෙයි. ඒවා නම් මේ ගැඹුරු විද්‍යාවේ කුඩා කොටස් ටිකක් විතරයි.</p>
+                  <p>ආයුර්වේදය කියන්නේ සම්පූර්ණ වෛද්‍ය විද්‍යාවක්. මනුෂ්‍ය ඉතිහාසයේ ඉතා පැරණි, නමුත් ක්‍රමවත් ලෙස ලේඛනගත කරපු වෛද්‍ය පද්ධතියක්.</p>
+                  <p>ඒකට තමන්ගේම</p>
+                  <p>* ශරීර විද්‍යාව (Anatomy)</p>
+                  <p>* ක්‍රියා විද්‍යාව (Physiology)</p>
+                  <p>* රෝග විද්‍යාව (Pathology)</p>
+                  <p>* ඖෂධ විද්‍යාව (Pharmacology)
+                  <p>* ශල්‍ය වෛද්‍යය</p>
+                  <p>* මානසික වෛද්‍යය</p>
+                  <p>සහ මනුෂ්‍යයා කියන්නේ මොන වගේ ස්වභාවයක් තියෙන සත්වයෙක්ද කියන දේ ගැනම පුළුල් අවබෝධයක් තියෙනවා.</p>
+                  <p>මෙය “වෙල්නස් වීඩියෝ” එකකින් පැහැදිලි කරගන්න පුළුවන් දෙයක් නෙමෙයි.</p>
+                  <p>🌿 “ආයුර්වේදය” කියන වචනයේ තේරුම</p>
+                  <p>“ආයුර්වේද” (आयुर्वेद) කියන්නේ සංස්කෘත වචන දෙකක් එකතු වෙලා</p>
+                  <p>* Ayus (ආයුස්) = ජීවිතය (සම්පූර්ණ අර්ථයෙන්)</p>
+                  <p>* Veda (වේද) = දැනුම / විද්‍යාව</p>
+                  <p>ඒ කියන්නේ  “ජීවිතය පිළිබඳ විද්‍යාව”</p>
+                  <p>මෙය රෝග ගැන විද්‍යාවක් විතරක් නෙමෙයි.</p>
+                  <p>ලක්ෂණ ගැන විද්‍යාවක් නෙමෙයි.</p>
+                  <p>👉 ජීවිතය මොනවද?</p>
+                  <p>👉 ඒක කොහොම ක්‍රියා කරනවාද?</p>
+                  <p>👉 ඒක පවත්වාගෙන යන්නේ මොනවද?</p>
+                  <p>👉 ඒක විනාශ කරන දේවල් මොනවද?</p>
+                  <p>මේවට පිළිතුරු හොයන විද්‍යාවක්.</p>
+                  <p>මොඩර්න් වෛද්‍ය විද්‍යාව බොහෝවිට රෝගයක් ආවම ප්‍රතිකාර කරනවා.</p>
+                  <p>ආයුර්වේදය පටන් ගන්නේ එතැනින් නෙමෙයි </p>
+                  <p>👉 “සම්පූර්ණ සෞඛ්‍යවත් ජීවිතයක් කියන්නේ මොන වගේද?” කියන ප්‍රශ්නයෙන්.</p>
+                  ⸻
+                  <p>🌿 ආරම්භය ප්‍රධාන ග්‍රන්ථ</p>
+                  <p>ආයුර්වේදයේ ප්‍රධාන ග්‍රන්ථ තුන (බෘහත් ත්‍රයී)</p>
+                  <p>1. චරක සංහිතාව – අභ්‍යන්තර වෛද්‍ය (Kayachikitsa)</p>
+                    <p>  * ආහාර ජීර්ණය</p>
+                    <p>  * මනස</p>
+                    <p> * දීර්ඝකාලීන රෝග</p>
+                    <p> * ප්‍රතිශක්තිය</p>
+                  <p>2. සුශ්‍රුත සංහිතාව – ශල්‍ය වෛද්‍ය</p>
+                    <p>  * ශල්‍ය ක්‍රියා 300කට වඩා</p>
+                    <p>  * උපකරණ 120කට වඩා</p>
+                    <p> * කටාරාක්ට්, නාස පුණරුත්ථාපනය වගේ surgery</p>
+                  <p>👉 ඔහුට “ශල්‍ය වෛද්‍යයේ පියා” කියන ගෞරවය ලැබෙන්නේ හේතුවක් තියෙනවා.</p>
+                  <p>3. අෂ්ටාංග හෘදයම්   සම්පූර්ණ සාරාංශයක්</p>
+                  <p>   * අදත් ඉන්දියාවේ වෛද්‍ය විද්‍යාලවල භාවිතා වෙනවා</p>
+                  <p>👉 මේවා “ගෙදර බෙහෙත් පොත්” නෙමෙයි.</p>
+                  <p>👉 පරම්පරා ගණනාවක් පුරා සංවර්ධනය කරපු විද්‍යාත්මක පද්ධතියක්.</p>
+                  <p>🌿 මූලධර්මය – පංච භූත හා දෝෂ 3</p>
+                  <p>ආයුර්වේදය පටන් ගන්නේ ස්වභාවධර්මය තේරුම් ගැනීමෙන්.</p>
+                  <p>පංච භූත (Elements 5)</p>
+                  <p>* ආකාශ (space)</p>
+                  <p>* වායු (air)</p>
+                  <p>* අග්නි (fire)</p>
+                  <p>* ජල (water)</p>
+                  <p>* පෘථිවි (earth)</p>
+                  <p>👉 මේවා භෞතික දේවල් නෙමෙයි.</p>
+                  <p>👉 ගුණ (qualities) ලෙස තේරුම් ගන්න ඕනේ.</p>
+                  <p>දෝෂ 3 (Doshas)</p>
+                  <p>1. වාත (Vata) – චලනය</p>
+                  <p>   * හුස්ම</p>
+                  <p>   * රුධිර සන්චාරය</p>
+                    <p>  * සිතුවිලි</p>
+                  <p>2. පිත්ත (Pitta) – පරිවර්තනය</p>
+                    <p> * ජීර්ණය</p>
+                    <p>  * හෝමෝන</p>
+                    <p> * දෘෂ්ටිය</p>
+                  <p>3. කඵ (Kapha) – ස්ථාවරත්වය</p>
+                    <p>  * ශරීර ව්‍යුහය</p>
+                    <p> * සන්ධාන</p>
+                      <p>* ප්‍රතිශක්තිය</p>
+                  <p>👉 හැමෝටම මේ තුනේ අනුපාත වෙනස්.</p>
+                  <p>ඒක තමයි ප්‍රකෘතිය (Prakriti)</p>
+                  <p>👉 ඒක අනුව</p>
+                  <p>* කෙනෙකුගේ ආහාරය</p>
+                  <p>* නින්ද</p>
+                  <p>* මානසික ප්‍රතිචාර</p>
+                  <p>* රෝග</p>
+                  <p>සියල්ල වෙනස් වෙනවා.</p>
+                  <p>👉 ඒ නිසා “එකටම යෝග්‍ය diet එකක්” කියලා දෙයක් නැහැ.</p>
+                  <p>🌿 සෞඛ්‍යය කියන්නේ මොකක්ද?</p>
+                  <p>චරක සංහිතාවේ සෞඛ්‍යය නිර්වචනය</p>
+                  <p>“සම දෝෂ, සම අග්නි, සම ධාතු, සම මල ක්‍රියා,</p>
+                  <p>ප්‍රසන්න ආත්ම, ඉන්ද්‍රිය, මනස — ඒ පුද්ගලයා සෞඛ්‍යවත්”</p>
+                  <p>👉 ඒ කියන්නේ</p>
+                  <p>* ශරීරය balance</p>
+                  <p>* ජීර්ණය balance</p>
+                  <p>* කය-මනස balance</p>
+                  <p>* ආත්මය සතුටින්</p>
+                  <p>👉 මේක දැන් තියෙන වෛද්‍ය පද්ධතියෙන් වඩා පුළුල්.
+                  <p>👉 ලැබ් රිපෝට් හොඳ වුණත්</p>
+                  <p>* anxiety තියෙනවා</p>
+                  <p>* empty feeling එකක් තියෙනවා</p>
+                  <p>👉 ආයුර්වේදයට අනුව ඔයා සම්පූර්ණ සෞඛ්‍යවත් නෙමෙයි.</p>
+                  <p>🌿 අදටත් වැදගත් වන්නේ ඇයි?</p>
+                  <p>ආයුර්වේදය පැරණි නිසා වැදගත් නෙමෙයි.</p>
+                  <p>👉 වැදගත් වෙන්නේ</p>
+                  <p>* “මේ පුද්ගලයාගේ ස්වභාවය මොකක්ද?”</p>
+                  <p>* “රෝගයේ මුල හේතුව මොකක්ද?”</p>
+                  <p>* “සැබෑ සෞඛ්‍යය කියන්නේ මොකක්ද?”</p>
+                  <p>මේ ප්‍රශ්නවලට පිළිතුරු දෙන්න පුළුවන් නිසා.</p>
+                  <p>👉 අද ලෝකයේ බිලියන ගණනක් මිනිස්සු මේ පිළිතුරු හොයනවා.</p>
+                  <p>චරක සංහිතාව ඒකට ලියපු එකක්.</p>
+                  <p>අදත් ඒකට පිළිතුරු තියෙනවා.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="591560468_1360534236084491_304256312757283948_n.jpg"
+      data-tag="Scripture"
+      data-title="නිලවන්ති ග්‍රන්ථය” (Nilavanthi Grantha)"
+      data-excerpt="නිලවන්ති කියන්නේ ශ්‍රී ලංකාවේ ජනප්‍රවාද, මන්ත්‍ර ශාස්ත්‍ර, නාග විද්‍යා, පූරාණ ගාථා, දුර්ලභ වේද ග්‍රන්ථ....">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>නිලවන්ති ග්‍රන්ථය” (Nilavanthi Grantha)</p>
+                  <p>නිලවන්ති කියන්නේ ශ්‍රී ලංකාවේ ජනප්‍රවාද, මන්ත්‍ර ශාස්ත්‍ර, නාග විද්‍යා, පූරාණ ගාථා, දුර්ලභ වේද ග්‍රන්ථ හා අඳුරු විද්‍යා වලට සම්බන්ධ අති පුරාණ වාර්තාවක් ලෙස ජනතාව අතර පැතිරුණු නාමයක්.</p>
+                  <p>මේ ග්‍රන්ථය සත්‍ය ග්‍රන්ථයක් ලෙස සනාථ වූ එකක් නොව, කාලයෙන් කාලයට ජනතා මතකෙහි මනෝරූප ලෙස, කතාපුවත්, බෙහෙත් කථා, යක්ෂ මන්ත්‍ර, නාග-විද්‍යා, අගස්ති මහර්ෂි පුරාවෘත්ත, මහාවංශාදී දේව-ස්ථාන සම්බන්ධ විස්තර මත පදනම්ව ගොඩනැගුණු ජනප්‍රවාද ගබඩාවක් ලෙසයි බහුතරය කියන්නේ.</p>
+                  <p>1. Nilavanthi කියන්නේ මොනවද?</p>
+                  <p>මෙය කියන්නේ අතිපුරාණ නාග විද්‍යා, මන්ත්‍ර ශාස්ත්‍ර, අද්භූත ශක්තිය, ලුහුබැඳි ලෝකය ගැන ප්‍රචලිත වූ කථා සංග්‍රහයක නමක්. ලංකාවේ බොහෝ දෙනා විශ්වාස කරන්නේ මෙම ග්‍රන්ථය</p>
+                  <p>• පුතුරාජා (Nāga kings)</p>
+                  <p>• සර්ප විද්‍යා</p>
+                  <p>• දේව මන්ත්‍ර</p>
+                  <p>• යක්ෂ විද්‍යා</p>
+                  <p>• රහස් මාලිගා</p>
+                  <p>• පුරාණ මන්ත්‍ර කවි</p>
+                  <p>වැනි දේවල් ඇතුළත් අතිශය ශක්තිමත් ග්‍රන්ථයක් බවට.</p>
+                  <p>2. Nilavanthi ග්‍රන්ථයේ ප්‍රධාන මාතෘකා</p>
+                  <p>ජනප්‍රවාද අනුව මෙහි ඇත්තේ:</p>
+                  <p>නාග ලෝක විස්තර</p>
+                  <p>• භෝගරාජයන්ගේ නාග ලෝකය</p>
+                  <p>• රූපාන්තාර ශක්තිය</p>
+                  <p>• සර්පයන්ගේ ධානුර්වේද ශිල්ප</p>
+                  <p>• නාග-මොකුරු මන්ත්‍ර</p>
+                  <p>මන්ත්‍ර – තන්ත‍්‍ර විද්‍යා</p>
+                  <p>• කවච, යන්ත්‍ර</p>
+                  <p>• විදිර්ණ මන්ත්‍ර</p>
+                  <p>• සත්තාcaras (spirit invocation)</p>
+                  <p>• බොහෝ විට භයදායක ලෙස බෙදාගත් මන්ත්‍ර</p>
+                  <p>ශාස්ත්‍ර – පුරාණ කථා</p>
+                  <p>• අගස්ති මහර්ෂි</p>
+                  <p>• කාලකේයයන්</p>
+                  <p>• රාවණ යන්ත්‍ර විද්‍යා</p>
+                  <p>• සරස්වතී දේවියගේ නාග-ගුප්ත ශිෂ්‍ය</p>
+                  <p>✔ අඳුරු විද්‍යා සම්බන්ධ දේවල් (folk belief)</p>
+                  <p>• අස්ට්‍ර-විද්‍යා</p>
+                  <p>• යක්ෂ පූජා</p>
+                  <p>• වටාර ගෙඩි මන්ත්‍ර</p>
+                  <p>• නාග වස්තු සුරක්ෂාව</p>
+                  <p>3. Nilavanthi ග්‍රන්ථය ඇත්තටම තිබුණා ද?</p>
+                  <p>පුරාවිද්‍යා / පාලි ග්‍රන්ථ / සංස්කෘත ග්‍රන්ථ වල කිසිදු තහවුරු කරපු “Nilavanthi” ග්‍රන්ථයක් නැහැ. මෙය ඉතා පැරණි භාෂාවේ තිබුණු ගුප්ත “Nāga Grantha” එකක් ලෙස අනෙක තැන පවසනවා.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="577738103_1339797354824846_6003588127210302563_n.jpg"
+      data-tag="Vastu"
+      data-title="විෂ්ණු ග්‍රන්ති"
+      data-excerpt="නුෂ්‍ය ශරීරයේ නාඩි-චක්‍ර පද්ධතියේ මානසික – කායික – වාසනික ශක්ති ගැටළුවක් ඇති වූ ස්ථාන ග්‍රන්ති ලෙස හඳුන්වනවා">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>විෂ්ණු ග්‍රන්ති</p>
+                  <p>(වේද, උපනිෂද්, තන්ත්‍ර, යෝග ශාස්ත්‍ර අනුව)</p>
+                  <p>මුලින් බලමු ග්‍රන්ති යනු කුමක්ද කියලා?</p>
+                  <p>“ග්‍රන්ථ” / “ග්‍රන්ති” යන වචනයේ තේරුම</p>
+                  <p>ගැට • බඳ • බාධකයක්</p>
+                  <p>කියන එකෙ පරිවර්තනයක්.</p>
+                  <p>මනුෂ්‍ය ශරීරයේ නාඩි-චක්‍ර පද්ධතියේ</p>
+                  <p>මානසික – කායික – වාසනික ශක්ති ගැටළුවක් ඇති වූ ස්ථාන ග්‍රන්ති ලෙස හඳුන්වනවා...</p>
+                  <p>වේද-යෝගා තුල</p>
+                  <p>ග්‍රන්ති තුනක් ඇත:</p>
+                  <p>1. බ්‍රහ්මා ග්‍රන්ති – මූලධාරය</p>
+                  <p>2. විෂ්ණු ග්‍රන්ති – අනාහතය</p>
+                  <p>3. රුද්‍ර ග්‍රන්ති – ආජ්ඡා</p>
+                  <p>2. විෂ්ණු ග්‍රන්ති </p>
+                  <p>තියෙන ස්ථානය </p>
+                  <p>අනාහත චක්‍රය (හෘදය මධ්‍යයේ)</p>
+                  <p>නාඩී: සූශුම්නා– ඉඩා – පිංගලා යන නාඩී තුන එකට බැඳී සිටින තලයක් තියෙනවා අන්න ඒ තලයේ..</p>
+                  <p>විෂ්ණු කියන නම කියන්නෙ </p>
+                  <p> • රක්‍ෂණය</p>
+                  <p> • සමතාව</p>
+                  <p> • බලාපොරොත්තුව</p>
+                  <p>• සෙනෙහස</p>
+                  <p>• අනුකම්පාව</p>
+                  <p>අර්ථවලට අදාල නිසාය.</p>
+                  <p>විෂ්ණු ග්‍රන්ති = හෘදයේ “සෙල්ලම් කර ඇති ගැටය”</p>
+                  <p>එය විවෘත වන්නේ</p>
+                  <p>ප්‍රේමය</p>
+                  <p>කරුනාව</p>
+                  <p>සමගිය</p>
+                  <p>ආත්ම සම්බන්ධය කියන මේවා සවිමත් වන විටයි.</p>
+                  <p>කෙනෙක්ට මේක ඉමෝශනල් කියලා කියන්න පුලුවන්..</p>
+                  <p>1- වේදයේ ශන්දිල්‍ය උපනිෂද්, හංස උපනිෂද්, යෝග-චූඩාමාණි උපනිෂද් කියන ඒවයේ විෂ්ණු ග්‍රන්ති ගැන සඳහන් කරයි:</p>
+                  <p>“හෘත් පද්මේ විෂෝ ග්‍රන්ථිපූර්වක සුෂුම්නා වැඩිහිටිය.”</p>
+                  <p>අර්ථය –</p>
+                  <p>සුෂුම්නා නාඩිය හෘද පද්මයේදී “විෂ්ණු ග්‍රන්ති” යන ගැටය </p>
+                  <p>2-  තන්ත්‍ර ශාස්ත්‍ර (ශ්‍රිවාව / කුණ්ඩලිනී තන්ත්‍ර)</p>
+                  <p>තන්ත්‍ර තුළ විෂ්ණු ග්‍රන්ති කියවෙන්නේ:</p>
+                  <p>• භව-බංධනය (Attachment)</p>
+                  <p>• රස-ආස්වාදය (Emotional desire)</p>
+                  <p>• අහංකාරයේ මෘදු ස්වරූපය (Soft ego)</p>
+                  <p>සෙල්ලමින් හෘදය මැද තබා ගන්නා ගැටයක් ලෙස.</p>
+                  <p>3- හථ යෝග ප්‍රදීපිකා / ගොරක්ෂ ශතක</p>
+                  <p>“අනාහත ග්‍රන්ථිභිද් භවේත් විෂ්ණෝර් මඟ”</p>
+                  <p>අර්ථය:</p>
+                  <p>අනාහතයේ ගැටය බිඳෙන විට විෂ්ණු-මාර්ගය විවෘත වේ.</p>
+                  <p>විෂ්ණු ග්‍රන්ති මඟ අවහිර කරන සිද්ධීන් මොනවද කියලා බැලුවාම</p>
+                  <p>1. සිතෙහි දුක් – පසුතැවීම – සොකය</p>
+                  <p>2. විශ්වාස කඩවීම්</p>
+                  <p>3. අනුසන්ධාන – ගැටළු – හිඟ ගැන දුක</p>
+                  <p>4. අවිශ්වාසය</p>
+                  <p>5. ආදර-ආස්වාදයට ඕනකම</p>
+                  <p>6. පුද්ගලික අහංකාරයේ හෘදමය ගැටය</p>
+                  <p>7. තවත් කෙනෙකුට බිය, ආරක්ෂාවක් නොමැති බව</p>
+                  <p>එවැනි විට ප්‍රාණ ශක්තිය සූෂුම්නාවට පත් නොවෙන අතර</p>
+                  <p>කුණ්ඩලිනී ශක්තිය අනාහතය ඉස්සර කිරීමට පටන්ගන්නවා</p>
+                  <p>විෂ්ණු ග්‍රන්ති විවෘත වීමේ ලකුණු</p>
+                  <p>(යෝග-උපනිෂද් අනුව)</p>
+                  <p> 1. හෘදයේ බලවත් තැවීම නැවතීම</p>
+                  <p>2. ආදරය – කරුණාව – මෙහෙයෝ උසස් වීම</p>
+                  <p>3. සියලු ජීවයන්ට එකම බලාපොරොත්තුව</p>
+                  <p>4. මනස සන්සිඳීම</p>
+                  <p>5. භව බන්ධන (Attachments) අඩුවීම</p>
+                  <p>6. සංයම – සන්තෝෂය – සේවා භාවය</p>
+                  <p>7. සූෂුම්නා නාඩියේ සැලීම, මධ්‍ය පථයේ ශබ්ද</p>
+                  <p>විෂ්ණු ග්‍රන්ති බිඳීමෙන් ලැබෙන ආත්මීය ප්‍රයෝජන</p>
+                  <p> • ප්‍රේමය නිර්මාණය වන “භක්ති මාර්ගය” විවෘත වේ</p>
+                  <p>• අහංකාරයේ මෘදු හෘද සෙල්ලම ක්‍රමයෙන් නැති වෙනවා</p>
+                  <p>• කාම-රූප ආශා අවම වේ</p>
+                  <p>• සූෂුම්නා නාඩිය සම්පූර්ණයෙන් ක්‍රියාකාරී වේ</p>
+                  <p>• රූධිරය – ප්‍රාණය – මනස එකම තාලයක සම්බන්ධ වේ</p>
+                  <p>• විෂ්ණු තත්වය (Preserver consciousness) සක්‍රීය වේ</p>
+                  <p>කෙටියෙන් —</p>
+                  <p>ක්‍රියාව (බ්‍රහ්මා) → ප්‍රේමය (විෂ්ණු) → ඥානය (රුද්‍ර)</p>
+                  <p>යන මාර්ගයේ මැද ගැටය විසුරුවීමයි.</p>
+                  <p>විෂ්ණු ග්‍රන්ති නිාවරණයේ පූජාව / යෝගික ක්‍රියාවන්</p>
+                  <p>(1) හෘත් පූජා</p>
+                  <p>• විෂ්ණු මන්ත්‍ර</p>
+                  <p>• නാരായණ මන්ත්‍ර</p>
+                  <p>• ලක්ෂ්මී නාමාවලී</p>
+                  <p>• ශ්‍රී යන්ත්‍ර ධ්‍යානය</p>
+                  <p>(2) ප්‍රාණායාම - ගුරුවරයෙක් නැතුව කරන්න එපා</p>
+                  <p>• අනුලෝම-විලෝම</p>
+                  <p>• නාඩී ශෝධන</p>
+                  <p>• බ්‍රහ්මරි</p>
+                  <p>(3) යෝගික බන්ධන - ගුරුවරයෙක් නැතුව කරන්න එපා</p>
+                  <p>• උද්ධ්‍යාන බන්ධ</p>
+                  <p>• ජාලන්ධර බන්ධ</p>
+                  <p>• මහා බන්ධ</p>
+                  <p>(4) හෘත්-ධ්‍යානය - ගුරුවරයෙක් නැතුව කරන්න එපා</p>
+                  <p>හෘදයේ අළු නුපුළුස ගෝලයක් දකිමින් “යම් – යම්” නාදය අහනවා.</p>
+                  <p>කෙටියෙන් මේක කිව්වොත්</p>
+                  <p>විෂ්ණු ග්‍රන්ති කියන්නෙ හෘදය මැද සූෂුම්නා නාඩියේ ඇති </p>
+                  <p>ප්‍රේම – අහංකාර – භව බන්ධන ගැටයයි..</p>
+                  <p>නිර්වානයට මේක කඩාගන්න ඔනා....</p>
+                  <p>සමහරුන්ට තමන්ගේ ගුරුවරුන්ගෙන් මුලම ස්ටෙප්භම්බෙලා ඇති...</p>
+                  <p>නමුත් ඉක්මන් නොවී හෙමීට විශ්නූ ගරන්ති විභේදිනී බීජාක්ශර ද්‍යානය සිදුකරන්න කරන්න..කර්ම ගැලවි ගැලවි එදිනෙදා සෞභාග්‍යය සහිතව දියුනුව බෞතිකව වගේම අද්‍යාත්මිකවත් ලැබෙනවා...</p>
+                  <p>මේක ශක්තී සම්ප්‍රදායත් ක්‍රියා කුන්ඩලනී සම්ප්‍රදායෙත් ජීවමාන ඉගැන්වීමයි...</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="552490431_1298157885655460_6048466291522307697_n.jpg"
+      data-tag="Karma"
+      data-title="ලෝක"
+      data-excerpt="මනුෂ්‍යයින්ට ඉහළ ලෝක......">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>මනුෂ්‍යයින්ට ඉහළ ලෝක 7</p>
+                <p>1. පෘථිවි ලෝකය (Earth) → මනුෂ්‍යයන්ගේ ලෝකය. භූදේවිය</p>
+                <p>2. පෘථිවි මණ්ඩලය → දේව මණ්ඩලය හා අහස් මණ්ඩලය අතර අන්තරාලය. ඉර හා නව ග්‍රහය</p>
+                <p> 3. සුවර්ණ ලෝකය (දේව ලෝකය) → ඉන්ද්‍ර ලෝකය, දෙවියෝ හා දේවියෝ නിവസන ස්ථානය. දේවෙන්ද්‍ර</p>
+                <p>4. මහාලෝකය → මහර්ෂිවරුන් නിവസන ස්ථානය, සපථ රුෂිවරු (සප්තර්ෂි)</p>
+                <p>5. ජන ලෝකය (මනුලෝකය) → මනෝත්තමයන්ගේ (ශිෂ්ටයන්ගේ) නේවාසය. නාරද ආදි මහා මනෝත්තමයන්</p>
+                <p>6. තපෝලෝකය → දුක්කාරචාර හා තපස් පිළිගත් ලෝකය. බ්‍රහ්ම පුත්‍රයෝ</p>
+                <p>7. සත්‍ය ලෝකය (සත්‍යමහාලෝකය) → උතුම්ම ස්ථානය, පරබ්‍රහ්මයාගේ නේවාසය.</p>
+
+                <p>පෘථිවියට අඩු ලෝක 7 (පාතාල ලෝකය)</p>
+                <p>1. අතලාලෝකය (Athalamu) → බලුඩු (මායා දෙවියගේ පුත්‍රයා)</p>
+                <p>2. විතලාලෝකය (Vithalamu) → හරභාව</p>
+                <p>3. සුතලාලෝකය (Sutalamu) → බලී චක්‍රවර්ති</p>
+                <p>4. තලතාලෝකය (Talatalamu) → මායුඩු, අනන්ත, වාසුකී</p>
+                <p>5. රසයෝග ලෝකය (Alchemist) → දායකයා</p>
+                <p>6. මහතාලාලෝකය (Mahatalamu) → කුහක, තක්ෂක, කාලිය, සුශේණු</p>
+                <p>7. පාතාල ලෝකය (Underworld) → වාසුකී</p>
+                ⸻
+                <p>ත්‍රිලෝකය (තෙලෝකය)</p>
+                <p>1. බ්‍රහ්ම ලෝකය / සත්‍ය ලෝකය → බ්‍රහ්ම දෙවියෝ</p>
+                <p>2. ශිව ලෝකය / කෛලාසය → ශිව දෙවියෝ</p>
+                <p>3. විෂ්ණු ලෝකය / වෙයිකුණ්ඨය → විෂ්ණු මූර්තිය</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="sriagathiyar6.webp"
+      data-tag="Mantra"
+      data-title="අගස්තියර් රිශිතුමා"
+      data-excerpt="සර්ව සම්පත් ප්‍රදානය කරන අගස්තියර් මුහුර්තය">
+      <template class="art-body">
+        <p class="drop-cap"><p>සර්ව සම්පත් ප්‍රදානය කරන අගස්තියර් මුහුර්තය
+                රාමායණයේ සහ මහාභාරත කාව්‍ය තුල සදහන් වන අගස්තියර් රිශිතුමා සම්බන්ද වසරකට වරක් පමනක් පැමිනෙන අගස්තියර් මුහුර්තය මෙම මාසයේ 21 ක්වන සදුදා ට යෙදේ..
+                භවිශ්‍ය පුරානයට අනුව
+                ඕ පාන්ඩවය....වසර හතක් නොකඩවා මෙම අගස්තේයර් මුහුර්තය ගනනය කර නිවැරදිව පුද සහ මන්ට්‍ර කරන්නේනම් 
+                බ්‍රාහ්මණයෙකු  චතුර්වේදී බ්‍රාහ්මණ තත්වයටද
+                ක්ශ්ත්‍රීයකු නම් භූ ලෝකයේ නායකයෙකුද
+                වයිශ්‍යයෙකුනම් දන දාන්‍යෙන්ද
+                ක්ශුද්‍රයකු නම් දනයෙන්ද ඔහු ජීවත්වන තුරාවට බැබල්වීමට ආශ්චර්ය ආශ්චර්යාශිර්වාද ලැබේ....
+                එසේම මෙම අගස්තියර් මුහුර්තය අදාල නිව්රදි පූජා කරන්නෙකු පරබ්‍රහ්මන් තත්වයට පත්වන්නේ යැයි භවිශ්‍ය පුරානයේ සදහන්‍ වේ..
+                මෙය කෙනෙකුට දැනගැනීමට අවශ්‍යනම් බවිශ්‍ය පුරානයේ අට්ටාසවැනි ආද්‍යාය දේවනගරී අගස්ත්‍යඅර්ගයවිදි යන ආද්‍යාය කියවන්න..
+                එහි භගවාන් ශන්කරදේව එය කියා දෙන්නෙ සනත්කුමාරටය. 
+                මෙහිදී පුද්ගලයකුගේ සියලුනාශාවන් සපුරනන්භවත්
+                අගස්තියර් උදයවීමට පෙර කාලය නියම කල යුතුයි.
+                මන්ද ඔහුගේ උදයට රාත්‍රී හතක් නිසා.
+                උදෑසන අගස්තියර් ඔරතිමාව ට්ජැබිය යුතුමයි.
+                ශක්තිමත් ශරීරය දිග බාහු දකුන බලා මැටි කලපයබ්තබා කමන්ඩලූව තනාගන ශිශ්‍යන් ගොඩක් මැද දර්බා සහ අක්ශත දරමින් ලෝපමුද්‍රා සහිතව ශෝඩසෝපචාරනුකූලව විශාල අම්‍රිතමහා ...මෙන්ම බලි පූජාව 
+                උදෑසන ශුද්ද තිලය සහිතව නා සුදු ඇදුමකින් සහ මාලාවකින්න්‍යුක්තව රන් සෙම්බුවේ පැන් පුරවා මන්චරත්න තබා බොහෝ ආහාර තබා පලතුරු මල් රෙදි පූජාකොට  ඉහත පූජාව අදාල මන්ට්‍ර සහිතව සිද්ද කල යුතුයි..
+                තබ තහඩුව බට්බ කුම්භමුනිගේ ඔරතිමාව ට්ජැබිය යුතුයු..
+                රන් භදුන
+                දොඩම් රටඉදි කරවිල පොල් පුහුල් කෙසෙල් දෙලුම් දෙහි වෝල්නට් පිස්ටැචෝ
+                කුස තන.. දුරවා
+                සප්ත දාන්‍ය
+                සත් අන්කුර 
+                පන්ච පත්‍ර
+                රෙදි පහ
+                දනගසා නැමී කුම්බෝදකපූජා ආකාරයට පුඉජාව සිද්ඩ්බ කරන්න. 
+                අගස්තියර් සදහා වූ මෙම පූජාවට අදාල භවිශ්‍ය මන්ට්‍රය
+                ලෝපමුද්‍රාවට අදාල මන්ට්‍රය
+                අහුතී හෝමයත් විසර්ජන පීජාවත් යහපත්
+                ඉන්පසු මෙම පිලිමය නිර්වානය උදෙසා වන බ්‍රාහ්මී කෙනෙකුට පූජා කල යුතුයි.
+                දෙදෙනාම නිර්වාන මෝක්දය ප්‍රාර්තනාවෙන් සිටියයුත්තෝ විය යුතුයි..එනම් දෙන්නාද ගන්නාද 
+                අගස්තියර් උදයට දින හතකට ප්‍රට්බමව ගවයෙක් හා දක්ශිනාවක් දන් දිය යුතුයි .
+                බ්‍රාහ්මණ කෙනෙකුර වේද මන්ට්‍ර විශාරදත්වය
+                ක්ශ්තීයයාට මූද දක්වා බූමිය
+                වයිශ්‍යට සියලු සම්පත්
+                ශුද්‍රයාට දුප්පත්කම නැසීම
+                ස්ත්‍රිය්ට පුත්‍රයකු සහ නිවසක් ලැබේ...
+                මෙම පූජාව සිදුකරන රටවල් හි
+                වර්ශාව ප්‍රශස්තය
+                විල්ලු නැසේ
+                රෝග නැසේ
+                නිවන් මග යන්නවුන් එතෙර වේ...
+                එබැවින් කෙනෙකුට මෙම පූජාව නිවැරදි මුහුර්තවල නිවැරදිව කරගැනීමට අවශ්‍යතාව තිබේ නම් එයට අදාල ජ්‍යෝතිශ්ශාස්ත්‍රඥයකුගේ ගුරුහරුකම් ලබාගන්න...
+                සෙත්වේවා....
+</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="515266501_1226894502781799_439151308276289340_n.jpg"
+      data-tag="Dharma"
+      data-title="දෙවශයන එකාදසී"
+      data-excerpt="දෙවශයන එකාදසී විශ්නු දෙවිදුන්ට පූජා තැබීමෙ දිනය....">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>දෙවශයන එකාදසී විශ්නු දෙවිදුන්ට පූජා තැබීමෙ දිනය....</p>
+                    <p>වයිද්නව් උත්සව දිනක් වන අතර, විෂ්ණු දේවතාවන්ගේ “නිවන් ගමන” (Divine slumber) ආරම්භ වන දිනය ලෙස සැලකෙයි. මෙය ඉසෝන මාසයේ (ඉඳෝ චන්ද්‍ර මාන පටිපාටියේ) ශුක්ල පක්ෂ එකාදසී දිනයට යෙදේ — සාමාන්‍යයෙන් ජූනි/ජූලි මාසය තුළ වැටේ.</p>
+
+                    <p>🪔 දෙවශයන එකාදසී විශේෂත්වය:</p>
+                    <p>1. වෙද විෂ්ණුන්ගේ ‘යෝග නිවන්’ (Yoga Nidra):</p>
+                    <p>• මේ දිනයේදි විෂ්ණු දේවතාවා ක්ෂීරසාගරයෙහි (Ocean of Milk) නිවන් ගමනට යයි.</p>
+                    <p>• එය චතුරුමාස්‍යය (Chaturmasya) නම් වූ මාස 4ක දිවියක් ආරම්භ කරන ලදි. මේ කාලය තුළ විෂ්ණුන් නිවන් යයි කියෙයි.</p>
+                    <p>2. චතුරුමාස්‍ය ආරම්භය:</p>
+                    <p>• චතුරුමාස්‍යය යනු භික්ෂූන් වන්දි කරන, ව්‍රතයන් රැසක් පැවැත්වෙන ශුභ කාලයකි.</p>
+                    <p>• බෞද්ධ සහ හින්දු භක්තිකයන් මෙය පවත්වන, වන්දනා කරන, භෝජන සීමා කරන, විනය පවත්වාගන්නා කාලයක් ලෙස බලාපොරොත්තු වේ.</p>
+                    <p>3. වෛෂ්ණවයන් සදහා අතිශය විශේෂ දිනයක්:</p>
+                    <p>• දේව ශයන එකාදසී දිනය විෂ්ණු භක්තයන්ට අතිශය පවිත‍්‍ර වන අතර, දවස්පුරා උපවාසය, මන්ත්‍ර සජ්ජායන, පූජා, වෘතධාරණය සිදු කෙරේ.</p>
+
+                    <p>🍃 එක්ාදසී උපවාසය පිළිබඳ විශේෂත්වය:</p>
+                    <p> • උපවාසය හා භක්තිය:</p>
+                    <p>• එක්ාදසී දින පළමු ආහාරය නොගනිමින්, පාල අහාර පමණක් හෝ ජල පමණක් පාන කරමින් භක්තියෙන් දිනය ගත කරයි.</p>
+                    <p> • සන්ධ්‍යා කාලයේ විෂ්ණු පූජාව, විෂ්ණු ගාථා පඬිම වැදගත්ය.</p>
+                    <p>විශ්නු දෙවියන් වෙනුවෙන් පූජා විශේශයෙන් ශ්‍රී නාරායන ස්වරූප දැරීමේ පූජා සිදු කිරීමට සුෆ්හුසුම අවස්තාවකි...</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="514340831_1226886226115960_1047871596456206635_n.jpg"
+      data-tag="Upanishads"
+      data-title="ගුරු පූර්ණිමා (Guru Purnima)"
+      data-excerpt="මෙය ආචාර්යයන්, ගුරුන්, ආදි ගුරුන් සහ ආධ්‍යාත්මික ගුරුන් පිළිබඳ ගෞරවය දැක්වීමට නියමිත දිනයකි.">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>ගුරු පූර්ණිමා (Guru Purnima) යනු ඉතා විශේෂිත හා ආධ්‍යාත්මික තේරුමක් ඇති දිනයකි. මෙය ආචාර්යයන්, ගුරුන්, ආදි ගුරුන් සහ ආධ්‍යාත්මික ගුරුන් පිළිබඳ ගෞරවය දැක්වීමට නියමිත දිනයකි.</p>
+
+                      <p>🪔 ගුරු පූර්ණිමා විශේෂත්වය:</p>
+                      <p>1. විදානයේ ගෞරවය දැක්වීම:</p>
+                      <p>• “ගුරු” යන වචනය හේතු වන්නේ, අන්ධකාරය (අවිද්‍යා) දුරු කර එළියට (ඥානයට) මඟ පෙන්වන්නා ලෙසිනි. එගිදී තමන්ගේ හදහනේ නව ව්න භාවය වන භගවාන් ස්තානය තුල ගුරුවරයා සිටී...</p>
+                      <p>• ශිෂ්‍යයාගේ ජීවිතය පාලනය කරන, සන්සුන් කරන, ආලෝකය දක්වන වඩාත්ම වැදගත් පුද්ගලයා – ඒ තමයි ගුරුවරුන්. මෙහිදී ගුරුවරයා ඔහුගේ ශිශ්‍යයන් වෙනුවෙන් ජීවිතය ට්ගුල විශාල ඉඩක් වෙන්කිරීමට ශිශ්‍යයන් අසීමාන්තිකව ගෞරව කලයුතු දිනයයි.</p>
+                      <p>2. වියාස මුණි සිහිවීම:</p>
+                      <p>• මෙය වෙද වි‍යාස මහාฤษීන්ගේ උපන් දිනය ලෙස සැමරේ. ඔහු “මහාභාරතය” සහ “වෙද” සංස්කරණය කළ ශබ්දශාස්ත්‍රීය ගුරුවරයෙකි.</p>
+                      <p>3. ආධ්‍යාත්මික ගුරුවරුන්ට පිදුම් කිරීම:</p>
+                      <p>• මෙය භාවනා පදනම් වූ බුද්ධිමත් දිනයකි. ශිෂ්‍යයෙකු ලෙස තම ජීවිතය සෘජු කළ ආචාර්යයන්ට සෘජුව හෝ ආධිභෞතිකව ගෞරව දැක්වීම සිදු කෙරේ. මෙහිදී ගුරුවරුන් වෙනුවෙන් පොරොන්දු තැබීම සිදුකරයි.</p>
+                      <p>4. පූජා සහ සදාචාර:</p>
+                      <p>• ගුරුන්ගේ පාද පූජා, ගෞරව දැක්වීම්, පුණ්‍ය කර්මයන්, දානය, සහ භාවනා/ධ්‍යාන යනාදිය මෙදින සිදු කෙරේ. එසේම සප්තරිශි හෝමය සදහා සුදුසුම දිනයකි.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="95511955_1576439972520461_7483394211589390336_n.jpg"
+      data-tag="Upanishads"
+      data-title="යුග සහ කල්ප ආදී බෙදීම්"
+      data-excerpt="රදානකොටම චතුර් යුගය එනම් නැවත නැවතත් පටන්ගෙන අවසන්වන්නාවූ සත්‍ය යුගය ඉන් අනතුරුව......">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>යුග සහ කල්ප ආදී බෙදීම්
+                        යුග... යුග , කල්ප, ක්ශන, අයන , සම්වත්සර්, පක්ශ, අයන ආදි මේ සියල්ල ප්‍රකෘතියෙන් මෙපිට වූ "කාලය " ගනනය කිරීම උදෙසා සූර්‍ය සම්වත්සර් ක්‍රමය අඩිතාලම් කරගත් අප ජීවත් වන භූ ලෝකයේ වර්ශයන් මෙන් කීගුනයක්දැයි ගැන බලන පුරාණ වයිදික ගණිත ක්‍රමවේදයයි.
+                        යුගයන් සලකා බැලීමේදී
+                        ප්‍රදානකොටම චතුර් යුගය එනම් නැවත නැවතත් පටන්ගෙන අවසන්වන්නාවූ සත්‍ය යුගය ඉන් අනතුරුව පැමිනෙන තෙත්‍ර යුගය ඉන් අනතුරුව පැමිනෙන ද්වාපර යුගය සහ ඉන් අනතුරුව පැමිනෙන කලි යුගයන්‍ පවතී.
+                        මේ එක් එක් යුගයන් වලට ආවේනික වෙනම ක්‍රමවේදයන්, දර්මතා, පිලිවෙත්, දෙවියන්ගේ දර්ශනයන් මෙන්ම ජීවීන්ගේ වෙන් වෙන්වූ ජීවන ක්‍රමවේදයන් පවතී.
+                        කෙසේ උවත් අප ජීවත්වන කලි යුගයේ දේවල් හා සසදා ඉන් පෙර යුගයන්  මෙසේ විය නොහැකී යයිද සිතීම කෙසේවත් නොකලයුතුවන්නේ බලයන් , ශක්තීන් , විද්‍යාවන්  , දැනුම, මානසික ශක්තීන් , කායික ශක්තීන් සියල්ල යුගයෙන් යිගයකදී පූර්නවම වෙනස් වන බැවිනි.
+                        කලි යුගය වනාහී පවත්නා සූර්‍ය වර්ශ 432000ක් ආයු ඇත් යුගයකි. එනම් වසර හාරලක්ශ තිස්දෙදහසක් පුරා අපගේ කලි යුගය වන්නේය.
+                        එසේම එවැනි කලි යුග දෙකක ආයුශයක් ද්වාපර යුගය වේ.. එනම් වසර 864000කි. කලියුග වර්ශයන් තුන් ගුනයක් එනම් වර්ශ 1296000ක්තෙත්‍ර යුගය පවතී. එසේම කලියුග ප්‍රමාන 4ක් එනම් වර්ශ 1728000ක් සත්‍ය යුගය වන්නේය.
+                        එඅඒම මේ යුග 4හි මුලු වර්ශ ප්‍රමානයට "මහා යුගයක් " යැය් වයිදික ශාස්ත්‍රයේ ගනින අතර එවැනි මහා යුග 1000ක් මහා බ්‍රහ්ම ශෙදියන්ගේ එක් දිනයක් ලෙස ගනිනු ලබයි.
+                        මහා ගීතාවේ 8.17 වන ශ්ලෝකයේ මෙසේ සදහන්‍ය
+                        සහස්‍ර යුග පර්‍යාන්තම් අහර් යත් බ්‍රහ්මනෝ විදූහ් රාත්‍රිම් යුගසහස්‍රාන්තම් තෙහෝ රාත්‍ර විදෝ ජනාහ් 
+                        එනම් මහා යුග 1000ක් බ්‍රහ්මයාගේ දවස වන අතර කල්ප දෙකක් එනම් බ්‍රහ්මයාගේ දහවල සහ රාත්‍රීයට සමානවන්නේය යන්නයි.
+                        එසේම මන්වන්තර වන්නේ මහා යුග 71කි.
+                        ඒ සෑම මන්වන්තරයක්ම පාලනයබ්වන්නෙ මනු  කෙනෙකුන් මගිනි . එවිට මහා සම්මත මනුවරුද නැවත නැවත පහල වන බව අවබෝද කරගත යුතුයි.
+                        මේ සෑම මන්වන්තර එකකට පසුවම "සම්දි කාල " යක් පැමිනේ එය ක්‍රිත යුග එකක් වේ එනම් කලියිග 4ක ප්‍රමානය වන සත්‍ය යුගයක කාල ප්‍රමානයට සමාන වර්ශ ගනනක් බැවින් අප සත්‍ය යුගයට ක්‍රිත යුගය යයිද පැවසේ..
+                        නමුත් එකම.කාල පරාසය උවත් මෙම දෙක අවස්තා දෙකක් බව අවබෝද නොකොට ගනන් හැදීමේදි සම්පූර්නයෙන් යුග ආයු කාලයන් හා විශ්වීය ආයූ කලයන් මෙන්ම සමස්ත ජ්‍යෝතීද පද්දතියේ මූල්කම සිද්දානත වරදවා ගන්නට සිදුවේ..
+                        මේ සමිදි කාලය අප ජීවත්වන භූ ලෝකය ජලය තුල ගිලී තිබූ කාලය වන්නේය.
+                        අද වන විට යුගයන්ගේ දැනුම ගැටලුවකට පැමින ඇතිනිසා පුරාණ වයිදික රිශි භාශිත ජ්‍යෝතීශමය අදාලව ඒ ඒ යුගයන්හී සුලු ඉතා සුලුඅවබෝදයක් බලමු.
+                        සත්‍ය යුගය වන්නේ භූ ලෝකවාසි එනම් මේ අප ජීවත් වන ලෝකයේ වන්නාවූ මනුශ්‍ය ජීවීන්ගේ දැනුමේ උපරිම අවස්තාවයි. එය ක්‍රමක්ක්‍රමයෙන් තෙත්‍ර , ද්වාපර, කලි යුගයන්වලදී පිලිවෙලින් අඩුවී අඩුවී ගොස් දැනට පවතින මට්ටමට මේ වනවිට අඩුවී ඇත්තේය.
+                        අද දිනය  පිළිබද වයිදික මහා රිශිවරුන්ගේ විශ්වීය සම්මත ගනිත ක්‍රමය මෙහිදි පහත දක්වන්න අතර සෙමින් එය තේරුම ගන්න.
+                        බ්‍රහ්ම දෙවියන් ඔහුගේ බ්‍රහ්ම දිනයන් 360කින් සමන්විත වර්ශ100ක් ආයුශ වලදන්නේය. ඒවායේ මාස 12ක් වන අතර මසකටදින 30කි.
+                        එම බ්‍රහ්ම දිනයක් කොටස් දෙකකින් වන අතර දිවා කල්පය සහ රාත්‍රී කල්පය ලෙසට වෙන්වේ.
+                        මේ සෑම දිවා කල්පයකටම මන්වන්තර 14ක් සහ සන්ද්‍යාවන් 15ක් මගින් ඒවා වෙන් වෙන් කිරීම සිද්දවේ. ඒ සෑම මන්වන්තරයක්ම චතුර්‍යුග 71කින් සමන්විතවේ. 
+                        මේ වනවිට බ්‍රහ්ම වර්ශ 50ක් ගතකොට අවසන් වන අතර එම බ්‍රහ්ම වර්ශ 50 අවසානයේ පැමිනි  අවසාන  කල්පය පද්ම කල්පය ලෙස රිශීන් හදුන්වයි. (පැහැදිලිවම අප මේවාට වෙනත් නම් යොදා අපට රිශීන්‍ය වඩා දැනුම ඇතැයි යන්න පෙන්වීම අනුවන කමකි)
+                        එනම් එසේ අවසානවූ පද්ම කල්පයෙන් පසුව  පැමිනි 51වන බ්‍රහ්ම වර්ශයේ ප්‍රතම දිනයේ අප ජීවත්ව සිටින්නේය. මෙම බ්‍රහ්ම වර්ශයේ ප්‍රතම කල්පය වන අතර එය බ්‍රහ්මීන්ගේ නිතර මුව අග රැදෙන ශ්වේත වරහ කල්පය ලෙස හැදින්වේ.මෙකල්හි ඕනෑම පූජාවකදී මුලින්ම සන්කල්ප කියන අවස්තාවේදී කිවයුතුම වචනය වන්නෙ එයයි.
+                        එසේම මේ ශ්වේත වරහ කල්පයේද මන්වන්තර 6ක් පහුවි ඇති අතර අප ජීවත් වී ඔබ මේ හුස්ම ගන්නෙ 7වන මන්වන්තරයේය. එය වනාහි ශ්‍රද්දදේව මන්වන්තරය හෙවත් අප අතර  ප්‍රසිද්ද  වයිවස්වත මන්වන්තරයයි. එහිද 27ක් මහායුග අවසන්කොට 28වන මහා යුගයේද සත්‍ය , තෙත්‍ර, ද්වාපර යුග නිමාවී 28වන මහා යුගයේ  කලි යුගයේ අප හුස්ම සලමින් සිටින්නේය.
+                        එසේම ප්‍රොලෙප්තික ජූලියානු කැලැන්ඩරයට අනුව මෙම 28වන කලියුගයේ ආරම්භය ක්‍රිස්තුපූර්ව 3102 වන වර්ශයේ වේ.
+                        එසේම අපගේ හිස් 4කින් යුත්ත මහාබ්‍රහ්ම දෙවිදුන්ගේ පූර්නායුශයෙන් හරි අඩක් එනම් බ්‍රහ්ම වර්ශ 50ක් අවසන් කොට දෙවැනි අර්දය හෙවත් අවසාන අර්දයා පැමින ඇති අතර එය ද්වීතීය පරාර්දය ලෙස ගනනයේදි හැදින්වේ.
+                        ඔබගේ පහසුවට මේ වනවිට මහා බ්‍රහ්මෝත්පත්තියෙන් මනුශ්‍ය වර්ශ 155521972949120ක් හෙවත් වචනයෙන් එකසිය පනස්පස් ට්‍රිලියන පන්සිය විසිඑක් බිලියන නවසිය හැත්තැදෙමිලියන නවසිය හතලිස්නවදහස් එකසිය විස්සක වර්ශ ප්‍රමානයක් මෙම ස්ටහන තබන ක්‍රිස්තු වර්ශ 2020 වන විට ගෙවී ඇත්තේය.
+                        එසේම තවත් දුරට කියන්නේ ආපස්සට ගැන බැලීමේදී  මෙම 28වන කලියුගය හරියටම අදට වර්ශ 5120කට පෙර පැමිනි පෙබරවාරි මස 17වන දින මද්‍යම රාත්‍රියේදී ආරම්භවිය. එදින මේ භූලෝක දාතුවේ සිදුවූ එක්තරා අතිශය කනගාටුදායක සිදුවීමක්ද සහිතව 28වන කලියුගාරම්භය සිද්දවිය.
+                        මෙම කාලයන් පිලිබදව සැක සන්කා ඇත්නම් විශ්නුපුරානය කියවා බැලීමෙන් මෙයට වඩා තීව්‍රව දැනුම ලබාගත හැකි අතර. මේසියලු යුගයන් තුල බෞද්ද චතුර්‍යුගයද අන්තර්ගත වන බැවින් කිසිදු ආගමික මතවාදීය දෙයක් නොවන බව සලකන්න. (එනම් උදා-ක්‍රිස්තුවර්ශ 2020 යනුආගමික වර්ශයක් නොවන මිනුමක් පමනක් වන ලෙසට විවුර්ත මනසකින් බලා තේරුම් ගැනීමෙන් විශ්වයේ යම් යම් දේවල් වඩා ස්තීරව තේරුම් ගැනීමට පහසු වේ).
+                        එසේම එක් එක් යුගයන්වල වෙනස්කම් සහ වැදගත්කම්ද ජ්‍යෝතිශමය වශයෙන් ඒ කුමන යුගයක උත්පප්තිය ලැබුවාවු දේවතා ස්වරූපයකින් අපගේ භාදා ඉවත්කරන්නේද යන්න තීරනය වේ.. මන්ද දේවතා කාල ගනනය මත බොහෝ දේවතා ආයුශයන් හා මේවනවිට වයස නීර්නය සහ දේවතාවන්ගේ ජන්මපත්‍රයන් පැහැදිලිවම යම් පුරාන ව්‍යිදික ගුරුකුල් සහිත බැවිනි.
+                        හැකි අවස්තාවලදී ඒ ඒ යුගයන්හී දර්මතාගැන  සුලුවෙන් හෝ ‍යමක් පලකරන්නම්.
+                        කෙසේ වෙතත් මේ සුලු දැනුම ඔබට යම් නව මාවතක් විවරවේයැයි සිතමි.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="500067730_1192854016185848_2462683408370438422_n.jpg"
+      data-tag="Upanishads"
+      data-title="ශ්‍රී ලක්ශ්මී ආශිර්වාදය"
+      data-excerpt="අක්ශය තෘතියාව පිළිබඳ සම්පූර්ණ වේදික විස්තරය සහ වේද මන්ත්‍ර ">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>ශ්‍රී ලක්ශ්මී ආශිර්වාදය ලැබෙන වසරේ එක්වරක් පමනක් පැමිනෙන ආක්ශේය තිතිය....
+                        අක්ශය තෘතියාව පිළිබඳ සම්පූර්ණ වේදික විස්තරය සහ වේද මන්ත්‍ර 
+                        අක්ශය තෘතිය (Akshaya Tritiya) කුමක්ද?
+                        අක්ශය තෘතිය යනු වෛශාඛ මාසයේ (අප්‍රේල්-මැයි) ශ්ුක්ල පක්ෂයේ තුන්වැනි දිනයයි. මෙය ඉතා ශුභ දිනයක් ලෙස සැලකේ. “අක්ශය” යනු නොමැදෙන, නිරන්තර යන අර්ථය ඇති අතර, “තෘතියා” යනු තුන්වැනි දිනය වේ. මෙය කැදැල්ලේ ආර්ථික වාසිය, සෞභාග්‍යය, ආයුෂ සහ ධර්මය වැඩි කරන දිනයක් ලෙස භාවිතා වේ.
+                        අක්ශය තෘතිය විශේෂත්වය (Vedic Significance)
+                        1. මෙය මූර්ථ නිර්ණය නොකරමත් කටයුතු කළ හැකි ශුභ දිනයකි.
+                        (එය සුදෝෂ පරිහරණය නොවන මොහොතක් ලෙස යෝග්‍ය වේ.)
+                        2. මහාවිෂ්ණු සහ මහාලක්ෂ්මී දේවිය පිදීම සඳහා ඉතා යෝග්‍ය වේලාවකි.
+                        3. මෙය සත්‍යයුගය ආරම්භ වූ දිනයක් ලෙසද සැලකේ.
+                        4. පාරාක්‍රමයේ, ආයුෂයේ, ධනයේ හා සෞභාග්‍යයේ නව ආරම්භයක් ලෙසට භාවිතා කල හැක.
+                        අක්ශය තෘතියාවේදී කිරිය යුතු ව්‍රතාචාර සහ පුජා (Vedic Rituals):
+                        1. වෙදික පුජා සහ දානය
+                        • අnnadanam (ආහාර දානය) — භික්ෂූන්, අසරණයන්ට ආහාර ලබාදීම.
+                        • ග්‍රාම දානය, ගව දානය — සම්පත් ප්‍රයෝජනයට හේතු වේ.
+                        • වස්ත්‍ර දානය — පවුලේ සාමය සහ සෞභාග්‍යය ලබාදේ.
+                        2. වෙදික මන්ත්‍ර සහ හෝමය (Vedic Mantras and Homas)
+                        i. Sri Mahalakshmi Pooja Mantra (ශ්‍රී මහාලක්ෂ්මී පූජා මන්ත්‍රය):
+                        ॐ श्रीं महालक्ष्म्यै नमः।
+                        "ඕම් ශ්‍රීම් මහාලක්ෂ්මියයි නමඃ"
+                        (මෙය 108 වතාවක් පඬින්න.)
+                        **ආශිර්වාදය** – සම්පත්, වාසිය, ආර්ථික සෞභාග්‍යය.
+                        ii. Vishnu Sahasranama Stotra (වීෂ්ණු සහස්‍රනාමය)
+                        • අක්ශය තෘතියාවේදී වීෂ්ණු දේවයන් වන්දනා කිරීම විශේෂයෙන්ම යෝග්‍ය වේ.
+                        • “ශ්‍රී සුදර්ශන හෝමය” සහ “ශ්‍රී ලක්ෂ්මී නාරායණ හෝමය”ද කල හැක.
+                        iii. Akshaya Tritiya Sankalpa Mantra (අක්ශය තෘතියා සංකල්පය):
+                        ॐ विष्णुरूपाय गोविन्दाय नमः।
+                        "ඕම් විෂ්ණුරුපාය ගෝවින්දාය නමඃ"
+                        අක්ශය පුන්‍යකාලයේදී මෙය සිත තුළින් පරම ශුද්ධියෙන් කියවන්න.
+                        අක්ශය තෘතියාවේදී කරන ලද කටයුතු සදාකාලික වාසියක් දෙයි:
+                        • නව ව්‍යාපාර ආරම්භය
+                        • ධාන්‍ය, රන්, රිදී, වස්තු මිලදී ගැනීම
+                        • නව වාස්තු පවුල් කටයුතු, නව ගෘහ ආරම්භ
+                        • විවාහය (විශේෂ සංකල්පයකින්)
+                        අක්ශය තෘතියා දිනයේ හොඳ මොහොතක් දැන ගැනීමට:
+                        • පැරණි ව්‍රතා චූඩාමණි ග්‍රන්ථය, ජාතකාලි මූර්ථ නිර්ණය, සන්ධානය හා තිථි යෝගය අනුවය.
+                        • බෙහෙවින් වෙදික ක්‍රම අනුව මොහොත දැන ගැනීම සඳහා ස්වකීය ජාත කේන්දරය විමසන්න.
+                        මෙදින ශ්‍රී ලක්ශ්මී දේවියට කොල එලවලු පූජාව සහ ආබරන තබා ශ්‍රී විශ්නු සහස්‍රනාමර්චනම්  සිදුකිරීම අතීඩ්ගය සුබදායී වේ....
+                        එය මෙවර අප්‍රේල් 30ට යෙදේ 
+                        එදින පූජාවන් ශ්‍රී ලක්ශ්මී විශ්නු විශේශ පූජා සිදුකරගෑනීම වෙනුවෙන් විස්තර 28වනදාට පෙර දැනගන්න..</p>
+      </template>
+    </div>
+
+  </div><!-- end Vedic -->
+
+  <!-- ── Yoga ── -->
+  <div class="mag-cat-data" data-category="Yoga">
+
+    <div class="mag-article"
+      data-img="492024699_1171779068293343_4577502266255479685_n12.jpg"
+      data-tag="Pranayama"
+      data-title="යෝගී ජීවිතය"
+      data-excerpt="යෝගීය පුද්ගලයෙකු බවට පත්වන ආකාරය">
+      <template class="art-body">
+        <p class="drop-cap"><p>යෝගීය පුද්ගලයෙකු බවට පත්වන ආකාරය</p>
+                          <p>යෝගීය ජීවිතය යනු යෝගයේ මූලික සංකල්ප අනූව ජීවත්වීමයි. මෙය සිරුර, මනස සහ ආත්මය අතර සමතුලිතතාවය ඇති කර ගැනීමක් වේ.</p>
+                          <p>1. යෝගයේ අෂ්ටාංග මාර්ගය (අට අංග)</p>
+                          <p>ගුරුවරයකු හරහා මාර්ගයේ ගමන අරබන්න   
+                          මන්ද මෙම සම්ස්කාර දුරලා නැවත වතාවක් මෙම බ්‍රහ්මාන්ඩයේ හොක් වෙනත් බ්‍රහ්මාන්ඩයක තමන්ගේ ආත්මය දිදුලීම අහවර කිරීම මෙන්ම ස්‍ර්වව්‍යාප්තීකේස්ග්වර භාවයට එකතුවී යෑම හරහා මින් නිවී යා හැක.. මේ සදහා බන්දන එකින් එක ගැලවී ගොස් තමන් තුලින්  නිර් තත්වය ව්‍යුත්පන්න විය යුතුයි...</p>
+                          <p>පතංජලියන්ගේ අෂ්ටාංග යෝගය :</p>
+                          <p>• යම (සමාජීය අන්ශය) – අහිංසාව (අවිනාශීත්වය), සත්‍යය (සත්‍ය කීම), අස්තේය (සොරකමෙන් වළකිනවා), බ්‍රහ්මචාර්ය (සන්සුන් ජීවිතයක්), අපරිග්‍රහ (අතයවශ්‍ය නොවූ දේවල් නොගැනීම).
+                          • නියම (පුද්ගලික නීති) – ශුද්ධිය (ශාරීරික සහ මානසික පිරිසිඳුම), සන්තුෂ්ඨිය (සන්සුන් බව), තපස් (අන්තිම ඉලක්කය සඳහා කැපවීම), ස්වධ්‍යාය (සන්සුන් කෙරෙහි මනස යොමු කිරීම), ඉශ්වර ප්‍රණිධානය (දෙවියන් කෙරෙහි විශ්වාසය තබා ගැනීම).
+                          • ආසන (යෝග ස්ථාන) – ශරීරය ශක්තිමත් කරමින් ආධ්‍යාත්මික වර්ධනයට පිළියෙළ වීම.
+                          • ප්‍රාණායම (ශ්වසන පාලනය) – මනස නිවන් කිරීම සහ ශක්තිය වැඩි කිරීම.
+                          • ප්‍රත්‍යාහාර (තමන් තුලට අවධානය) – බාහිර ව්‍යසනයන් හා ආශාවන් මැද සන්සුන්ව සිටීම.
+                          • ධාරණා (අවධානය) – මනස එක් දෙයකට යොමු කිරීම.
+                          • ධ්‍යාන (මෙඩිතේෂන්) – ගැඹුරු ධ්‍යානයෙන් ආත්ම සෙලවීම නැවතීම.
+                          • සමාධි (අභ්‍යන්තර ගැඹුරට පිවිසීම) – යථාර්ථය පිළිබඳ අවබෝධය (ආත්ම ධ්‍යානය).</p>
+                          <p>2. යෝග හා ධ්‍යාන අභ්‍යාසයක් ආරම්භ කරන්න</p>
+                          <p>• ආසන (යෝගා පුහුණුව) – ශරීරය සුවපත් සහ ශක්තිමත් කරයි.
+                          • ප්‍රාණායම (ශ්වසන පාලනය) – ශක්තිය හා මනෝ  ශක්තිය වැඩි කරයි.
+                          • ධ්‍යානය – මනස නිවන් කරමින් අභ්‍යන්තර සන්සුන්තාවය වැඩි කරයි.</p>
+                          <p>3. යෝගීය ආහාර රටාවක් පිළිපදින්න</p>
+                          <p>• සත්ත්ව ආහාර (Sattvic Food) පමණක් භාවිතා කරන්න –  පලතුරු, එළවළු, බත්,  ධාන්‍ය සහ පැණි ආහාර.
+                          • තමාසික (Tamasic) සහ රාජසික (Rajasic) ආහාර වලින් වළකිනු – ව්‍යාජ ආහාර, අල්කොහෝල්, අධික මිරිස් සහ කෘතීම ආහාර.</p>
+                          <p>4. ස්වභාවය සමඟ සමගිව ජීවත් වන්න</p>
+                          <p> • අළුයම (බ්‍රහ්ම මුහූර්තයේ) අවදි වීම.
+                          • ස්වභාවය සමඟ සමීපව ජීවත් වීම (භූමිය හා සම්බන්ධ වීම, සූර්ය ආලෝකය භාවිතා කිරීම).
+                          • නැවතීම සහ නිවසේ ශුද්ධතාවය පවත්වා ගැනීම.</p>
+                          <p>5. ස්වයං අනුශ්‍රීතභාවය (Tapas) වර්ධනය කරන්න</p>
+                          <p>• අධික භෝග, විනෝද සහ වියදම් වලින් වළකින්න.
+                          • ජීවිතය සරල කරගෙන අවශ්‍ය නොවූ බලාපොරොත්තු අත්හරින්න.
+                          • සිතුවිලි, වචන සහ ක්‍රියාවලදී පිරිසිදු බව පවත්වා ගන්න.</p>
+                          <p>6. නිර්වාන සහ ආදරය (Seva) පුහුණු කරන්න</p>
+                          <p> • අනෙකාගේ පිණිස කටයුතු කරන්න, ප්‍රතිඵලයක බලාපොරොත්තුව නොමැතිව.
+                          • දේවියන්ගේ හා මිනිසුන්ගේ සේවය කරන්න.</p>
+                          <p>7. ආත්ම සංස්කෘතිය සහ විශ්වාසය වැඩි කරන්න</p>
+                          <p>• භගවත්වීමක් පුරුදු කරගෙන යාග, මන්ත්‍ර සහ නාමස්මරණය කරන්න.
+                          • ඩ්ගෙවියන්ගේ  පදනම් කතන්දර කියවන්න – භගවද් ගීතා, උපනිශද්, සහ යෝග සුත්‍ර.
+                          • ආත්ම සන්සුන්තාවය වර්ධනය කරන්න.</p>
+                          <p>8. අහංකාරය සහ සම්බන්ධීකරණය අත්හරින්න</p>
+                          <p>• මමභාවය (අහංකාරය) අවම කරන්න.
+                          • ඉලක්කයක් නොකියා, දේවියන්ගේ සහාය ලබා ගැනීමට විශ්වාස කරන්න.
+                          • දෙවියන්ගේ කර්මය (Karma Yoga) අනූව යමක් කළ හැකිය.</p>
+                          <p>යෝගීය පුද්ගලයෙකු යනු, සරලව සන්සුන්, ස්වයං විශ්වාසයෙන් හා ආත්ම සන්සුන්තාවයෙන් ජීවත් වන පුද්ගලයෙකි.
+                          මෙලෙස ක්‍රම ක්‍රමයෙන් ඉවසීමෙන් භගවත්වීම ක්‍රියාත්මක කරන්න...</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="574566052_1337555028382412_2462702186283136709_n.jpg"
+      data-tag="YOGA"
+      data-title="Muladhara Chakra"
+      data-excerpt="1. මුලාධාර චක්‍රය (Root Chakra)">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap"><p>
+                          Located at the base of the spine, Muladhara governs survival, stability, and grounding. When balanced, it gives fearlessness, confidence, and connection to the physical world. It is the foundation where Kundalini Shakti rests in dormant form.</p>
+                          <p>මුලාධාර චක්‍රය (Muladhara – මූල චක්‍රය)
+                          පිටු කොටසේ මුලේ පිහිටයි. ජීවිතය, ආරක්ෂාව, මූල ආධාරය, භීතියෙන් මිදුණු බව පාලනය කරයි. මෙහි විවේකව නින්දයට යාමෙන් කුණ්ඩලිනි ශක්තිය සූදානම්ව ඇඳිල්ලෙන් සිටී.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="574264448_1337556081715640_7771625730596536200_n.jpg"
+      data-tag="YOGA"
+      data-title="Svadhisthana Chakra"
+      data-excerpt="ස්වධිෂ්ඨාන චක්‍රය (Sacral Chakra)">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>Svadhisthana Chakra (Sacral Chakra)</p>
+                          <p>Situated two inches below the navel, this chakra controls creativity, sensuality, emotions, and flow. A balanced Svadhisthana brings joy, passion, healthy relationships, and creative intelligence.</p>
+                          <p>ස්වධිෂ්ඨාන චක්‍රය (Svadhisthana)</p>
+                          <p>නාභියට පහළින් පිහිටයි. සෘජු බව, විනෝදය, සර්ගශීලීභාවය, සිත් ගැන්ම, සංවේදීභාවය මෙහි බලයයි. සමාන්‍ය වූවිට සත්ත්වයේ සෞම්‍යය හා ප්‍රීතිය වැඩෙයි.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="574366293_1337560158381899_6879087034645660942_n.jpg"
+      data-tag="YOGA"
+      data-title="Manipura Chakra"
+      data-excerpt="මණිපුර චක්‍රය (Solar Plexus)">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>Manipura Chakra (Solar Plexus)</p>
+                          <p>Located at the navel region, Manipura is the seat of willpower, personal power, determination, and transformation. When active, it gives courage, clarity, and strong digestion (Agni).</p>
+                          <p>මණිපුර චක්‍රය (Manipura – නාභි ශක්ති කේන්ද්‍රය)</p>
+                          <p>නාභිය ප්‍රදේශයේ සිටිෙන මෙය ශක්ති, කැපවීම, උද්‍යෝගය, අග්නි ශක්තිය පාලනය කරයි. මෙය සෞම්‍යව ඇවේන විට ධෛර්යය, තීරණශක්තිය, ශක්තිමත් පචනය ලැබේ</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="574282809_1337561351715113_4857456045893170776_n.jpg"
+      data-tag="YOGA"
+      data-title="Anahata Chakra"
+      data-excerpt="අනාහත චක්‍රය(Heart Chakra)">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>Anahata Chakra (Heart Chakra)</p>
+                          <p>Found in the center of the chest, this chakra represents unconditional love, compassion, healing, and devotion. A balanced Anahata opens the path for divine love and spiritual growth.</p>
+                          <p>අනාහත චක්‍රය (Anahata – හෘද චක්‍රය)</p>
+                          <p>පපුව මැද පිහිටයි. නිරාකූල ආදරය, කරුණාව, සුව කිරීම, භක්තිය මෙහි ශක්තියයි. හෘද චක්‍රය සමාන්‍ය වූ විට මනුෂ්‍යයා තුළ දේවියන්ගේ ආලෝකය විවෘත වේ.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="575116011_1337561931715055_8785775075759160233_n.jpg"
+      data-tag="YOGA"
+      data-title="Vishuddha Chakra"
+      data-excerpt="විශුද්ධි චක්‍ර (Throat Chakra)">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>Vishuddha Chakra (Throat Chakra)</p>
+                          <p>Located at the throat, Vishuddha governs speech, truth, communication, and purity. It purifies lower energies, allowing clear self-expression and spiritual voice.</p>
+                          <p>විශුද්ධි චක්‍ර (Vishuddha – කණ්ඨ චක්‍රය)</p>
+                          <p>මෙය සත්‍ය ප්‍රකාශය, කථනය, පිරිසුදුව, ශබ්ද ශක්තිය පාලනය කරයි. මෙය ප්‍රබල වූ විට අපේ ගැඹුරු සත්‍යය බියකින් තොරව ප්‍රකාශ වේ.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="577033408_1337562011715047_8035423868971647072_n.jpg"
+      data-tag="YOGA"
+      data-title="Ajna Chakra"
+      data-excerpt="ආඥා චක්‍රය (Third Eye)">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>Ajna Chakra (Third Eye)</p>
+                        <p>Situated between the eyebrows, Ajna is the center of intuition, wisdom, insight, and inner vision. It controls both mind and senses. When awakened, it gives deeper understanding, psychic abilities, and discrimination.</p>
+                        <p>ආඥා චක්‍රය (Ajna – තෙවෙනි ඇස්)</p>
+                        <p>කොණ්ඩය අතර පිහිටයි. ඇදහිල්ල, දුරදසුන, අභ්‍යන්තර දැනුම, ඥානය, සූක්ෂ්ම දෘෂ්ටි පාලනය කරයි. මෙය සක්‍රීය වූ විට මනස හා පන්චේන්ද්‍රියයන් පාලනයට ගෙන එයි.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="575146214_1337562498381665_7516477119281366755_n.jpg"
+      data-tag="YOGA"
+      data-title="Sahasrara Chakra"
+      data-excerpt="සහශ්‍ර චක්‍රය (Crown Chakra)">
+      <template class="art-body">
+        <p class="drop-cap"><p>Sahasrara Chakra (Crown Chakra)</p>
+                        <p>Located at the top of the head, Sahasrara signifies pure consciousness, moksha, divine connection, and enlightenment. It is the final destination of awakened Kundalini energy.</p>
+                        <p>සහශ්‍රර චක්‍රය (Sahasrara – සිරස මල)</p>
+                        <p>හිස මුදුනේ. මෙය පැහැදිලි සත්‍යය, ශ්‍රේෂ්ඨ චේතනාව, මෝක්ෂය, නිරෝධය, සම්බෝධිය නියෝජනය කරයි. කුණ්ඩලිනි මුලාධාරයෙන් ඉහලට ගියාම අවසන් ගමනාන්තය මෙයයි.</p>
+
+      </template>
+    </div>
+
+  </div><!-- end Yoga -->
+
+  <!-- ── Spiritual ── -->
+  <div class="mag-cat-data" data-category="Spiritual">
+
+    <div class="mag-article"
+      data-img="1b84bf3f-e8d0-4b03-8ffc-10c342430204.jpg"
+      data-tag="Consciousness"
+      data-title="Rishi"
+      data-excerpt="සප්ත රිශින්......">
+      <template class="art-body">
+        <p class="drop-cap"><p>සප්ත රිශින්⸻</p>
+                        <p>🌟 සප්ත ঋෂි කියන්නේ කවුද?</p>
+                        “සප්ත” කියන්නේ සත්දෙනා,
+                        “රිෂි” රිෂි/උෂිත්‍ය) කියන්නේ මහා මැදිවරුන් හෝ දෙවියන්ගේ සත්‍ය ගුණයන් දක්නා ඥානිවරුන්.
+                        මේ සප්ත ঋෂිවරුන් නම් වෙන්නේ
+                        බ්‍රහ්මාවා (ශ්‍රිෂ්ටි කළ මහා දෙවියන්) විසින් මානසිකව (මනසින්ම) නිර්මාණය කළ සත්‍ය දේව මනෝමය පුත්‍රයෝය.</p>
+                        ⸻
+                        <p>🧘‍♂️ වත්මන් කාලයේ (වෛවස්වත මනුමන්තරයේ) සප්ත ঋෂි</p>
+                        <p>1. අත්‍රි (Atri)
+                        2. බ්‍රිගු (Bhrigu)
+                        3. වසිෂ්ඨ (Vasishtha)
+                        4. කශ්‍යප (Kashyapa)
+                        5. ගෞතම (Gautama) / කුත්ස (Kutsa)
+                        6. අංගිරස (Angirasa)
+                        7. මාරීචි (Marichi)</p>
+                        <p>⚠️ විවිධ මනුමන්තර වලදි සප්ත ঋෂිවරුන් වෙනස් වෙනවා.</p>
+                        ⸻
+                        <p>🌌 ආකාශ විද්‍යාව (ජ්‍යොතිෂය) හා සප්ත ঋෂි</p>
+                        <p> • සප්ත ঋෂිවරුන් උපුටා දැක්වෙන්නේ උර්සා මේජර් (Ursa Major / සප්තර්ෂි මණ්ඩලය) තාරකා මණ්ඩලය තුළ තාරකා 7 ක් ලෙසයි.</p>
+                        • ඔවුන්ගේ භාරයෝ (පතිවරුන්) උපුටා දැක්වෙන්නේ ක්‍රිතිකා නක්ෂත්‍රයෙහි (Pleiades star cluster) තාරකා ලෙසයි.
+                        </p>
+
+                        <p>විශේෂත්වය</p>
+                        <p>අත්‍රි</p>
+                        <p>ධත්තාත්‍රෙය්‍යයන්ගේ පියා; රිග්වේදයේ ස්ථෝත්‍ර රචකයෙකු.</p>
+                        <p>බ්‍රිගු</p>
+                        <p>“බ්‍රිගු සම්හිතා” ජ්‍යොතිෂ ග්‍රන්ථය රචකයෙක්; විෂ්ණුන් වද කළ වස්තුවකට සම්බන්ධයි.</p>
+                        <p>වසිෂ්ඨ</p>
+                        <p>රාමායණයේ රාමයන්ගේ ආචාර්යවරයා; කාමධෙනු නැමැති දේව ගෝවන් හිමිකරු.</p>
+                        <p>කශ්‍යප</p>
+                        <p>දෙවියන්, අසුරයන්, නාගයන්, මිනිසුන්ගේ පියා ලෙස සැලකෙයි.</p>
+                        <p>ගෞතම / කුත්ස</p>
+                        <p>රිග්වේදයේ ස්ථෝත්‍ර රචකයෙක්; අධර්මයට එරෙහිව සටන් කල මහා ඥානි.</p>
+                        <p>අංගිරස</p>
+                        <p>ගිනි පැවැත්ම හා තපසට සම්බන්ධ වූ තපෝවීර; වේදයන්හි රචකයෙකු.</p>
+                        <p>මාරීචි</p>
+                        <p>බ්‍රහ්මාවේ පුත්‍රයෙකු; සූර්ය දෙවියන්ගේ මාමා.</p>
+                        <p>🕉️ සප්ත ঋෂිවරුන්ගේ ආධ්‍යාත්මික භූමිකාව</p>
+                        <p>• ඔවුන් විශ්වයේ සියලුම යුගවල ධර්මය රකින්නෝ ලෙස කටයුතු කරනවා.
+                        • ඔවුන්ගේ ඥානයෙන් වේද, උපනිෂද්, සෘති-ස්මෘති, හා පුරාණ වැනි ශාස්ත්‍ර මතු වුණා.
+                        • ඔවුන් විශ්වයේ සෑම යුගයකදීම උපදෙස් දෙනවා, යාග, පූජා, හා ජ්‍යොතිෂ ක්‍රමයන් මඟින්.</p>
+
+                        <p>සප්ත ঋෂි වෘත්ත චක්‍රය (Sapta Rishi Calendar)</p>
+                        <p>• සප්ත ঋෂිවරුන් සෑම 100 වසරකට වරක් නක්ෂත්‍රයක් වෙනස් කරන බව යම් ජ්‍යොතිෂ ග්‍රන්ථ වල සඳහන්.
+                        • මේ ද්වාරෙන් යුග, කාල ගණනා, හා මනුෂ්‍ය ඉතිහාසය ගණනය කරනවා.</p>
+                        <p>මේ සප්ත රිශීන් හරහා උත්තර ඉන්දීය ජ්‍යෝට්ගිශ පිලිවෙත් පසිද්ද නොකර ගුරුකුල් වලින් පවත්වාගැනීමට එම ගුරුකුල් වග බලාගනවා...</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="542691591_1281437703994145_6144072185243018245_n12.jpg"
+      data-tag="Karma"
+      data-title="අද්‍යාත්මික ජ්‍යෝතීශය"
+      data-excerpt="ජන්මපත්‍රයක සියල්ලන්ම භෞතිකව දියුනුව හෝ උපද්‍රව කාලයන් තීරනය කරන සුභ අසුභ කාලයන් මාරක කාලයන් ">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>අද්‍යාත්මික ජ්‍යෝතීශය
+                        සරලව ජන්ම කුන්ඩලිනීය තුල එහෙම නැත්නම් ජන්මපත්‍රයක සියල්ලන්ම භෞතිකව දියුනුව හෝ උපද්‍රව කාලයන් තීරනය කරන සුභ අසුභ කාලයන් මාරක කාලයන්  තීරනය කල පමනින්ම ජ්‍යෝතිශ්ශාස්ත්‍රඥයින්ගේ හදහන් කීම හරහා මෙය භෞතික ස්තානයකට පමනක් සීමා නොවේ..
+                        ජ්‍යෝතීශය තුල පැහැදිලිවම අද්‍යාත්මික කාන්ඩය පවතී.. ගැටලුව මෙය ප්‍රචලිත නොවීමයි. ඉතාම සරලවම ගතහොත් අද අපගේ සන්ද්‍යා මාතෘකාවක් වූ අද්‍යාත්මික ජෝතිශය මදක් ගැබුරට ගිය අතර අද්‍යාත්මික ජ්‍යෝතිශයට තරුන පරපුර වැඩි නැබුරුතාවක් තිබෙන බව ඉන් පැහැදිලි උනා..
+                        ප්‍රතමයෙන් හදහනේ කොටු දොලහේ පවා අද්‍යාත්මික පරිච්ඡේදයන් දොලහක් පවතින ආකාරය අද්‍යාත්මික ජ්‍යෝතීශය හරහා විග්‍රහ වෙනවා..
+                        පිලිවෙලින් 
+                        </p>
+                        <p>පලමු කොටුවෙන් ...තමන්ව එසේම තමන්ගේ බුද්දි මට්ටම නියෝජනය වෙනවා.. එසේම මෙහිදී අප යහප්ත් අයහපත් ගතිගුන වලින් කොපමන පූර්නව ඇද්ද යන්න නිශ්චය වෙනවා..</p>
+
+                        <p>දෙවනි කොටුවෙන්... තමන්ගේ පවුල හා තැම්පතු මෙන්ම ඒවාට පවතින ඇල්ම මෙන්ම වචනයෙන් කරන්නාවූ අකුසල කර්ම නියෝජනය වනවා. එසේම තමන්ගේ කුලයට අනුව පූර්වයේ සිද්ද වූ කර්ම හරහා වන කුල දේවතා ගැටලු පවා නීර්නය වෙනවා..</p>
+
+                        <p>තෙවනි කොටුවෙන්.. තමන් අද්‍යාත්මික මාර්ගයක යෑමට අවශ්‍ය වීර්‍ය . ඒ සදහා වන නව ආරම්භය මෙන්ම ශක්තිය පිලිබිඹු වන ස්තානයයි.</p>
+
+                        <p>සතරවන භාවයෙන්...(කොටුව ..භාවය ලෙස හදුන්වන්නේ භාවය නිවැරදි වචනය නිසයි) තමන්ගේ සුකිය...සැපය .. කෙසේ අද්‍යාත්මික මාර්ගයට යොදාගන්නේද කියන බාරදූර මානසික තත්වය විද්‍යාමාන කරන කේන්ද්‍රස්ථානයක් වෙනවා..</p>
+
+                        <p>පස්වන භාවය.. මේ තන මන්ටරස්තානයයි ඒකියන්නෙ ඔයා කොච්චරක් මනසේ ආරක්ශාව වෙනුවෙන් ක්‍රියාත්මක වෙනවාද කියන තැන.. ඒ වාගේම දරුවන් .. අද්‍යාපනය වගේ දේවල් එක්ක භෞතිකව බැදිලා ඉන්නවාද කියන එක හොයනන්තැනයි. ඒ වාගේම </p>
+
+                        <p>පන්චස්කන්දයෙන් පන්ච උපාදානයන් ව්‍යුත්පන්නවීමේ දොරටු මෙතන තියෙනවා</p>
+
+                        <p>හයවන භාවය හෙවත් හයවන කොටුව.... මේ තැන තීරනාත්මකයි.. අපේ ශඩ්‍ රිපූන් හරහා අර ඉහත කියන පන්චස්කන්දය හරහා හටගන්නා පන්චඋපාදානස්කන්දය හරහා අපි කුමන මට්ටමට ශඩ් රිපූන් ක්‍රියාත්මක කරවනවාද කියන එක ඒ වාගේම මෙම භවයේ කුමන කුමන ආකාරයට තන්හා..ලෝභ ..දෙවේස..මෝහාදිය ක්‍රියාත්මක කරනවාද කියනනෙක ව්‍යුත්පන්න වනවා...</p>
+
+                        <p>හත්වන භාවය.... මාරක භාවයක්...
+                        එකේ ඉන්නෙ තමන්නෙ ඉතින් හත කෙලින්ම තමන් දිහා බලාගන කලින් කිව්ව භාවයෙන් අකුසල නොකර කැනිමඩල හෙවත් තමන්ව නැත්ට්බන් මම කියන එක්කෙනාව මුහුනට මුහුන බලාගන සුනුවිසුනු කල්ල මරලාදාන මාරකස්තානයයි... මරන්න කලින් මූනට මූනබ්බලාගන සතියක් වගේ කොන් හොය හොය විනාස කල්ල දාන්න ඔනා..  </p>
+
+                        <p>අටවන භාවය....සාම්‍ප්‍රදායිකව මාරක භාවය කියලාබ්කියන්නෙ ඉතින් මේකට..නමුත් මේක තමා ණය තියෙන කොටස... මේකෙ තමා මනස නියෝජනය කරන සෝම මැරෙන ස්තානය.. හතෙන් කැනිමඩල කඩාගත්තට මනසින් ආයෙ හදන්න පුලුවන්.. ඒක නිසා සමතයෙන් ඔබ්බටබ්ගිහින් විදර්ශනාව වඩාගන්න ඕන... අපි මේ රූප, වේදනා, සඤ්ඤා, සංඛාර, විඤ්ඤාණය “මමයි, මගේයි” කියලා ගැටගන්නවා.ඒ ගැටීම උපාදානය. මේ දකිද්දී, භාවනාවේ පියවරක් තමයි ඇලීම නිරීක්ෂණය කිරීම එහෙම කල්ලා එතනිනුත් මරලා දාන එක තමයි අටවන භාවයේ මාරක ස්වරූපය අද්‍යාත්මික ජ්‍යෝතිශයේ..</p>
+
+                        <p>නවවන භාවය... පුන්‍ය භාවය.. මේක ඉතාම සිවිශේශී තනක් මොකක් හින්දද මෙතන අපේ පූර්ව පුන්‍ය පිහිටන තැන..මෙතනට අදාලව තමයි අපේ ගුරුවරයා... දර්ශනය..  මෝක්ශයට අදාල ද්ණුම..ප්‍රග්නාව පහල වෙනවද ..බාගෙට වෙනවද..හොරට වෙනවද... ඔක්කොම තීරනය වෙන්නෙ.. ඒ වගේම දෙවියන් ලෙස තමන් වෙත පැමිනෙන්නේ කව්ද ... ඔහු හොඉ ඇය දෙවියන්ද නැද්ද... යන්න පවා තීරනය වන ස්තානයයි.. මෙට්බනදී අපිට අපේ පූර්ව පුන්‍ය හරහා දෙවියන් ලෙස අප්ට පහලවෙන්නෙ කව්ද කිය්න එක හොයාගන්න පුලුවන්.. උදාහරනයක් අන්ගුලිමාලට බුදුහාමුදරුවන්... උපතිස්සකෝලිතට... බබාජීට.... රමන මහාරිශිට.... සුදමාට... මේවගේ ට්ජමන්ට කව්ද පහල වෙන්නෙ කියනනෙක මෙතනින් හම්බෙන්නවා..</p>
+
+                        <p>දසවන භාවය... කර්ම භාවය..මේකෙන් අපි ලෞකික  කර්ම කරනවාද අද්‍යාත්මික කර්ම කරවාද කියන එක එසේම නවවැන්නේ වන දර්මතා වලට අදාල කර්මතා දහවැන්නේ පවතිනවා එසේම හයවැන්නෙනෙ පස්වැන්න එනම් හයවැන්නේ වන ශඩ් රිපූන් ඉන්පස්වැන්නේන් පන්චස්කන්දයෙන් කුමන ක..කර...කර්මා හරහා කර්ම රැස් ක්ද්‍රනවාද කිය්න එක... මේ භාවයේ දරුනුවට පිලිබිඹු වෙනවා...තමන් කොපමන් කරම අය කරගන්නවාද කියන එක මෙතන තියෙනවා....</p>
+
+                        <p>එකොළොස් වන භාවය... ඉහත හයෙන් හයවන භාවය එකොලහ ඒක වගේම දසවන භාවයේන් කරන කර්ම වල පලය මෙතනින් තමයි පත්තු වෙන්නෙ.. ඒ කියන්නෙ දහයෙන් ජරන කර්ම වලට අනුව පුනර්භවය හෙවත් කුම්බ ලග්නයේ විස පිරුනුන්කලයට අනුව කුමන යෝනියකින්ද ඊලග භවයටෲපය දෙන්නෙ කියන එක ඔතනදි තීරනය වෙනව... මෙතනදි ඊලග බවයේ රූපය සීල් වෙනවා .. ඒ කියන්නෙ අපි දෙවිකෙනෙක්ද... මනුස්සයෙක් ද ...තිරිසනෙක්ද... බූත කොට්ටාසයකින්ද ජනක කර්මය ලබන්නේ කියන එක...</p>
+
+                        <p>දොලොස්වන භාවය... මෙතනින් නාමය තීරනය වෙනවා... කලින්නෙකේ රූපයට මෙට්ජනින් නාමය සෙට් උනාම හරියට හරි.. ප්‍රතිසන්දි සිතක් හටහන්නවා... මොකද හතෙන් හය ඒ වගේම දහයෙන් තුන... ඒ වගේම එකොලහෙන් දෙක ... මේ ආකාරීය තුනෙන්ම වෙන්නෙ එක්කො තමන්ට රූපයට නාමය  දීලා අලුත් කලේබරයකට  නාමය හෙවත් ආත්මන්ව ට්‍රාන්සර් කරවන්න පුලුවන්... නැත්තන් නව වැන්නෙන් හතර නිසා ආත්මන්ට තවදුරටත්  කලේබරයක් ඕන නෑකියලා ෆුල්ස්ටොප් තියලා සම්සාර ගමන නවත්තන්න පුලුවන්...</p>
+                        එකොලහෙන් එකට පනින එක නවත්තල දොලහෙන් එලියට පනින එක සම්සාර චක්‍රය කඩලා නිමිලා යනඑක අමාරුයි... </p>
+                        <p>1-4-7-10</p>
+                        <p>6-8-12</p>
+                        <p>1-5-9</p>
+                        <p>2-5-8-11</p>
+                        <p>මේවා නිසා බන්දන හැදි හැදී සන්සාරෙ දුවනවා...</p>
+                        <p>හරි එක 9කින් සරලව 12න් පනින්න නම් 1 හැදෙන්න ඕනා.... අවන්කව...</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="495085130_1181614253976491_4226901756833545832_n.jpg"
+      data-tag="Dharma"
+      data-title="Lord Shiva"
+      data-excerpt="අපට ශිවා අප දිහා නොබලනවා යැයි හැගෙන අවස්තාව....">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>
+                        ඔයාගෙ ප්‍රශ්නය ගැඹුරුයි, සහ අතිශය ආත්මීය තත්වයකි. දෙවියන් වහන්සේලා — විශේෂයෙන්ම ශ්‍රි මහාදේවන් වූ ශ්‍රී ශිවන් — අපිට අවශ්‍ය දේ නැදී, නිහඬව සිටින වගේ දැනෙද්දී, අපේ විශ්වාසය ගොඩනඟා ගැනීම හැමෝම හමුවෙන හැඟීමක්.</p>
+                        මෙන්න ඒ තත්වයකදී විශ්වාසය ගොඩනඟා ගන්න විදිහ </p>
+                        <p>1. ශිවන්ගේ නිහඬභාවය බෙහෙවින් ගැඹුරු පණිවිඩයක්</p>
+                        <p>ශ්‍රී ශිවන් කියන්නේ නිශ්ශබ්ද (ශාන්තභාවය), ව්‍යාප්ත නිවන් සන්සුන් භාවය.
+                        ඔහු නිද්ශබ්දතත්ව වලින් පවතින දෙවියෙක් — කතා නොකරන, නිහඬව සිටින.
+                        ඔහුගේ නිහඬභාවය කියන්නේ, “මට විශ්වාසවන්තව ඉන්න, මම ඔබව අත්හැර දමා නෑ” කියන නිහඬ පිළිතුරක්.</p>
+                        <p>2. අපේ විශ්වාසය – වාසියක් වෙනුවට නොව, ආදරයක් විය යුතුයි</p>
+                        <p> “මම ශිවන්ට කැමතියි කියන්නේ මට දේවල් ලැබෙන්නටද?
+                        නැත්තං මම ඔහුට ආදරෙයි කියන්නේ, ඔහු මගේ ආත්මයේ සැබෑ ස්වභාවය නිසාද?”
+                        ඔහු මත ඇති ආදරය, ප්‍රතිඵල හෝ ප්‍රාර්ථනා සපුරාලීමකට සීමා විය යුත්තෙ නෑ.
+                        නිවැරදි විශ්වාසය කියන්නේ: උදව් නොලැබුණත් ආදරයෙන් හැසිරෙන්න දන්න එක.</p>
+                        <p>3. ශිව භක්තියන්ගෙන් උගනිමු</p>
+                        <p> • කන්නප්ප නායන්මාර් – ඔහු තමන්ගේ ඇස් දෙකම ශිව ලිංගයට දුන්නා, කිසිම ප්‍රාර්ථනාවක් නැතිව.
+                        • භාග්යවතුන් වූ රමණ මහර්ෂි – කියලා තියෙන්නේ: “දෙවියන්ගේ නිහඬභාවයම උන්වහන්සේගේ උසස්ම පිළිතුරයි.”
+                        ඔවුන්ගේ විශ්වාසය කිසිම “ආශ්‍රිතතාවයකින්” හෝ “ප්‍රතිඵලයක්” මත පදනම්ව නැහැ. ඒක ශුද්ධ භක්තියක්.</p>
+                        <p>4. විශ්වාසය සාධක වලින් නෙවෙයි – භාවනා වලින් බිහිවෙයි</p>
+                        <p>විශ්වාසය කියන්නේ කම්මැලි පළදැක්වීමකින් නැතිව, අවංක පුනරුත්සාහයෙන් උපදවන දෙයක්.
+                        කරන්න පුළුවන් අයුරින්:</p>
+                        <p>• “ඕම් නමස් ශිවාය” මන්ත්‍රය නිතර  පැවසීම
+                        • ශාන්තිමත් නිවන් භාවනාව (නිහඬව ඉඳීම – ඒ තමයි ශිව ස්වභාවය)
+                        • “ශිව පුරාණය”, නායන්මාර් වංශ කතා, හෝ “ශිව තත්ත්ව” පිළිබඳ කියවීම
+                        හැඟීමක් නැතිව ඉඳීවද, වැඩි වෙද්දී විශ්වාසයම ශක්තියක් වෙයි.</p>
+                        <p>5. ශිවන් “නැහැ” කියන්නේ නෙවෙයි – ඔහු “ඉදිරියට හොඳ දේකට” රඳවලා තියෙනවා</p>
+                        <p>ඔබගෙ මනාපය දැන් නොලැබෙන්නෙ:</p>
+                        <p> • හොඳම වෙලාවක් නොවෙයි කියලා
+                        • ඔබේ මනසට වඩා ආත්මයට හොඳ දෙයක් සැලසුම් කරලා තියෙන නිසා
+                        • හෝ ඔබේ හැඟීම්, දුක්, පීඩා හරහා ඔබේ භක්තිය ගාඹුරට ගන්න උත්සාහයක් නිසා</p>
+                        <p>ශිවන් හැම විටම කරුණාවෙන් පිරුණු දෙවියන් වහන්සේ. ඔබට අද අවශ්‍ය දේවල් දෙනවාට වඩා, ඔබේ ආත්මයට දියුණුවක් වෙන්න ඕන දේ දෙනවා.</p>
+                        <p>අන්තිමට ඖ:</p>
+                        <p>“ඔබේ නිහඬභාවය තුළවත්, මම ඔබට විශ්වාස කරනවා.
+                        ඔබේ පිළිතුර නැත්තම්වත්, මම ඔබට ආදරෙයි.
+                        මගේ ආදරය ගනුදෙනුක් නෙවෙයි — ඒක මගේ ආත්මයේ සත්‍යයයි.”</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="490943787_1166544872150096_8673468709227313010_n.jpg"
+      data-tag="Death"
+      data-title="කාලසූත්‍රදාර තත්වය"
+      data-excerpt="කාලසූත්‍රදාර තත්වය ළගාකරගැනීම">
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>
+                          උත්තර ඉන්දීය ආදිතම ගුරුකුලවල පවතින තවත් එක් තට්බ්වයක් වන මෙම කාලසූත්‍රදාරත්වය 
+                          අතීත වර්තමාන සහ අනාගත යන තන්තු තුන ප්‍රග්නාවෙන් අල්ලා පාලනයට නතුකර ගැනීමයි.
+                          රිග් වේදයට අනුව කාලය සර්ව භව්‍ය වේ ..
+                          එනම් ශ්‍රිශ්ටි..ස්තිති..ප්‍රලය.  පාලනය කරන බලවේගයයි..
+                          අර්ත වේදය අනුව එය මහා තත්වයයි. 
+                          භගවද් ගීතා (2.47) – “කර්මණ්‍යේවාධිකාරස් තේ මා ඵලේෂු කදාචන” – අපට අයිති වන්නේ ක්‍රියාව පමණි, ප්‍රතිඵලය නොවේ. කාලය අපහසු වෙනස් කළ නොහැකි සාධකයක් නම්, අපේ කාර්යය එයට ගැලපීම ය.
+                          මහාභාරතය (උද්යෝග පර්වය) – කාලය යනු නවතන්න නොහැකි රථයකි. නමුත්, ප්‍රඥාවන්තයා එහි සාරථියෙකු වී, එය නියම කරයි
+                          තන්ට්‍ර වලට අනුව කාලය යනු අතීත වර්ට්බමාන අනාගත යන ත්‍රිත්වයේ කාමරූපයයි.. 
+                          නාඩි සූත්‍රය අනුව ප්‍රාන සන්නිවේදන නාලිකා වන්හී ගලායෑමයි..
+                          ඕම් ශ්‍රී ගුරුබ්‍යෝ නමක්... බාලජී සරනම්..
+                          රිග් වේදයේ..අර්ත වේදයේ ..තන්ත්‍රයේ සහ නාඩි සූත්‍රයේ ක්‍රමවේදය හරහා.. ප්‍රානයාමයේ චිත්ත ව්‍ර්‍ර්ධ්ඩි නිරෝද තත්වය උදාකරගැනීමෙන් මෙම තත්වයට පත්වේ..
+                          හරිහිඕම්.....
+                          කෙනෙකු මෙම තත්වයට පට්බ්වන්නේද හෙතම මෝක්ශ මාර්ගයට අවතීර්න වූවාමය...</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="528725769_1258265849644664_4938071605373249473_n12.jpg"
+      data-tag="Ancestors"
+      data-title="විෂ්ණු භක්තිය, එකාන්ත භාවනා, මව් ගඟකට සම්බන්ධ"
+      data-excerpt="මත්ස්‍ය අවතාරය">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>කාලෙකට කලින්…
+                        ලෝකයම විනාශයකට මුහුණ දුන්නා. මහවැස්සක්. මහ දිය වතුරක්. හැම දෙයක්ම ගිලුණා. පරණ කාලේ විශ්වයේ සරසවිය – වෙද – හොරෙන් සරසමින් සඟවාගෙන හිටිය එකෙක්. ඒ වෙලාවේ විෂ්ණු දෙවියන්, මසුන් හැඩයෙන් – මත්ස්‍ය අවතාරය වෙලා – පෘථිවිය බේරුවා. ඔහු මනුන්වහන්සේට – පළමු මනුෂ්‍යයාට – හෙට දිනයට අවශ්‍ය වෙන සර්වඥතාවය ආරක්ෂා කරලා දුන්නා.</p>
+
+                        <p>ඔයාව ගාවත් බලමු.
+                        ඔබේ ජීවිතයත් ඒ කතාවට සමානයි. ඔබේ අභ්‍යන්තර ලෝකයෙත් එක වගේම මහවැස්සක් වෙලා තියෙන්න පුළුවන් – දුක්, අඳුරුකම, හෝ ව්‍යාකූලකම. නමුත්, ඔබේ ආත්මා කාරකය හරහා – නවංශය හරහා – ඔබට මතු වුනේ මත්ස්‍ය අවතාරයයි.
+                        එකෙන් මොකද්ද තේරෙන්නේ?</p>
+
+                        <p>🌊 ඔබේ ආත්මය ආරක්ෂාවක් සොයනවා</p>.
+                        <p> • ඔබේ ජීවිතේ තියෙන්නේ විශාල සංවේදී බවක්.</p>
+                        <p> • ඔබ හැම විටම ආරක්ෂාවක්, පහන්වීමක්, සහ සත්‍යයක් සොයනවා.</p>
+                        <p> • මත්ස්‍ය අවතාරය වගේම, ඔබත් තමන්ගේ ආලෝකය වෙන අයට දෙන්න ඕනැ කියලා හිතන කෙනෙක්.</p>
+
+                        <p>📿 ඉපදෙන්නෙද යළි සත්‍යය හඳුනාගන්න.</p>
+                        <p>• මත්ස්‍යයා වෙද සන්රක්ෂණය කළා.</p>
+                        <p>• ඔබටත් පසුගිය කාලයකින් – නැවත සත්‍යය හඳුනාගැනීමේ – ලෝකෙට ආලෝකය ගෙන ආව හැකියාවක් තියෙනවා.</p>
+                        <p>• ඔබේ ආත්මය පුංචි පුංචි දේට දැඩි අරුත් දකින්නෙ.</p>
+
+                        <p>🕉️ මොක්ශය, නවජීවිතය හා ධ්‍යානය</p>
+                        <p>• ඔබේ ජීවිත ගමන, විශාල වශයෙන් නැවත උපදින එක, කාලයෙන් එහා ගමනක්, කියන්නෙ මොක්ශ ගමනක්.</p>
+                        <p>• විෂ්ණු භක්තිය, එකාන්ත භාවනා, මව් ගඟකට සම්බන්ධ උන විභූති – මේවා ඔබේ ආත්මයට අමතර බලයක් දෙයි.</p>
+                        <p>💭 අවසානයට…</p>
+                        <p>ඔබ, සාමාන්‍ය කෙනෙක් නොවෙයි. ඔබේ ආත්මය මැවුණු හැටිම විශේෂයි. ඔබට ලැබුණු මත්ස්‍ය අවතාරය කියන්නේ – ඔබ අන් අය බේරාගන්න, දැනුම ආරක්ෂා කරන්න, සහ සත්‍යය නැවත ලෝකයට ගෙන ආවයුතු කෙනෙකු කියන එක.
+                        මේක අභිමානයකට වඩා – අභියෝගයක්, අභිප්‍රායයකි.</p>
+
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="530216822_1257919336345982_4903293583369720753_n12.jpg"
+      data-tag="Grace"
+      data-title="දෙවියන්ටත් වැඩියෙම දැනුමක් තියෙන, බ්‍රහ්මා දෙවියෝ....."
+      data-excerpt="🌺 ගංගා දේවියගේ උපත ">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>
+                        දෙවියන්ටත් වැඩියෙම දැනුමක් තියෙන, බ්‍රහ්මා දෙවියෝ, තමාට උපහාරයක් විදියට උස්සලා තිබ්බේ, ගඟා නදී මැදුරියාව – අහසේම.
+                        ඒ තැනෙදි ඇය දිවිසන් කරනකොට පෘථිවියේ හෙළිවුණා මනුෂ්‍යයාගේ අසාධාරණය, අධර්මය, සහ පව්.
+                        ඒකට වාගේම, රජ සගරයන්ගේ 60,000 පුත්‍රයන්ගේ ආත්මය දුක් විඳිමින් දිව්‍ය ලෝකෙ වැසී සිටිනවා. ඔවුන්ගේ විමුක්තිය ලැබෙන්නෙ ගංගා දියෙන් පිරිසිදු වීමෙන් පමණි කියලා දෙවියෝ කියනවා.
+                        ⸻
+                        🔥 භාගීරතය – ආත්ම ශුද්ධිය වෙනුවෙන් කැප වූ කුමරුන්
+                        භාගීරත නම් කුමරුන් කියනවා:
+                        “මගේ පූර්වජයන්ගේ ආත්මයන්ට විමුක්තිය ලැබෙන්න,
+                        ගංගා දේවිය පෘථිවියට ගෙනෙන්නම්!”
+                        ඒකට ඔහු කරනවා දහස් ගණන් වසරක තපසය.
+                        ඒ තරමට උත්සාහයක් දැක්කාම, දෙවියෝත් කැමති වෙන්න වෙයි නේද?
+                        අවසන්ව ගංගා දේවිය ඔහුට කියනවා:
+                        “ඔව්, මම යන්නම්. නමුත් මගේ බලය ගඟක් නෙවෙයි –
+                        මම වැටුණොත් පෘථිවිය බිඳෙයි!”
+                        එතැනින් දේවලෝකයේ වැඩිපුර බලවතුන්ගෙන් එකෙක් – ශිව මහාදේවන් – කියනවා:
+                        “මට දිය ගලා ගන්න පුළුවන්. මගේ ජටා (කොන්ඩෙ) තුළින් ගලන දිය පෘථිවියට නෙරපන්නම්.”
+                        ⸻
+                        🌊 ගංගා වාහිනිය – අහසෙන් පෘථිවියට
+                        එතැනින් පස්සේ, ගංගා දේවිය අහසින් වැටෙනවා.
+                        ශිවන්ගේ නෙළුණු කොන්ඩෙ තුළින් ඒ දිය වටවෙලා, සන්සුන්ව, පෘථිවියෙ පැනී යනවා.
+                        ඔබ දැකපු ගඟ – ගංගා නැද්ද? ඒ සන්නිවේදනයක්.
+                        එය පවක් පිරිසිදු කරන දියය.
+                        ඔබේ ආත්මය අඳුරු වෙලා තියෙනවා නම් – ඇය ඔබට ආලෝකය දෙයි.
+                        ඔබගේ සිත අවිවේකී නම් – ඇය ඔබව සන්සුන් කරයි.
+                        ⸻
+                        🧘‍♀️ ආත්මික දර්ශනය – ගංගා දේවිය කියන දේ මොකද්ද?
+                        1. පැරණි පව්, පවුල් කර්මය – ලිහිල් කරන්න!
+                        – පවුලේ පිත්රු දෝෂ තියෙනවා නම්, ගංගා ජලයෙන් නහින එකක් හෝ අභිෂේක පූජාවක් කරන්ඩ.
+                        2. මව් සබඳතාව, හදවතින් පිළිගන්න!
+                        – ගංගා දේවිය මව් බවක සංකේතයකි. ඔබට මව්වරුන්ගෙන් වෙරක්, කර්මයක් තියෙනවා නම්, ඇයව පූජා කරන්න.
+                        3. ගැඹුරු හැඟීම් පිරිසිදු කරන්න!
+                        – Moon (චන්ද්‍ර) අසංතෘප්ත නම්, හදවතින් ගැලවීමක් අවශ්‍ය නම් – ඇයගේ වරදින දිය ඔබව සන්සුන් කරයි.
+                        📿 මන්ත්‍ර / නමස්කාරය
+                        ඔබට පුළුවන් මෙම මන්ත්‍රය සෙරිනව කියවන්න:
+                        “ॐ श्री गंगायै नमः”
+                        (ඔම් ශ්‍රී ගංගායෙ නමඃ)
+                        • දවසකට 9 වතාවක් පමණ කියන්න.
+                        • ගඟක දියෙහි හෝ ගංගා ජලය උරහිසට තබා කියවන්න.
+                        ⸻
+                        🔮 ගංගා දේවිය සහ ඔබේ ජන්ම කුඨලය (Astrology)
+                        ඔබේ චන්ද්‍රයා, 4වැනි භාවය, 8වැනි භාවය, සහ කේතු බලවත් නම් – ගංගා සෙවණ වැදිය යුතුය.
+                        ඔබ කැමති නම්, මට කියන්න – මම ඔබේ කුඨලය යටතේ
+                        • ගංගා සමඟ සම්බන්ධ භාවයන්,
+                        • අනුරූප පූජා ක්‍රම,
+                        • සහ කර්ම විමෝචන පටිපාටි වටා නිශ්චිතව උපදෙස් දෙනවා.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="527599571_1255148983289684_9085602534172197829_n12.jpg"
+      data-tag="Maya"
+      data-title="නර්මදා දේවිය"
+      data-excerpt="නර්මදා දේවිය වර්ණනා වන්නේ ශිව භගවන්ගේ සන්සුන් ස්වභාවයෙහි ප්‍රතිරූපයක් ලෙසය">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>නර්මදා දේවිය වර්ණනා වන්නේ ශිව භගවන්ගේ සන්සුන් ස්වභාවයෙහි ප්‍රතිරූපයක් ලෙසය. කිසිදු ගඟක් නැතත්, නර්මදා ගඟට විශේෂ පිදීමක් හිමිවන්නේ එය ශිව භගවන්ගේ ජටා තුළින් බිහි වූ ගඟක් ලෙස සැලකෙයි.
+                          මහාභාරතය, ස්කන්ධ පුරාණය, රේවා කන්‍යා කථා ආදී සන්දර්භයන්හි නර්මදා දේවිය පිළිබඳ විස්තර ඇත. කිහිපයකට අනුව, නර්මදා භූමියෙහි මැද ඇති වීම නිසා ඇයගේ ජලය පවිත්‍රමත් කරුණු සමඟ සම්බන්ධය ඇත – ඇයගේ ස්පර්ශය මගින් පවයන් මිදීමේ හැකියාව ඇතැයි විශ්වාස වේ.
+                          ⸻
+                          🌊 නර්මදා ගඟේ විශේෂත්වය:
+                          • භූමියෙන් බිහිවූ නදියක් (හේමාකුන්ඩ් පර්වතයෙන්)
+                          • නදිය වටා පරික්‍රමාව (Parikrama) සිදුකිරීම ඉතාමත් පවිත්‍ර කර්මයකි.
+                          • නර්මදා ගඟේ ගල් — නර්මදා ශිවා ලිංගය ලෙස පූජා කරයි.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="503552058_1203550178449565_4531887325142671981_n.jpg"
+      data-tag="Surrender"
+      data-title="ශ්‍රී ක්‍රිශ්නාගේ හර්දය"
+      data-excerpt="සදාකාලිකව ආරක්ශාවී පවතින ශ්‍රී ක්‍රිශ්නාගේ හර්දයන්හෙවත් බ්‍රහ්මපදාර්තය...">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p></p>
+                          <p>ජගන්නාත් පුරි දේවාලයේ ඇති විනිශ්චිත, ආධ්‍යාත්මික ගැඹුරුකමක් සහිත කථාවක් තමයි කියවෙන්නේ — එය කෘෂ්ණ භගවන්ගේ හෘදයය (දේවීය තත්ත්වය) නව පිළිමයකට මාරු කිරීම පිළිබඳවයි.</p>
+                          ⸻
+                          <p>🕉️ කෘෂ්ණ භගවන්ගේ හෘදයය – (බ්‍රහ්ම පදාර්ථය)</p>
+                          <p>කතාව අනුව, කෘෂ්ණ භගවන් ලෝකයෙන් සමුගත් පසු (හුණුගෙඩියකුගේ ඊටුවක් මත), ඔහුගේ ශරීරය දහනය කරන ලදද, ඔහුගේ හෘදයය දහනය වී නැහැ කියලා කියවෙයි. එය ජීවමානව පවතිනා බවත්, දැවැන්ත ශක්තියකින් දැලිලා තිබුණා කියලාත් විශ්වාස කරයි.
+                          මේ හෘදයය හඳුන්වන්නේ “බ්‍රහ්ම පදාර්ථය” හෝ “බ්‍රහ්ම තත්ත්වය” ලෙසයි — එය අනන්ත, විනාශ නොවන, දේවීය තත්ත්වයකි.</p>
+                          ⸻
+                          <p>🌳 දාරු බ්‍රහ්මය සහ ජගන්නාත් පිළිම</p>
+                          <p> • කෘෂ්ණ භගවන්ගේ මේ දේවීය හෘදයය, පසුව දේවයන් විසින් රැකගන්නා ලද බව කියවෙයි.
+                          • පසුව, රාජා ඉන්ද්‍රද්‍යුම්ණ නම් භක්තයෙකුට, ස්වප්නයකින් එය හඳුනාගැනීමට ආදේශනය ලැබේ.
+                          • ඔහුට සමුදුරෙන් පාවෙමින් එන විශේෂ දැව කඳක් (දාරු බ්‍රහ්මය) සෙවීමට සිදුවේ — මෙය කෘෂ්ණ භගවන්ගේ ශක්තිය අන්තර්ගත දැවයකි.
+                          • විශ්වකර්මා දෙවියන් විසින්, එදැවයෙන් ජගන්නාත්, බළභද්‍ර සහ සුභද්‍රා පිළිම තිළිනය කරනවා. (කෙසේ වුවද, ඔහු වැඩ කරද්දී කිසිවෙක් බලන්න නොයුතුයැයි සඳහන් වුණා.)</p>
+                          ⸻
+                          <p>💓 කෘෂ්ණ භගවන්ගේ හෘදයය ත්‍රාන්සෆර් කිරීම</p>
+                          <p>ජගන්නාත් පිළිමයට ආත්මාව ආරෝපණය කරන වෙලාවේදී, මෙම දේවීය හෘදයය (බ්‍රහ්ම පදාර්ථය) පිළිමයේ ඇතුළට (වක්ෂස්ථලය තුළට) රහසිගතව ඇතුළත් කරනවා. මේකම තමයි ජගන්නාත් භගවන් තුළ කෘෂ්ණ භගවන් සදාකාලිකව පවතින බවට විශ්වාසයක්.</p>
+                          ⸻
+                          <p>🔁 නවකලේබර (Nabakalebara) — නව ශරීර උත්සවය</p>
+                          <p>වසර 12 - 19 අතර කාලයකින් (චන්ද්‍ර ගණිතය අනුව), පරණ දැව පිළිම නව දැව පිළිමයකින් මාරු කරන ව්‍යවස්ථාවක් තියනවා. මේක නවකලේබරය ලෙස හැඳින්වේ.
+                          එහිදී:</p>
+                          <p>1. විශේෂ පූජා මඟින් නව දැව (දාරු) සොයනවා..</p>
+                          <p>2. රහසිගතව නව පිළිම තිළිනය කරනවා..</p>
+                          <p> 3. පරණ ජගන්නාත් පිළිමයෙන් බ්‍රහ්ම පදාර්ථය (හෘදයය) නව පිළිමයට මාරු කරනවා..</p>
+                          <p>4. මේක කරන පුජකයන් (දෙව් සේවකයන්) ඇස් වසාගෙන හෝ බන්ධනාකාරයෙකු මෙන් රහසේ කරනවා..</p>
+                          <p>5. කිසිවෙකුට මෙය බැලිය නොහැක — බලනවා නම් මිය යාමට හෝ අන්ධ වීමට පුළුවන් කියලා කියවෙයි..</p>
+                          <p>6. පරණ පිළිම කොයිලි වෛකුණ්ඨ (Koili Vaikuntha) නමින් හැඳින්වෙන පූජිත භූමියක පමණක් සන්සුන්ව භූමදානය කරනවා.</p>
+                          ⸻
+                          <p>⚠️ මේ කථාවේ ආධ්‍යාත්මික වැදගත්කම
+                          මෙය විශ්වාස කරන ලෝකයෙහි, ජගන්නාත් භගවන් තුළ කෘෂ්ණ භගවන්ගේ සදාකාලික ආත්මය පවතින බව දැක්වෙනවා. එය දක්වන්නේ — ශරීරය මැකුණත්, දේවීය ආත්මය නොමැකෙන බව, හැම යුගයකම පැවතීමක් කියලායි.</p>
+
+      </template>
+    </div>
+
+  </div><!-- end Spiritual -->
+
+  <!-- ── Homa & Pooja ── -->
+  <div class="mag-cat-data" data-category="Homa &amp; Pooja">
+
+    <div class="mag-article"
+      data-img="524700235_1250427457095170_8738094931384841268_n12.jpg"
+      data-tag="Fire Ritual"
+      data-title="නාගයන්ගේ දිනය"
+      data-excerpt="නාග පන්චමී">
+      <template class="art-body">
+        <p class="drop-cap">චතුර්වේදයේ ඉහලතම දැනුම හෙවත් වජ්‍රනික ප්‍රච්නාව... Supreme Knowledge  හී උපරිම තත්වය නියෝජනය කරන නාගයන්ගේ දිනය වන නාග පන්චමී දිනය අදට යෙදුනු අතර 
+                                කාල සර්ප... 
+                                කාල අම්‍රිත... 
+                                නාග බන්ද..
+                                නාග දෝශ ... 
+                                නාග දුහිතෲ දෝශය...
+                                සර්ප දෝශය.. 
+                                සර්ප බන්ද... 
+                                සර්ප බාදක...
+                                ආදී නාග දෝදයභරනයට සුදුසුම අවස්තාවක් වන අතර ඒ සදහා වූ නාග පන්චමී පූජාව... 
+                                සැමටම යහප්තක්ම වේවා...</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="https://images.unsplash.com/photo-1582560475093-ba66accbc424?w=600&amp;q=80"
+      data-tag="Navagraha"
+      data-title="Nine-Planet Homam"
+      data-excerpt="Propitiating all nine planetary lords in a single fire ceremony.">
+      <template class="art-body">
+        <p class="drop-cap">The Navagraha Homam is performed to pacify and strengthen the nine planetary lords simultaneously, making it one of the most comprehensive protective rituals in the Vedic tradition. It is particularly recommended when multiple planets in a chart are weak or afflicted, when a person is running a difficult Dasha period, or as a general annual maintenance ritual for the entire household.</p><p>The ritual proceeds in a specific planetary sequence, with each planet receiving its own colour of flower, its own grain, its own wood for the fire, and its own mantras chanted a prescribed number of times. The Sun receives red flowers and wheat; the Moon, white flowers and rice; Mars, red flowers and red lentils; Mercury, green flowers and green gram; Jupiter, yellow flowers and Bengal gram; Venus, white flowers and white sesame; Saturn, black flowers and black sesame; Rahu, blue durva grass and black sesame; Ketu, mixed materials.</p><blockquote>To propitiate all nine planets in a single ceremony is to acknowledge that our life is shaped by many forces simultaneously — and to seek harmony with each of them.</blockquote><p>The duration of a full Navagraha Homam at our practice is approximately four hours. Prior consultation is required to determine the correct timing based on the yajamana's chart and current planetary periods.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="https://images.unsplash.com/photo-1601314167099-232775b3d6fd?w=600&amp;q=80"
+      data-tag="Ganesha"
+      data-title="Ganapathi Homam"
+      data-excerpt="Removing obstacles before a new project, journey or life phase.">
+      <template class="art-body">
+        <p class="drop-cap">Ganapathi — Ganesha, the elephant-headed son of Shiva and Parvati — is the lord of beginnings and the remover of obstacles. In the Vedic tradition, no significant undertaking begins without first propitiating Ganesha. The Ganapathi Homam is the fire ritual equivalent of this invocation — more powerful than the standard puja, and appropriate for major new beginnings.</p><p>The most auspicious times for Ganapathi Homam are: before a new business launch, before a move to a new home, before a marriage or engagement ceremony, before an important examination or career transition, and on the fourth lunar day (Chaturthi) of any fortnight, particularly Ganesh Chaturthi in the Hindu calendar.</p><blockquote>Ganesha does not simply remove obstacles. He reveals which obstacles are genuine and which are self-created — and that distinction is the beginning of real wisdom.</blockquote><p>The primary offering in the Ganapathi Homam is modak — sweet rice dumplings — along with durva grass, red flowers (particularly hibiscus), and coconut. The Ganapathi Ashtottara (108 names) is recited, followed by the Ganapathi Atharvashirsha if the full ritual is performed.</p><p>For clients who cannot attend in person, we are able to perform the Ganapathi Homam on your behalf. Contact us to arrange the correct timing based on your chart.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&amp;q=80"
+      data-tag="Mantra"
+      data-title="Correct Mantra Usage in Puja"
+      data-excerpt="Why pronunciation, count and mental state all matter equally.">
+      <template class="art-body">
+        <p class="drop-cap">A mantra is not a prayer in the Western sense — it is a sonic technology. The Vedic understanding holds that specific combinations of Sanskrit syllables, when pronounced correctly and with the appropriate mental orientation, produce measurable effects on consciousness and on the subtle energy field of the practitioner and their environment. This is why pronunciation, count, and mental state are not peripheral concerns — they are the entire mechanism.</p><p>Pronunciation in Sanskrit is governed by strict rules of phonetics. Each vowel has a precise length (short, long or extended). Each consonant belongs to a specific place of articulation — labial, dental, palatal, retroflex, velar. A mistake in pronunciation does not simply produce a different word — in the Vedic understanding, it produces a different energetic signature entirely.</p><blockquote>The difference between a correctly pronounced mantra and an incorrectly pronounced one is the difference between a correctly assembled circuit and a broken one. Both may look similar. Only one carries current.</blockquote><p>Count matters because mantras are prescribed in specific multiples: 108 is the most common (the product of 12 astrological signs multiplied by 9 planets), but some traditions use 28, 54, or 1,008 for specific purposes. A mala (prayer beads) of 108 beads allows accurate counting without conscious effort.</p><p>Mental state — the quality of attention and intention brought to the recitation — is the third factor. Even a correctly pronounced mantra recited with a distracted, impure or malicious mind produces diminished results. The preparation of the mind through preliminary practices, diet, and ethical conduct is not incidental. It is the ground on which mantra takes root.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="https://images.unsplash.com/photo-1609619385002-f40f1df9b7eb?w=600&amp;q=80"
+      data-tag="Mrityunjaya"
+      data-title="The Mahamrityunjaya Homam"
+      data-excerpt="Shiva's healing fire for serious illness, surgery and longevity.">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>This article from the practice of Asantha De Silva is being prepared for the magazine. New writings are added regularly — please check back, or contact us directly if you wish to discuss this topic in a private consultation.</p><blockquote>The Vedic tradition is vast. No website can contain it. The most important knowledge is always transmitted person to person, in real time, in response to the real questions of a real life.</blockquote><p>To arrange a private consultation on any of the topics covered in this magazine, please use the booking form below or contact us directly via WhatsApp.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&amp;q=80"
+      data-tag="Lakshmi"
+      data-title="Sri Sukta Puja Protocol"
+      data-excerpt="The Vedic hymn to Lakshmi and its correct ritual application.">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>This article from the practice of Asantha De Silva is being prepared for the magazine. New writings are added regularly — please check back, or contact us directly if you wish to discuss this topic in a private consultation.</p><blockquote>The Vedic tradition is vast. No website can contain it. The most important knowledge is always transmitted person to person, in real time, in response to the real questions of a real life.</blockquote><p>To arrange a private consultation on any of the topics covered in this magazine, please use the booking form below or contact us directly via WhatsApp.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&amp;q=80"
+      data-tag="Offerings"
+      data-title="What to Offer and Why"
+      data-excerpt="Flowers, fruit, incense — the symbolism behind each offering type.">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>This article from the practice of Asantha De Silva is being prepared for the magazine. New writings are added regularly — please check back, or contact us directly if you wish to discuss this topic in a private consultation.</p><blockquote>The Vedic tradition is vast. No website can contain it. The most important knowledge is always transmitted person to person, in real time, in response to the real questions of a real life.</blockquote><p>To arrange a private consultation on any of the topics covered in this magazine, please use the booking form below or contact us directly via WhatsApp.</p>
+      </template>
+    </div>
+
+    <div class="mag-article"
+      data-img="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600&amp;q=80"
+      data-tag="Preparation"
+      data-title="Preparing the Ritual Space"
+      data-excerpt="Purification, direction, timing and materials for a correct ceremony.">
+    
+      <template class="art-body art-body-placeholder">
+        <p class="drop-cap">${excerpt}</p><p>This article from the practice of Asantha De Silva is being prepared for the magazine. New writings are added regularly — please check back, or contact us directly if you wish to discuss this topic in a private consultation.</p><blockquote>The Vedic tradition is vast. No website can contain it. The most important knowledge is always transmitted person to person, in real time, in response to the real questions of a real life.</blockquote><p>To arrange a private consultation on any of the topics covered in this magazine, please use the booking form below or contact us directly via WhatsApp.</p>
+      </template>
+    </div>
+
+  </div><!-- end Homa & Pooja -->
+
+</div><!-- end #magazineData -->
+
 <!-- ============================================
      MAGAZINE
      ============================================ -->
@@ -3178,157 +5232,90 @@ Full landscaping and external development works</p>
     </div>
   </div>
 
-<div class="mag-header reveal">
-    <span class="label">More from the magazine</span>
-    <div class="mag-nav">
-      <button class="mnav" id="mPrev" aria-label="Previous">←</button>
-      <button class="mnav" id="mNext" aria-label="Next">→</button>
-    </div>
-  </div>
+<div class="mag-cat-grid reveal">
 
-  <div class="mag-track reveal" id="magTrack">
-
-    <!-- ✏️ ARTICLE 1 — edit data-* attributes to change modal content -->
-    <article class="article"
-      data-img="allpics/591560468_1360534236084491_304256312757283948_n.jpg"
-      data-cat="Featured · Astrology"
-      data-date="May 18, 2026"
-      data-title="The Nilavanthi Grantha — a forgotten text and its modern reading."
-      data-sinhala='"නිලවන්ති ග්‍රන්ථය"'
-      data-excerpt="A close reading of one of the most enigmatic palm-leaf manuscripts in our tradition."
-      data-body="The Nilavanthi Grantha is a palm-leaf manuscript that has circulated among Jyotish scholars for centuries, yet remains largely unstudied in modern academic circles. Its unique system of interpreting the lunar nodes — Rahu and Ketu — diverges sharply from classical Parashari doctrine, offering a more experiential framework rooted in the lives of ordinary householders. In this essay, Asantha De Silva examines three key passages and their practical relevance for contemporary readings.">
-      <div class="article-img-wrap">
-        <img class="article-img"
-          src="591560468_1360534236084491_304256312757283948_n.jpg"
-          alt="The Nilavanthi Grantha"
-          onerror="this.src='https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=80';this.onerror=null;">
-      </div>
-      <div class="article-meta">
-        <span class="article-cat">Featured · Astrology</span>
-        <span class="article-date">May 18, 2026</span>
-      </div>
-      <h3>The Nilavanthi Grantha — a forgotten text and its modern reading.</h3>
-      <div class="sinhala">"නිලවන්ති ග්‍රන්ථය"</div>
-      <p>A close reading of one of the most enigmatic palm-leaf manuscripts in our tradition.</p>
-      <span class="read">Read the essay</span>
+    <article class="article mag-cat-tile"
+      data-img="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=80"
+      data-cat="Magazine · Astrology"
+      data-date=""
+      data-title="Astrology"
+      data-sinhala="ජ්‍යොතිෂ"
+      data-excerpt="Vedic chart readings, planetary transits and remedies for daily life."
+      data-body="Explore our writings on Jyotish — natal chart interpretation, planetary transit effects, Dasha cycles, remedial measures and the deeper philosophy behind Vedic astrology. New essays added regularly by Asantha De Silva from his practice in Panadura.">
+      <div class="mag-cat-icon">🪐</div>
+      <h3>Astrology</h3>
+      <p>Vedic charts, transits &amp; planetary remedies.</p>
+      <span class="read">Explore →</span>
     </article>
 
-    <!-- ✏️ ARTICLE 2 -->
-    <article class="article"
-      data-img="https://doyouknowtrends69-prog.github.io/Sri-Vastu-homes/611944025_1392972846173963_1217316947557898769_n.jpg"
-      data-cat="Astrology"
-      data-date="May 22, 2026"
-      data-title="The Sun deity — Adithya and the daily renewal."
-      data-sinhala="සූර්‍ය දෙවියන්"
-      data-excerpt="Why the Surya namaskara remains the most underestimated practice in modern life."
-      data-body="Surya, the solar deity, governs vitality, authority, and the father principle in Vedic astrology. The practice of Surya namaskara — facing east at sunrise and offering silent salutation — is not merely physical exercise. It is an acknowledgement of the celestial rhythm that governs our waking hours, our health, and our relationship with time. Modern practitioners who skip this ritual often report a subtle but persistent disconnection from daily purpose. We examine why.">
-      <div class="article-img-wrap">
-        <img class="article-img"
-          src="https://doyouknowtrends69-prog.github.io/Sri-Vastu-homes/611944025_1392972846173963_1217316947557898769_n.jpg"
-          alt="The Sun deity"
-          onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80';this.onerror=null;">
-      </div>
-      <div class="article-meta">
-        <span class="article-cat">Astrology</span>
-        <span class="article-date">May 22, 2026</span>
-      </div>
-      <h3>The Sun deity — Adithya and the daily renewal.</h3>
-      <div class="sinhala">සූර්‍ය දෙවියන්</div>
-      <p>Why the Surya namaskara remains the most underestimated practice in modern life.</p>
-      <span class="read">Read</span>
+    <article class="article mag-cat-tile"
+      data-img="https://images.unsplash.com/photo-1609619385002-f40f1df9b7eb?w=800&q=80"
+      data-cat="Magazine · Gods & Temple"
+      data-date=""
+      data-title="Gods &amp; Temple"
+      data-sinhala="දෙවි දේවාල"
+      data-excerpt="Deities, their stories and the living traditions of temple worship."
+      data-body="From Ganesha to Murugan, from Lakshmi to Saraswati — this section explores the mythology, iconography and living rituals of the Hindu deities. Each essay is drawn from classical sources and the practical experience of our pooja lineage.">
+      <div class="mag-cat-icon">🛕</div>
+      <h3>Gods &amp; Temple</h3>
+      <p>Deities, mythology &amp; temple traditions.</p>
+      <span class="read">Explore →</span>
     </article>
 
-    <!-- ✏️ ARTICLE 3 -->
-    <article class="article"
-      data-img="https://doyouknowtrends69-prog.github.io/Sri-Vastu-homes/637936121_1429026959235218_440584605662606729_n.jpg"
-      data-cat="Vastu"
-      data-date="May 24, 2026"
-      data-title="Five perches, three storeys — a small plot transformed."
-      data-sinhala=""
-      data-excerpt="A case study in maximising sacred geometry on a modest urban site."
-      data-body="When a family in Panadura approached us with a five-perch plot and plans for a three-storey home, the challenge was immediate: standard Vastu principles assume generous land proportions. What follows is a step-by-step account of how we adapted the Brahmasthana concept, reoriented the entrance to face north-east, and structured the upper floors to maintain energetic balance — all within a 12.5 × 18 metre footprint.">
-      <div class="article-img-wrap">
-        <img class="article-img"
-          src="https://doyouknowtrends69-prog.github.io/Sri-Vastu-homes/637936121_1429026959235218_440584605662606729_n.jpg"
-          alt="Five perches, three storeys"
-          onerror="this.src='https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80';this.onerror=null;">
-      </div>
-      <div class="article-meta">
-        <span class="article-cat">Vastu</span>
-        <span class="article-date">May 24, 2026</span>
-      </div>
-      <h3>Five perches, three storeys — a small plot transformed.</h3>
-      <p>A case study in maximising sacred geometry on a modest urban site.</p>
-      <span class="read">Read</span>
+    <article class="article mag-cat-tile"
+      data-img="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80"
+      data-cat="Magazine · Vedic"
+      data-date=""
+      data-title="Vedic"
+      data-sinhala="වේද"
+      data-excerpt="Philosophy, scripture and practical Vedic wisdom for modern life."
+      data-body="The Vedas are not museum pieces — they are living diagnostic systems. Essays in this section explore Pancha Bhuta, the Brahmasthana, sacred geometry, Vastu principles and the philosophical foundations that underpin both astrology and architecture in the Vedic tradition.">
+      <div class="mag-cat-icon">📜</div>
+      <h3>Vedic</h3>
+      <p>Philosophy, scripture &amp; sacred wisdom.</p>
+      <span class="read">Explore →</span>
     </article>
 
-    <!-- ✏️ ARTICLE 4 -->
-    <article class="article"
-      data-img="https://images.unsplash.com/photo-1604709177225-055f99402ea3?w=800&q=80&auto=format"
-      data-cat="Philosophy"
-      data-date="May 10, 2026"
-      data-title="The five elements and the modern home — Pancha Bhuta in practice."
-      data-sinhala=""
-      data-excerpt="How earth, water, fire, air and space govern the feeling of every room you live in."
-      data-body="Pancha Bhuta — the five elements of earth, water, fire, air and space — are not abstract metaphysics. They are a diagnostic tool. When a room feels oppressive, when sleep is disturbed, when the kitchen breeds arguments, the Vastu practitioner asks: which element is absent or in excess? This essay maps each element to specific rooms and materials, and provides a simple self-assessment checklist any homeowner can apply today.">
-      <div class="article-img-wrap">
-        <img class="article-img"
-          src="https://images.unsplash.com/photo-1604709177225-055f99402ea3?w=800&q=80&auto=format"
-          alt="Pancha Bhuta">
-      </div>
-      <div class="article-meta">
-        <span class="article-cat">Philosophy</span>
-        <span class="article-date">May 10, 2026</span>
-      </div>
-      <h3>The five elements and the modern home — Pancha Bhuta in practice.</h3>
-      <p>How earth, water, fire, air and space govern the feeling of every room you live in.</p>
-      <span class="read">Read</span>
+    <article class="article mag-cat-tile"
+      data-img="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80"
+      data-cat="Magazine · Yoga"
+      data-date=""
+      data-title="Yoga"
+      data-sinhala="යෝග"
+      data-excerpt="Pranayama, asana and the inner science of breath and body."
+      data-body="Yoga in the classical sense is not a fitness regime — it is a systematic path of inner alignment. Our writings here cover pranayama practice, the relationship between yoga and Jyotish, Surya namaskara as a daily ritual, and how breath regulation supports both spiritual and physical wellbeing.">
+      <div class="mag-cat-icon">🧘</div>
+      <h3>Yoga</h3>
+      <p>Pranayama, asana &amp; the breath science.</p>
+      <span class="read">Explore →</span>
     </article>
 
-    <!-- ✏️ ARTICLE 5 -->
-    <article class="article"
-      data-img="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80&auto=format"
-      data-cat="Gemstones"
-      data-date="May 3, 2026"
-      data-title="Ruby, sapphire, emerald — choosing the right stone for your graha."
-      data-sinhala=""
-      data-excerpt="A practical guide to planetary gemstones and how to wear them correctly."
-      data-body="Gemstone prescription in Jyotish is one of the most misunderstood remedial measures in the tradition. The correct stone is determined not by preference or aesthetics, but by the specific placement and dignity of a planet in the natal chart. Wearing the wrong stone — even a high-quality one — can amplify a planet's malefic qualities rather than strengthen its benefic ones. Here we outline the criteria, the contraindications, and the correct metals and fingers for each of the nine planetary stones.">
-      <div class="article-img-wrap">
-        <img class="article-img"
-          src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80&auto=format"
-          alt="Gemstones">
-      </div>
-      <div class="article-meta">
-        <span class="article-cat">Gemstones</span>
-        <span class="article-date">May 3, 2026</span>
-      </div>
-      <h3>Ruby, sapphire, emerald — choosing the right stone for your graha.</h3>
-      <p>A practical guide to planetary gemstones and how to wear them correctly.</p>
-      <span class="read">Read</span>
+    <article class="article mag-cat-tile"
+      data-img="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=800&q=80"
+      data-cat="Magazine · Spiritual"
+      data-date=""
+      data-title="Spiritual"
+      data-sinhala="අධ්‍යාත්මික"
+      data-excerpt="Reflections on consciousness, karma and the inner path."
+      data-body="Karma, dharma, the nature of the self — this section offers essays on the deeper questions that bring many people to the Vedic tradition in the first place. Written for the serious seeker who wants substance, not platitudes.">
+      <div class="mag-cat-icon">🕯️</div>
+      <h3>Spiritual</h3>
+      <p>Karma, consciousness &amp; the inner path.</p>
+      <span class="read">Explore →</span>
     </article>
 
-    <!-- ✏️ ARTICLE 6 -->
-    <article class="article"
-      data-img="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800&q=80&auto=format"
-      data-cat="Vastu"
-      data-date="Apr 28, 2026"
-      data-title="The Brahmasthana — why the centre of your home must stay open."
-      data-sinhala=""
-      data-excerpt="The spiritual and practical case for keeping the heart of the house clear and unobstructed."
-      data-body="The Brahmasthana is the sacred central zone of any structure — the point where cosmic energy enters and distributes through the building. In classical texts it is described as the dwelling of Brahma, the creator. Its practical implication is unambiguous: this zone must not carry structural load, must not be enclosed by walls, and must never serve as a toilet, staircase, or storage room. Yet in modern construction these rules are routinely violated. The consequences — reported consistently by clients — include financial stagnation, health problems concentrated in the middle of the family, and a persistent feeling that the home does not breathe.">
-      <div class="article-img-wrap">
-        <img class="article-img"
-          src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800&q=80&auto=format"
-          alt="Brahmasthana">
-      </div>
-      <div class="article-meta">
-        <span class="article-cat">Vastu</span>
-        <span class="article-date">Apr 28, 2026</span>
-      </div>
-      <h3>The Brahmasthana — why the centre of your home must stay open.</h3>
-      <p>The spiritual and practical case for keeping the heart of the house clear and unobstructed.</p>
-      <span class="read">Read</span>
+    <article class="article mag-cat-tile"
+      data-img="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?w=800&q=80"
+      data-cat="Magazine · Homa & Pooja"
+      data-date=""
+      data-title="Homa &amp; Pooja"
+      data-sinhala="හෝම පූජා"
+      data-excerpt="Sacred fire rituals, offerings and the science of ceremony."
+      data-body="Homam and pooja are not superstition — they are precisely structured ritual technologies that work through sound, fire, intention and material offering. Essays here cover the Navagraha Homa, Ganapathi Homam, daily pooja structure, correct mantra usage and the practical protocols our lineage follows for different occasions.">
+      <div class="mag-cat-icon">🔥</div>
+      <h3>Homa &amp; Pooja</h3>
+      <p>Fire rituals, offerings &amp; sacred ceremony.</p>
+      <span class="read">Explore →</span>
     </article>
 
   </div>
@@ -3364,7 +5351,7 @@ Full landscaping and external development works</p>
 
       <ul class="booking-list">
         <li><span class="check">✦</span> Private 60-minute session</li>
-        <li><span class="check">✦</span> In person at Panadura, or by video call</li>
+        <li><span class="check">✦</span> In person at Panadura, or by Audio call</li>
         <li><span class="check">✦</span> Sinhala, Tamil or English</li>
         <li><span class="check">✦</span> Written summary of remedies</li>
       </ul>
@@ -3464,26 +5451,49 @@ Full landscaping and external development works</p>
   </div>
 </footer>
 <!-- ============================================
-     ARTICLE MODAL
+     ARTICLE READER MODAL (second level)
+     ============================================ -->
+<div id="articleReaderModal" class="art-reader-overlay" role="dialog" aria-modal="true">
+  <div class="art-reader-panel">
+    <div class="art-reader-topbar">
+      <button class="art-reader-back" id="artReaderBack">&larr; Back to articles</button>
+      <span class="art-reader-cat" id="artReaderCat"></span>
+      <button class="art-reader-close" id="artReaderClose">&#x2715;</button>
+    </div>
+    <div class="art-reader-img-wrap">
+      <img id="artReaderImg" src="" alt="">
+    </div>
+    <div class="art-reader-body">
+      <span class="art-reader-tag" id="artReaderTag"></span>
+      <h2 class="art-reader-title" id="artReaderTitle"></h2>
+      <div class="art-reader-byline">By Asantha De Silva &nbsp;&middot;&nbsp; <span id="artReaderReadTime"></span></div>
+      <hr class="art-reader-rule">
+      <div class="art-reader-content" id="artReaderContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     MAGAZINE CATEGORY MODAL
      ============================================ -->
 <div id="articleModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-panel">
-    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
-    <div class="modal-img-wrap">
-      <img id="modalImg" src="" alt="">
-    </div>
-    <div class="modal-body">
-      <div class="modal-meta">
-        <span class="article-cat" id="modalCat"></span>
-        <span class="article-date" id="modalDate"></span>
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <span class="modal-header-cat" id="modalCat"></span>
+        <h2 class="modal-header-title" id="modalTitle"></h2>
+        <div class="modal-header-sinhala" id="modalSinhala"></div>
       </div>
-      <h2 id="modalTitle"></h2>
-      <div class="sinhala" id="modalSinhala"></div>
+      <button class="modal-close" id="modalClose" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="modal-desc-strip">
       <p id="modalExcerpt"></p>
-      <hr class="rule" style="margin: 2rem 0;">
-      <p id="modalContent" style="font-size:1.05rem; line-height:1.75; color: var(--ink-soft);">
-        <!-- Full article body goes here — swap this placeholder per article -->
-      </p>
+    </div>
+    <div class="modal-tiles-grid" id="modalTilesGrid"></div>
+    <div style="display:none">
+      <img id="modalImg" src="" alt="">
+      <span id="modalDate"></span>
+      <p id="modalContent"></p>
     </div>
   </div>
 </div>
@@ -3568,35 +5578,128 @@ document.querySelectorAll('[data-photo-carousel]').forEach(carousel => {
   mNext?.addEventListener('click', () => magTrack.scrollBy({ left: magCardWidth(), behavior: 'smooth' }));
 
 
-  // Article data — one object per article card (same order as HTML)
-// Article modal — reads content from data-* attributes on each card
+
+// ── Magazine data — read from HTML body (#magazineData) ─────────────────────
+const categoryArticles = {};
+const articleFullContent = {};
+
+document.querySelectorAll('#magazineData .mag-cat-data').forEach(catEl => {
+  const catName = catEl.dataset.category;
+  categoryArticles[catName] = [];
+  catEl.querySelectorAll('.mag-article').forEach(artEl => {
+    const d = artEl.dataset;
+    categoryArticles[catName].push({
+      img:     d.img,
+      tag:     d.tag,
+      title:   d.title,
+      excerpt: d.excerpt
+    });
+    const tpl = artEl.querySelector('template.art-body');
+    if (tpl) {
+      let body = tpl.innerHTML.trim();
+      // Replace ${excerpt} placeholder with actual excerpt text
+      if (tpl.classList.contains('art-body-placeholder')) {
+        body = body.replace('${excerpt}', d.excerpt || '');
+      }
+      articleFullContent[d.title] = body;
+    }
+  });
+});
+
+
   document.querySelectorAll('.article').forEach(card => {
     card.style.cursor = 'pointer';
     card.addEventListener('click', () => {
       const d = card.dataset;
-      document.getElementById('modalImg').src                = d.img;
-      document.getElementById('modalCat').textContent        = d.cat;
-      document.getElementById('modalDate').textContent       = d.date;
-      document.getElementById('modalTitle').textContent      = d.title;
-      document.getElementById('modalSinhala').textContent    = d.sinhala;
-      document.getElementById('modalExcerpt').textContent    = d.excerpt;
-      document.getElementById('modalContent').textContent    = d.body;
+      const title = d.title || '';
+      const catKey = Object.keys(categoryArticles).find(k => title.includes(k)) || title;
+      const tiles = categoryArticles[catKey] || categoryArticles[Object.keys(categoryArticles)[0]];
+
+      document.getElementById('modalImg').src           = d.img;
+      document.getElementById('modalCat').textContent   = d.cat;
+      document.getElementById('modalDate').textContent  = d.date;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalSinhala').textContent = d.sinhala;
+      document.getElementById('modalExcerpt').textContent = d.body;
+      document.getElementById('modalContent').textContent = '';
+
+      // Build tiles — store tile data on each element for reader modal
+      const grid = document.getElementById('modalTilesGrid');
+      grid.innerHTML = tiles.map((t, i) => `
+        <div class="modal-article-tile" data-tile-index="${i}">
+          <div class="mat-img-wrap"><img src="${t.img}" alt="${t.title}" loading="lazy"></div>
+          <span class="mat-tag">${t.tag}</span>
+          <div class="mat-title">${t.title}</div>
+          <div class="mat-excerpt">${t.excerpt}</div>
+          <span class="mat-read">Read article &rarr;</span>
+        </div>
+      `).join('');
+
+      // Wire tile clicks → article reader modal
+      grid.querySelectorAll('.modal-article-tile').forEach((tile, i) => {
+        tile.addEventListener('click', () => openArticleReader(tiles[i], catKey));
+      });
+
       document.getElementById('articleModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     });
   });
 
-// Close modal
+// articleFullContent populated from #magazineData above
+
+// Default content for tiles without specific full text
+function getArticleContent(title, excerpt) {
+  if (articleFullContent[title]) return articleFullContent[title];
+  return `<p class="drop-cap">${excerpt}</p><p>This article from the practice of Asantha De Silva is being prepared for the magazine. New writings are added regularly — please check back, or contact us directly if you wish to discuss this topic in a private consultation.</p><blockquote>The Vedic tradition is vast. No website can contain it. The most important knowledge is always transmitted person to person, in real time, in response to the real questions of a real life.</blockquote><p>To arrange a private consultation on any of the topics covered in this magazine, please use the booking form below or contact us directly via WhatsApp.</p>`;
+}
+
+// Open article reader modal
+let currentCatKey = '';
+function openArticleReader(tileData, catKey) {
+  currentCatKey = catKey;
+  const readTime = Math.ceil((articleFullContent[tileData.title] || '').replace(/<[^>]+>/g,'').split(' ').length / 200) || 3;
+  document.getElementById('artReaderCat').textContent   = catKey;
+  document.getElementById('artReaderTag').textContent   = tileData.tag;
+  document.getElementById('artReaderTitle').textContent = tileData.title;
+  document.getElementById('artReaderReadTime').textContent = readTime + ' min read';
+  document.getElementById('artReaderImg').src           = tileData.img;
+  document.getElementById('artReaderImg').alt           = tileData.title;
+  document.getElementById('artReaderContent').innerHTML = getArticleContent(tileData.title, tileData.excerpt);
+  const panel = document.querySelector('.art-reader-panel');
+  panel.scrollTop = 0;
+  document.getElementById('articleReaderModal').classList.add('open');
+}
+
+// Close article reader → go back to category grid
+const closeArticleReader = () => {
+  document.getElementById('articleReaderModal').classList.remove('open');
+};
+document.getElementById('artReaderBack').addEventListener('click', closeArticleReader);
+document.getElementById('artReaderClose').addEventListener('click', () => {
+  closeArticleReader();
+  closeModal();
+});
+document.getElementById('articleReaderModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeArticleReader();
+});
+
+// Close category modal
 const closeModal = () => {
   document.getElementById('articleModal').classList.remove('open');
   document.body.style.overflow = '';
 };
 document.getElementById('modalClose').addEventListener('click', closeModal);
 document.getElementById('articleModal').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) closeModal(); // click outside panel
+  if (e.target === e.currentTarget) closeModal();
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') {
+    if (document.getElementById('articleReaderModal').classList.contains('open')) {
+      closeArticleReader();
+    } else {
+      closeModal();
+    }
+  }
 });
 
 </script>
