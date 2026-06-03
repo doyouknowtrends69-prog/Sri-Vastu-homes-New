@@ -5658,7 +5658,7 @@ Full landscaping and external development works</p>
         <label for="date">Preferred date</label>
         <input type="date" id="date">
       </div>
-      <button class="btn btn-primary" onclick="alert('In production, this would submit your request. For now please use WhatsApp or call +94 740 479 980.')">Request Appointment <span class="arrow">→</span></button>
+     <button class="btn btn-primary" onclick="sendToWhatsApp()">Request Appointment <span class="arrow">→</span></button>
     </div>
   </div>
 </section>
@@ -5966,6 +5966,33 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+function sendToWhatsApp() {
+  const name    = document.getElementById('name').value.trim();
+  const phone   = document.getElementById('phone').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const service = document.getElementById('service').value.trim();
+  const date    = document.getElementById('date').value.trim();
+
+  if (!name || !phone || !service || !date) {
+    alert('Please fill in your name, phone number, service, and preferred date.');
+    return;
+  }
+
+  const formattedDate = date ? new Date(date).toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'}) : 'Not specified';
+
+  const message =
+    `🙏 *New Appointment Request — Sri Vastu Homes*\n\n` +
+    `👤 *Name:* ${name}\n` +
+    `📞 *Phone:* ${phone}\n` +
+    `📧 *Email:* ${email || 'Not provided'}\n` +
+    `🔮 *Service:* ${service}\n` +
+    `📅 *Preferred Date:* ${formattedDate}\n\n` +
+    `_Sent via srivastuhomes.com_`;
+
+  const encoded = encodeURIComponent(message);
+  window.open(`https://wa.me/94740479980?text=${encoded}`, '_blank');
+}
+  
 </script>
 
 </body>
