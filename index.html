@@ -1952,29 +1952,28 @@ background: #1a1008;
   .gem:hover .gem-stone { transform: scale(1.1); }
 
   .gem-stone {
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto 1.2rem;
-    border-radius: 50%;
-    box-shadow: inset -8px -8px 20px rgba(0,0,0,0.25), inset 6px 6px 14px rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.15);
-    transition: transform 0.4s ease;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(42,24,16,0.18), 0 0 0 1px var(--rule);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     position: relative;
   }
-  .gem-stone::after {
-    content: '';
-    position: absolute;
-    top: 14%; left: 18%;
-    width: 28%; height: 22%;
-    background: rgba(255,255,255,0.45);
-    border-radius: 50%;
-    filter: blur(2px);
+  .gem:hover .gem-stone {
+    box-shadow: 0 14px 32px rgba(42,24,16,0.28), 0 0 0 1px var(--rule-strong);
   }
-  .gem-ruby { background: radial-gradient(circle at 35% 30%, #ff4d4d, #8B0000); }
-  .gem-sapphire { background: radial-gradient(circle at 35% 30%, #4a7fff, #0F2A6B); }
-  .gem-emerald { background: radial-gradient(circle at 35% 30%, #5dd494, #0E6B3F); }
-  .gem-yellow { background: radial-gradient(circle at 35% 30%, #ffe066, #B58B00); }
-  .gem-pearl { background: radial-gradient(circle at 35% 30%, #ffffff, #C9C0B0); }
-  .gem-hessonite { background: radial-gradient(circle at 35% 30%, #ff9966, #8B3D00); }
+  .gem-stone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: saturate(1.1) contrast(1.05);
+    transition: transform 0.5s ease;
+  }
+  .gem:hover .gem-stone img { transform: scale(1.08); }
 
   .gem h4 {
     font-family: var(--f-display);
@@ -4113,34 +4112,46 @@ Full landscaping and external development works</p>
 
   <div class="gems-grid reveal">
     <div class="gem">
-      <div class="gem-stone gem-ruby"></div>
+      <div class="gem-stone">
+        <img src="redgemstone.webp" alt="Ruby gemstone">
+      </div>
       <h4>Ruby</h4>
       <div class="gem-meta">Sun · Confidence</div>
     </div>
     <div class="gem">
-      <div class="gem-stone gem-sapphire"></div>
-      <h4>Blue Sapphire</h4>
-      <div class="gem-meta">Saturn · Discipline</div>
-    </div>
-    <div class="gem">
-      <div class="gem-stone gem-emerald"></div>
-      <h4>Emerald</h4>
-      <div class="gem-meta">Mercury · Intellect</div>
-    </div>
-    <div class="gem">
-      <div class="gem-stone gem-yellow"></div>
-      <h4>Yellow Sapphire</h4>
-      <div class="gem-meta">Jupiter · Wisdom</div>
-    </div>
-    <div class="gem">
-      <div class="gem-stone gem-pearl"></div>
+      <div class="gem-stone">
+        <img src="PearlGem.jpg" alt="Blue Sapphire gemstone">
+      </div>
       <h4>Pearl</h4>
       <div class="gem-meta">Moon · Peace</div>
     </div>
     <div class="gem">
-      <div class="gem-stone gem-hessonite"></div>
-      <h4>Hessonite</h4>
-      <div class="gem-meta">Rahu · Protection</div>
+      <div class="gem-stone">
+        <img src="Emerald.jpeg" alt="Emerald gemstone">
+      </div>
+      <h4>Emerald</h4>
+      <div class="gem-meta">Mercury · Intellect</div>
+    </div>
+    <div class="gem">
+      <div class="gem-stone">
+        <img src="YellowSapphire.jpeg" alt="Yellow Sapphire gemstone">
+      </div>
+      <h4>Yellow Sapphire</h4>
+      <div class="gem-meta">Jupiter · Wisdom</div>
+    </div>
+    <div class="gem">
+      <div class="gem-stone">
+        <img src="Diamond.jpg" alt="Pearl gemstone">
+      </div>
+      <h4>Diamond</h4>
+      <div class="gem-meta">Moon · Peace</div>
+    </div>
+    <div class="gem">
+      <div class="gem-stone">
+        <img src="Blue-Sapphire.png" alt="Hessonite gemstone">
+      </div>
+      <h4>Blue Sapphire</h4>
+      <div class="gem-meta">Sky · Freedom</div>
     </div>
   </div>
 </section>
